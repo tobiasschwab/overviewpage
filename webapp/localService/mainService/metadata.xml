@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="1.0" xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx">
+    <edmx:DataServices m:DataServiceVersion="2.0" xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata">
+        <Schema Namespace="com.example.vertrag" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+
+            <EntityType Name="VertragStatistik">
+                <Key>
+                    <PropertyRef Name="Status"/>
+                </Key>
+                <Property Name="Status" Type="Edm.String" MaxLength="20" Nullable="false"/>
+                <Property Name="Anzahl" Type="Edm.Int32" Nullable="false"/>
+            </EntityType>
+
+            <EntityContainer Name="Container" m:IsDefaultEntityContainer="true">
+                <EntitySet Name="VertragStatistiken" EntityType="com.example.vertrag.VertragStatistik"/>
+            </EntityContainer>
+
+        </Schema>
+    </edmx:DataServices>
+</edmx:Edmx>

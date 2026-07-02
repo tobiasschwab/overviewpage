@@ -1,0 +1,14 @@
+[
+  {
+    "Status": "Geplant",
+    "Anzahl": 100
+  },
+  {
+    "Status": "In Vergabe",
+    "Anzahl": 20
+  },
+  {
+    "Status": "Beauftragt",
+    "Anzahl": 200
+  }
+]
