@@ -118,6 +118,16 @@
           "annotationPath": "com.sap.vocabularies.UI.v1.LineItem"
         }
       },
+      "bereichSummenCard": {
+        "model": "mainModel",
+        "template": "sap.ovp.cards.charts.analytical",
+        "settings": {
+          "title": "{{bereichSummenCard_title}}",
+          "subTitle": "{{bereichSummenCard_subtitle}}",
+          "entitySet": "BereichSummen",
+          "chartAnnotationPath": "com.sap.vocabularies.UI.v1.Chart"
+        }
+      },
       "jahresWerteCard": {
         "model": "mainModel",
         "template": "sap.ovp.cards.charts.analytical",
