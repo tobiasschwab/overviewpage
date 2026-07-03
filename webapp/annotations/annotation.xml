@@ -14,12 +14,6 @@
     <edmx:DataServices>
         <Schema xmlns="http://docs.oasis-open.org/odata/ns/edm" Namespace="local">
             <Annotations Target="com.example.vertrag.VertragStatistik">
-                <Annotation Term="UI.SelectionFields">
-                    <Collection>
-                        <PropertyPath>Status</PropertyPath>
-                        <PropertyPath>Jahr</PropertyPath>
-                    </Collection>
-                </Annotation>
                 <Annotation Term="UI.DataPoint" Qualifier="Anzahl">
                     <Record Type="UI.DataPointType">
                         <PropertyValue Property="Value" Path="Anzahl"/>
@@ -43,6 +37,12 @@
                 </Annotation>
             </Annotations>
             <Annotations Target="com.example.vertrag.JahresWert">
+                <Annotation Term="UI.SelectionFields">
+                    <Collection>
+                        <PropertyPath>Jahr</PropertyPath>
+                        <PropertyPath>Bereich</PropertyPath>
+                    </Collection>
+                </Annotation>
                 <Annotation Term="UI.Chart">
                     <Record Type="UI.ChartDefinitionType">
                         <PropertyValue Property="Title" String="Jahreswerte"/>
