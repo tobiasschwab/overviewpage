@@ -118,13 +118,13 @@
           "annotationPath": "com.sap.vocabularies.UI.v1.LineItem"
         }
       },
-      "jahresWerteCard": {
+      "b4KostenentwicklungCard": {
         "model": "mainModel",
         "template": "sap.ovp.cards.charts.analytical",
         "settings": {
-          "title": "{{jahresWerteCard_title}}",
-          "subTitle": "{{jahresWerteCard_subtitle}}",
-          "entitySet": "JahresWerte",
+          "title": "{{b4KostenentwicklungCard_title}}",
+          "subTitle": "{{b4KostenentwicklungCard_subtitle}}",
+          "entitySet": "B4Zahlungen",
           "chartAnnotationPath": "com.sap.vocabularies.UI.v1.Chart"
         }
       }
