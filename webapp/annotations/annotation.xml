@@ -41,6 +41,28 @@
                     </Collection>
                 </Annotation>
             </Annotations>
+            <Annotations Target="com.example.vertrag.JahresWert">
+                <Annotation Term="UI.Chart">
+                    <Record Type="UI.ChartDefinitionType">
+                        <PropertyValue Property="Title" String="{i18n>jahresWerteCard_title}"/>
+                        <PropertyValue Property="ChartType" EnumMember="UI.ChartType/ColumnStacked"/>
+                        <PropertyValue Property="Dimensions">
+                            <Collection>
+                                <PropertyPath>Jahr</PropertyPath>
+                            </Collection>
+                        </PropertyValue>
+                        <PropertyValue Property="Measures">
+                            <Collection>
+                                <PropertyPath>B0</PropertyPath>
+                                <PropertyPath>B1</PropertyPath>
+                                <PropertyPath>B2</PropertyPath>
+                                <PropertyPath>B3</PropertyPath>
+                                <PropertyPath>B4</PropertyPath>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+            </Annotations>
         </Schema>
     </edmx:DataServices>
 </edmx:Edmx>

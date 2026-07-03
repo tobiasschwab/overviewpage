@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <edmx:Edmx Version="1.0" xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx">
     <edmx:DataServices m:DataServiceVersion="2.0" xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata">
-        <Schema Namespace="com.example.vertrag" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+        <Schema Namespace="com.example.vertrag" xmlns="http://schemas.microsoft.com/ado/2008/09/edm" xmlns:sap="http://www.sap.com/Protocols/SAPData">
 
             <EntityType Name="VertragStatistik">
                 <Key>
@@ -12,8 +12,21 @@
                 <Property Name="Created" Type="Edm.DateTime" Nullable="true"/>
             </EntityType>
 
+            <EntityType Name="JahresWert" sap:semantics="aggregate">
+                <Key>
+                    <PropertyRef Name="Jahr"/>
+                </Key>
+                <Property Name="Jahr" Type="Edm.String" MaxLength="4" Nullable="false" sap:aggregation-role="dimension" sap:label="Jahr"/>
+                <Property Name="B0" Type="Edm.Decimal" Precision="18" Scale="2" sap:aggregation-role="measure" sap:label="B0"/>
+                <Property Name="B1" Type="Edm.Decimal" Precision="18" Scale="2" sap:aggregation-role="measure" sap:label="B1"/>
+                <Property Name="B2" Type="Edm.Decimal" Precision="18" Scale="2" sap:aggregation-role="measure" sap:label="B2"/>
+                <Property Name="B3" Type="Edm.Decimal" Precision="18" Scale="2" sap:aggregation-role="measure" sap:label="B3"/>
+                <Property Name="B4" Type="Edm.Decimal" Precision="18" Scale="2" sap:aggregation-role="measure" sap:label="B4"/>
+            </EntityType>
+
             <EntityContainer Name="Container" m:IsDefaultEntityContainer="true">
                 <EntitySet Name="VertragStatistiken" EntityType="com.example.vertrag.VertragStatistik"/>
+                <EntitySet Name="JahresWerte" EntityType="com.example.vertrag.JahresWert" sap:semantics="aggregate"/>
             </EntityContainer>
 
         </Schema>

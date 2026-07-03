@@ -117,6 +117,16 @@
           "listFlavor": "standard",
           "annotationPath": "com.sap.vocabularies.UI.v1.LineItem"
         }
+      },
+      "jahresWerteCard": {
+        "model": "mainModel",
+        "template": "sap.ovp.cards.charts.analytical",
+        "settings": {
+          "title": "{{jahresWerteCard_title}}",
+          "subTitle": "{{jahresWerteCard_subtitle}}",
+          "entitySet": "JahresWerte",
+          "chartAnnotationPath": "com.sap.vocabularies.UI.v1.Chart"
+        }
       }
     }
   },
