@@ -45,11 +45,19 @@
             <Annotations Target="com.example.vertrag.JahresWert">
                 <Annotation Term="UI.Chart">
                     <Record Type="UI.ChartDefinitionType">
-                        <PropertyValue Property="Title" String="{i18n>jahresWerteCard_title}"/>
+                        <PropertyValue Property="Title" String="Jahreswerte"/>
                         <PropertyValue Property="ChartType" EnumMember="UI.ChartType/ColumnStacked"/>
                         <PropertyValue Property="Dimensions">
                             <Collection>
                                 <PropertyPath>Jahr</PropertyPath>
+                            </Collection>
+                        </PropertyValue>
+                        <PropertyValue Property="DimensionAttributes">
+                            <Collection>
+                                <Record Type="UI.ChartDimensionAttributeType">
+                                    <PropertyValue Property="Dimension" PropertyPath="Jahr"/>
+                                    <PropertyValue Property="Role" EnumMember="UI.ChartDimensionRoleType/Category"/>
+                                </Record>
                             </Collection>
                         </PropertyValue>
                         <PropertyValue Property="Measures">
@@ -59,6 +67,30 @@
                                 <PropertyPath>B2</PropertyPath>
                                 <PropertyPath>B3</PropertyPath>
                                 <PropertyPath>B4</PropertyPath>
+                            </Collection>
+                        </PropertyValue>
+                        <PropertyValue Property="MeasureAttributes">
+                            <Collection>
+                                <Record Type="UI.ChartMeasureAttributeType">
+                                    <PropertyValue Property="Measure" PropertyPath="B0"/>
+                                    <PropertyValue Property="Role" EnumMember="UI.ChartMeasureRoleType/Axis1"/>
+                                </Record>
+                                <Record Type="UI.ChartMeasureAttributeType">
+                                    <PropertyValue Property="Measure" PropertyPath="B1"/>
+                                    <PropertyValue Property="Role" EnumMember="UI.ChartMeasureRoleType/Axis1"/>
+                                </Record>
+                                <Record Type="UI.ChartMeasureAttributeType">
+                                    <PropertyValue Property="Measure" PropertyPath="B2"/>
+                                    <PropertyValue Property="Role" EnumMember="UI.ChartMeasureRoleType/Axis1"/>
+                                </Record>
+                                <Record Type="UI.ChartMeasureAttributeType">
+                                    <PropertyValue Property="Measure" PropertyPath="B3"/>
+                                    <PropertyValue Property="Role" EnumMember="UI.ChartMeasureRoleType/Axis1"/>
+                                </Record>
+                                <Record Type="UI.ChartMeasureAttributeType">
+                                    <PropertyValue Property="Measure" PropertyPath="B4"/>
+                                    <PropertyValue Property="Role" EnumMember="UI.ChartMeasureRoleType/Axis1"/>
+                                </Record>
                             </Collection>
                         </PropertyValue>
                     </Record>
