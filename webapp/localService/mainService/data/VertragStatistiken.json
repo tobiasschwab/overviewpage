@@ -2,16 +2,19 @@
   {
     "Status": "Geplant",
     "Anzahl": 100,
-    "Created": "/Date(1783036800000)/"
+    "Created": "/Date(1783036800000)/",
+    "Jahr": "2026"
   },
   {
     "Status": "In Vergabe",
     "Anzahl": 20,
-    "Created": "/Date(1783036800000)/"
+    "Created": "/Date(1783036800000)/",
+    "Jahr": "2025"
   },
   {
     "Status": "Beauftragt",
     "Anzahl": 200,
-    "Created": "/Date(1783036800000)/"
+    "Created": "/Date(1783036800000)/",
+    "Jahr": "2024"
   }
 ]
