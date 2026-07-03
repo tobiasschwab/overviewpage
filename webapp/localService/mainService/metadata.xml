@@ -10,6 +10,7 @@
                 <Property Name="Status" Type="Edm.String" MaxLength="20" Nullable="false"/>
                 <Property Name="Anzahl" Type="Edm.Int32" Nullable="false"/>
                 <Property Name="Created" Type="Edm.DateTime" Nullable="true"/>
+                <Property Name="Jahr" Type="Edm.String" MaxLength="4" Nullable="true" sap:label="Jahr"/>
             </EntityType>
 
             <EntityType Name="JahresWert" sap:semantics="aggregate">
@@ -24,9 +25,19 @@
                 <Property Name="B4" Type="Edm.Decimal" Precision="18" Scale="2" sap:aggregation-role="measure" sap:label="B4"/>
             </EntityType>
 
+            <EntityType Name="B4Zahlung" sap:semantics="aggregate">
+                <Key>
+                    <PropertyRef Name="Datum"/>
+                </Key>
+                <Property Name="Datum" Type="Edm.DateTime" Nullable="false" sap:aggregation-role="dimension" sap:label="Datum"/>
+                <Property Name="Jahr" Type="Edm.String" MaxLength="4" Nullable="false" sap:aggregation-role="dimension" sap:label="Jahr"/>
+                <Property Name="B4" Type="Edm.Decimal" Precision="18" Scale="2" sap:aggregation-role="measure" sap:label="B4 Zahlungen (kumuliert)"/>
+            </EntityType>
+
             <EntityContainer Name="Container" m:IsDefaultEntityContainer="true">
                 <EntitySet Name="VertragStatistiken" EntityType="com.example.vertrag.VertragStatistik"/>
                 <EntitySet Name="JahresWerte" EntityType="com.example.vertrag.JahresWert" sap:semantics="aggregate"/>
+                <EntitySet Name="B4Zahlungen" EntityType="com.example.vertrag.B4Zahlung" sap:semantics="aggregate"/>
             </EntityContainer>
 
         </Schema>
