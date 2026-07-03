@@ -99,26 +99,12 @@
   },
   "sap.ovp": {
     "globalFilterModel": "mainModel",
-    "globalFilterEntitySet": "VertragStatistiken",
+    "globalFilterEntitySet": "JahresWerte",
     "containerLayout": "resizable",
     "enableLiveFilter": true,
     "considerAnalyticalParameters": false,
     "cards": {
-      "vertragStatistikenCard": {
-        "model": "mainModel",
-        "template": "sap.ovp.cards.list",
-        "settings": {
-          "title": "{{vertragStatistikenCard_title}}",
-          "subTitle": "{{vertragStatistikenCard_subtitle}}",
-          "entitySet": "VertragStatistiken",
-          "sortBy": "Status",
-          "sortOrder": "ascending",
-          "listType": "condensed",
-          "listFlavor": "standard",
-          "annotationPath": "com.sap.vocabularies.UI.v1.LineItem"
-        }
-      },
-      "bereichSummenCard": {
+"bereichSummenCard": {
         "model": "mainModel",
         "template": "sap.ovp.cards.charts.analytical",
         "settings": {
