@@ -9,6 +9,7 @@
                 </Key>
                 <Property Name="Status" Type="Edm.String" MaxLength="20" Nullable="false"/>
                 <Property Name="Anzahl" Type="Edm.Int32" Nullable="false"/>
+                <Property Name="Created" Type="Edm.DateTime" Nullable="true"/>
             </EntityType>
 
             <EntityContainer Name="Container" m:IsDefaultEntityContainer="true">

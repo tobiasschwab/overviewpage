@@ -34,6 +34,10 @@
                         <Record Type="UI.DataFieldForAnnotation">
                             <PropertyValue Property="Target" AnnotationPath="@UI.DataPoint#Anzahl"/>
                         </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Value" Path="Created"/>
+                            <PropertyValue Property="Label" String="{i18n>vertragStatistik_createdLabel}"/>
+                        </Record>
                     </Collection>
                 </Annotation>
             </Annotations>
