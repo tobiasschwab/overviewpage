@@ -34,10 +34,21 @@
                 <Property Name="B4" Type="Edm.Decimal" Precision="18" Scale="2" sap:aggregation-role="measure" sap:label="B4 Zahlungen (kumuliert)"/>
             </EntityType>
 
+            <EntityType Name="BereichSumme" sap:semantics="aggregate">
+                <Key>
+                    <PropertyRef Name="Bereich"/>
+                    <PropertyRef Name="Jahr"/>
+                </Key>
+                <Property Name="Bereich" Type="Edm.String" MaxLength="1" Nullable="false" sap:aggregation-role="dimension" sap:label="Bereich"/>
+                <Property Name="Jahr" Type="Edm.String" MaxLength="4" Nullable="false" sap:aggregation-role="dimension" sap:label="Jahr"/>
+                <Property Name="B4" Type="Edm.Decimal" Precision="18" Scale="2" sap:aggregation-role="measure" sap:label="B4"/>
+            </EntityType>
+
             <EntityContainer Name="Container" m:IsDefaultEntityContainer="true">
                 <EntitySet Name="VertragStatistiken" EntityType="com.example.vertrag.VertragStatistik"/>
                 <EntitySet Name="JahresWerte" EntityType="com.example.vertrag.JahresWert" sap:semantics="aggregate"/>
                 <EntitySet Name="B4Zahlungen" EntityType="com.example.vertrag.B4Zahlung" sap:semantics="aggregate"/>
+                <EntitySet Name="BereichSummen" EntityType="com.example.vertrag.BereichSumme" sap:semantics="aggregate"/>
             </EntityContainer>
 
         </Schema>
