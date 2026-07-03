@@ -15,8 +15,10 @@
 
             <EntityType Name="JahresWert" sap:semantics="aggregate">
                 <Key>
+                    <PropertyRef Name="Bereich"/>
                     <PropertyRef Name="Jahr"/>
                 </Key>
+                <Property Name="Bereich" Type="Edm.String" MaxLength="1" Nullable="false" sap:aggregation-role="dimension" sap:label="Bereich"/>
                 <Property Name="Jahr" Type="Edm.String" MaxLength="4" Nullable="false" sap:aggregation-role="dimension" sap:label="Jahr"/>
                 <Property Name="B0" Type="Edm.Decimal" Precision="18" Scale="2" sap:aggregation-role="measure" sap:label="B0"/>
                 <Property Name="B1" Type="Edm.Decimal" Precision="18" Scale="2" sap:aggregation-role="measure" sap:label="B1"/>
