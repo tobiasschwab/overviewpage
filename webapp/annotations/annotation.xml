@@ -17,6 +17,7 @@
                 <Annotation Term="UI.SelectionFields">
                     <Collection>
                         <PropertyPath>Status</PropertyPath>
+                        <PropertyPath>Jahr</PropertyPath>
                     </Collection>
                 </Annotation>
                 <Annotation Term="UI.DataPoint" Qualifier="Anzahl">
@@ -57,6 +58,24 @@
                                 <PropertyPath>B1</PropertyPath>
                                 <PropertyPath>B2</PropertyPath>
                                 <PropertyPath>B3</PropertyPath>
+                                <PropertyPath>B4</PropertyPath>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="com.example.vertrag.B4Zahlung">
+                <Annotation Term="UI.Chart">
+                    <Record Type="UI.ChartDefinitionType">
+                        <PropertyValue Property="Title" String="{i18n>b4KostenentwicklungCard_title}"/>
+                        <PropertyValue Property="ChartType" EnumMember="UI.ChartType/Line"/>
+                        <PropertyValue Property="Dimensions">
+                            <Collection>
+                                <PropertyPath>Datum</PropertyPath>
+                            </Collection>
+                        </PropertyValue>
+                        <PropertyValue Property="Measures">
+                            <Collection>
                                 <PropertyPath>B4</PropertyPath>
                             </Collection>
                         </PropertyValue>
