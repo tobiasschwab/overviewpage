@@ -24,7 +24,7 @@
         }
       },
       "mainService": {
-        "uri": "/here/goes/your/serviceurl/",
+        "uri": "/sap/opu/odata/sap/ZSB_HUEL/",
         "type": "OData",
         "settings": {
           "annotations": [
@@ -53,7 +53,16 @@
     }
   },
   "sap.ui5": {
-    "flexEnabled": true,
+    "flexEnabled": false,
+    "extends": {
+      "extensions": {
+        "sap.ui.controllerExtensions": {
+          "sap.ovp.app.Main": {
+            "controllerName": "lbd.hasta.opexample.opexample.ext.controller.OverviewPageExt"
+          }
+        }
+      }
+    },
     "dependencies": {
       "minUI5Version": "1.96.49",
       "libs": {
@@ -99,39 +108,186 @@
   },
   "sap.ovp": {
     "globalFilterModel": "mainModel",
-    "globalFilterEntitySet": "JahresWerte",
+    "globalFilterEntitySet": "Huel",
+    "globalFilterAnnotationPath": "com.sap.vocabularies.UI.v1.SelectionVariant#GlobalDefaults",
     "containerLayout": "resizable",
     "enableLiveFilter": true,
     "considerAnalyticalParameters": false,
+    "globalFilterSettings": {
+        "selectionVariantQualifier": "GlobalDefaults"
+    },
     "cards": {
-"bereichSummenCard": {
-        "model": "mainModel",
-        "template": "sap.ovp.cards.charts.analytical",
-        "settings": {
-          "title": "{{bereichSummenCard_title}}",
-          "subTitle": "{{bereichSummenCard_subtitle}}",
-          "entitySet": "BereichSummen",
-          "chartAnnotationPath": "com.sap.vocabularies.UI.v1.Chart"
-        }
-      },
       "jahresWerteCard": {
         "model": "mainModel",
         "template": "sap.ovp.cards.charts.analytical",
         "settings": {
           "title": "{{jahresWerteCard_title}}",
           "subTitle": "{{jahresWerteCard_subtitle}}",
-          "entitySet": "JahresWerte",
-          "chartAnnotationPath": "com.sap.vocabularies.UI.v1.Chart"
+          "entitySet": "Huel",
+          "tabs": [
+            { "value": "{{antragstellerTab_bgesamt}}", "chartAnnotationPath": "com.sap.vocabularies.UI.v1.Chart#JahresWerte", "presentationAnnotationPath": "com.sap.vocabularies.UI.v1.PresentationVariant#JahresWerteTopBgesamt" },
+            { "value": "{{antragstellerTab_b0}}", "chartAnnotationPath": "com.sap.vocabularies.UI.v1.Chart#JahresWerteB0" },
+            { "value": "{{antragstellerTab_b1}}", "chartAnnotationPath": "com.sap.vocabularies.UI.v1.Chart#JahresWerteB1" },
+            { "value": "{{antragstellerTab_b2}}", "chartAnnotationPath": "com.sap.vocabularies.UI.v1.Chart#JahresWerteB2" },
+            { "value": "{{antragstellerTab_b3}}", "chartAnnotationPath": "com.sap.vocabularies.UI.v1.Chart#JahresWerteB3" },
+            { "value": "{{antragstellerTab_b4}}", "chartAnnotationPath": "com.sap.vocabularies.UI.v1.Chart#JahresWerteB4" }
+          ]
         }
       },
-      "b4KostenentwicklungCard": {
+      "bauamtWerteCard": {
         "model": "mainModel",
         "template": "sap.ovp.cards.charts.analytical",
         "settings": {
-          "title": "{{b4KostenentwicklungCard_title}}",
-          "subTitle": "{{b4KostenentwicklungCard_subtitle}}",
-          "entitySet": "B4Zahlungen",
-          "chartAnnotationPath": "com.sap.vocabularies.UI.v1.Chart"
+          "title": "{{bauamtWerteCard_title}}",
+          "subTitle": "{{bauamtWerteCard_subtitle}}",
+          "entitySet": "Huel",
+          "defaultSpan": { "rows": 3, "cols": 2 },
+          "tabs": [
+            { "value": "{{antragstellerTab_bgesamt}}", "chartAnnotationPath": "com.sap.vocabularies.UI.v1.Chart#BauamtBgesamt", "presentationAnnotationPath": "com.sap.vocabularies.UI.v1.PresentationVariant#BauamtTopBgesamt" },
+            { "value": "{{antragstellerTab_b0}}", "chartAnnotationPath": "com.sap.vocabularies.UI.v1.Chart#BauamtB0", "presentationAnnotationPath": "com.sap.vocabularies.UI.v1.PresentationVariant#BauamtTopB0" },
+            { "value": "{{antragstellerTab_b1}}", "chartAnnotationPath": "com.sap.vocabularies.UI.v1.Chart#BauamtB1", "presentationAnnotationPath": "com.sap.vocabularies.UI.v1.PresentationVariant#BauamtTopB1" },
+            { "value": "{{antragstellerTab_b2}}", "chartAnnotationPath": "com.sap.vocabularies.UI.v1.Chart#BauamtB2", "presentationAnnotationPath": "com.sap.vocabularies.UI.v1.PresentationVariant#BauamtTopB2" },
+            { "value": "{{antragstellerTab_b3}}", "chartAnnotationPath": "com.sap.vocabularies.UI.v1.Chart#BauamtB3", "presentationAnnotationPath": "com.sap.vocabularies.UI.v1.PresentationVariant#BauamtTopB3" },
+            { "value": "{{antragstellerTab_b4}}", "chartAnnotationPath": "com.sap.vocabularies.UI.v1.Chart#BauamtB4", "presentationAnnotationPath": "com.sap.vocabularies.UI.v1.PresentationVariant#BauamtTopB4" }
+          ]
+        }
+      },
+      "antragstellerTop10Card": {
+        "model": "mainModel",
+        "template": "sap.ovp.cards.charts.analytical",
+        "settings": {
+          "title": "{{antragstellerTop10Card_title}}",
+          "subTitle": "{{antragstellerTop10Card_subtitle}}",
+          "entitySet": "Huel",
+          "defaultSpan": { "rows": 3, "cols": 1 },
+          "tabs": [
+            { "value": "{{antragstellerTab_bgesamt}}", "chartAnnotationPath": "com.sap.vocabularies.UI.v1.Chart#AntragstellerBgesamt", "presentationAnnotationPath": "com.sap.vocabularies.UI.v1.PresentationVariant#AntragstellerTopBgesamt" },
+            { "value": "{{antragstellerTab_b0}}", "chartAnnotationPath": "com.sap.vocabularies.UI.v1.Chart#AntragstellerB0", "presentationAnnotationPath": "com.sap.vocabularies.UI.v1.PresentationVariant#AntragstellerTopB0" },
+            { "value": "{{antragstellerTab_b1}}", "chartAnnotationPath": "com.sap.vocabularies.UI.v1.Chart#AntragstellerB1", "presentationAnnotationPath": "com.sap.vocabularies.UI.v1.PresentationVariant#AntragstellerTopB1" },
+            { "value": "{{antragstellerTab_b2}}", "chartAnnotationPath": "com.sap.vocabularies.UI.v1.Chart#AntragstellerB2", "presentationAnnotationPath": "com.sap.vocabularies.UI.v1.PresentationVariant#AntragstellerTopB2" },
+            { "value": "{{antragstellerTab_b3}}", "chartAnnotationPath": "com.sap.vocabularies.UI.v1.Chart#AntragstellerB3", "presentationAnnotationPath": "com.sap.vocabularies.UI.v1.PresentationVariant#AntragstellerTopB3" },
+            { "value": "{{antragstellerTab_b4}}", "chartAnnotationPath": "com.sap.vocabularies.UI.v1.Chart#AntragstellerB4", "presentationAnnotationPath": "com.sap.vocabularies.UI.v1.PresentationVariant#AntragstellerTopB4" }
+          ]
+        }
+      },
+      "bereichSummenCard": {
+        "model": "mainModel",
+        "template": "sap.ovp.cards.charts.analytical",
+        "settings": {
+          "title": "{{bereichSummenCard_title}}",
+          "subTitle": "{{bereichSummenCard_subtitle}}",
+          "entitySet": "Huel",
+          "tabs": [
+            { "value": "{{antragstellerTab_bgesamt}}", "chartAnnotationPath": "com.sap.vocabularies.UI.v1.Chart#BereichBgesamt", "presentationAnnotationPath": "com.sap.vocabularies.UI.v1.PresentationVariant#BereichTopBgesamt" },
+            { "value": "{{antragstellerTab_b0}}", "chartAnnotationPath": "com.sap.vocabularies.UI.v1.Chart#BereichB0", "presentationAnnotationPath": "com.sap.vocabularies.UI.v1.PresentationVariant#BereichTopB0" },
+            { "value": "{{antragstellerTab_b1}}", "chartAnnotationPath": "com.sap.vocabularies.UI.v1.Chart#BereichB1", "presentationAnnotationPath": "com.sap.vocabularies.UI.v1.PresentationVariant#BereichTopB1" },
+            { "value": "{{antragstellerTab_b2}}", "chartAnnotationPath": "com.sap.vocabularies.UI.v1.Chart#BereichB2", "presentationAnnotationPath": "com.sap.vocabularies.UI.v1.PresentationVariant#BereichTopB2" },
+            { "value": "{{antragstellerTab_b3}}", "chartAnnotationPath": "com.sap.vocabularies.UI.v1.Chart#BereichB3", "presentationAnnotationPath": "com.sap.vocabularies.UI.v1.PresentationVariant#BereichTopB3" },
+            { "value": "{{antragstellerTab_b4}}", "chartAnnotationPath": "com.sap.vocabularies.UI.v1.Chart#BereichB4", "presentationAnnotationPath": "com.sap.vocabularies.UI.v1.PresentationVariant#BereichTopB4" }
+          ]
+        }
+      },
+      "einzelplanWerteCard": {
+        "model": "mainModel",
+        "template": "sap.ovp.cards.charts.analytical",
+        "settings": {
+          "title": "{{einzelplanWerteCard_title}}",
+          "subTitle": "{{einzelplanWerteCard_subtitle}}",
+          "entitySet": "Huel",
+          "tabs": [
+            { "value": "{{antragstellerTab_bgesamt}}", "chartAnnotationPath": "com.sap.vocabularies.UI.v1.Chart#EinzelplanBgesamt", "presentationAnnotationPath": "com.sap.vocabularies.UI.v1.PresentationVariant#EinzelplanTopBgesamt" },
+            { "value": "{{antragstellerTab_b0}}", "chartAnnotationPath": "com.sap.vocabularies.UI.v1.Chart#EinzelplanB0", "presentationAnnotationPath": "com.sap.vocabularies.UI.v1.PresentationVariant#EinzelplanTopB0" },
+            { "value": "{{antragstellerTab_b1}}", "chartAnnotationPath": "com.sap.vocabularies.UI.v1.Chart#EinzelplanB1", "presentationAnnotationPath": "com.sap.vocabularies.UI.v1.PresentationVariant#EinzelplanTopB1" },
+            { "value": "{{antragstellerTab_b2}}", "chartAnnotationPath": "com.sap.vocabularies.UI.v1.Chart#EinzelplanB2", "presentationAnnotationPath": "com.sap.vocabularies.UI.v1.PresentationVariant#EinzelplanTopB2" },
+            { "value": "{{antragstellerTab_b3}}", "chartAnnotationPath": "com.sap.vocabularies.UI.v1.Chart#EinzelplanB3", "presentationAnnotationPath": "com.sap.vocabularies.UI.v1.PresentationVariant#EinzelplanTopB3" },
+            { "value": "{{antragstellerTab_b4}}", "chartAnnotationPath": "com.sap.vocabularies.UI.v1.Chart#EinzelplanB4", "presentationAnnotationPath": "com.sap.vocabularies.UI.v1.PresentationVariant#EinzelplanTopB4" }
+          ]
+        }
+      },
+      "haushaltWerteCard": {
+        "model": "mainModel",
+        "template": "sap.ovp.cards.charts.analytical",
+        "settings": {
+          "title": "{{haushaltWerteCard_title}}",
+          "subTitle": "{{haushaltWerteCard_subtitle}}",
+          "entitySet": "Huel",
+          "tabs": [
+            { "value": "{{antragstellerTab_bgesamt}}", "chartAnnotationPath": "com.sap.vocabularies.UI.v1.Chart#HaushaltDonutBgesamt" },
+            { "value": "{{antragstellerTab_b0}}", "chartAnnotationPath": "com.sap.vocabularies.UI.v1.Chart#HaushaltDonutB0" },
+            { "value": "{{antragstellerTab_b1}}", "chartAnnotationPath": "com.sap.vocabularies.UI.v1.Chart#HaushaltDonutB1" },
+            { "value": "{{antragstellerTab_b2}}", "chartAnnotationPath": "com.sap.vocabularies.UI.v1.Chart#HaushaltDonutB2" },
+            { "value": "{{antragstellerTab_b3}}", "chartAnnotationPath": "com.sap.vocabularies.UI.v1.Chart#HaushaltDonutB3" },
+            { "value": "{{antragstellerTab_b4}}", "chartAnnotationPath": "com.sap.vocabularies.UI.v1.Chart#HaushaltDonutB4" }
+          ]
+        }
+      },
+      "massnahmeStackCard": {
+        "model": "mainModel",
+        "template": "sap.ovp.cards.stack",
+        "settings": {
+          "title": "{{massnahmeStackCard_title}}",
+          "subTitle": "{{massnahmeStackCard_subtitle}}",
+          "entitySet": "Huel",
+          "identificationAnnotationPath": "com.sap.vocabularies.UI.v1.Identification#HuelNavigation",
+          "presentationAnnotationPath": "com.sap.vocabularies.UI.v1.PresentationVariant#MassnahmeStack",
+          "defaultSpan": {
+            "rows": 3,
+            "cols": 1
+          }
+        }
+      },
+      "budgetverteilungCard": {
+        "model": "mainModel",
+        "template": "sap.ovp.cards.charts.analytical",
+        "settings": {
+          "title": "{{budgetverteilungCard_title}}",
+          "subTitle": "{{budgetverteilungCard_subtitle}}",
+          "entitySet": "Huel",
+          "tabs": [
+            { "value": "{{antragstellerTab_bgesamt}}", "chartAnnotationPath": "com.sap.vocabularies.UI.v1.Chart#BereichDonutBgesamt" },
+            { "value": "{{antragstellerTab_b0}}", "chartAnnotationPath": "com.sap.vocabularies.UI.v1.Chart#BereichDonutB0" },
+            { "value": "{{antragstellerTab_b1}}", "chartAnnotationPath": "com.sap.vocabularies.UI.v1.Chart#BereichDonutB1" },
+            { "value": "{{antragstellerTab_b2}}", "chartAnnotationPath": "com.sap.vocabularies.UI.v1.Chart#BereichDonutB2" },
+            { "value": "{{antragstellerTab_b3}}", "chartAnnotationPath": "com.sap.vocabularies.UI.v1.Chart#BereichDonutB3" },
+            { "value": "{{antragstellerTab_b4}}", "chartAnnotationPath": "com.sap.vocabularies.UI.v1.Chart#BereichDonutB4" }
+          ]
+        }
+      },
+      "massnahmeTop10TableCard": {
+        "model": "mainModel",
+        "template": "sap.ovp.cards.table",
+        "settings": {
+          "title": "{{massnahmeTop10TableCard_title}}",
+          "subTitle": "{{massnahmeTop10TableCard_subtitle}}",
+          "entitySet": "Huel",
+          "defaultSpan": { "rows": 3, "cols": 2 },
+          "tabs": [
+            { "value": "{{antragstellerTab_bgesamt}}", "annotationPath": "com.sap.vocabularies.UI.v1.LineItem#MassnahmeTableBgesamt", "presentationAnnotationPath": "com.sap.vocabularies.UI.v1.PresentationVariant#MassnahmeTableTopBgesamt" },
+            { "value": "{{antragstellerTab_b0}}", "annotationPath": "com.sap.vocabularies.UI.v1.LineItem#MassnahmeTableB0", "presentationAnnotationPath": "com.sap.vocabularies.UI.v1.PresentationVariant#MassnahmeTableTopB0" },
+            { "value": "{{antragstellerTab_b1}}", "annotationPath": "com.sap.vocabularies.UI.v1.LineItem#MassnahmeTableB1", "presentationAnnotationPath": "com.sap.vocabularies.UI.v1.PresentationVariant#MassnahmeTableTopB1" },
+            { "value": "{{antragstellerTab_b2}}", "annotationPath": "com.sap.vocabularies.UI.v1.LineItem#MassnahmeTableB2", "presentationAnnotationPath": "com.sap.vocabularies.UI.v1.PresentationVariant#MassnahmeTableTopB2" },
+            { "value": "{{antragstellerTab_b3}}", "annotationPath": "com.sap.vocabularies.UI.v1.LineItem#MassnahmeTableB3", "presentationAnnotationPath": "com.sap.vocabularies.UI.v1.PresentationVariant#MassnahmeTableTopB3" },
+            { "value": "{{antragstellerTab_b4}}", "annotationPath": "com.sap.vocabularies.UI.v1.LineItem#MassnahmeTableB4", "presentationAnnotationPath": "com.sap.vocabularies.UI.v1.PresentationVariant#MassnahmeTableTopB4" }
+          ]
+        }
+      },
+      "b4ZeitreiheCard": {
+        "model": "mainModel",
+        "template": "sap.ovp.cards.charts.analytical",
+        "settings": {
+          "title": "{{b4ZeitreiheCard_title}}",
+          "subTitle": "{{b4ZeitreiheCard_subtitle}}",
+          "entitySet": "Huel",
+          "tabs": [
+            {
+              "value": "{{b4ZeitreiheTab_monat}}",
+              "chartAnnotationPath": "com.sap.vocabularies.UI.v1.Chart#B4ZeitreiheMonat"
+            },
+            {
+              "value": "{{b4ZeitreiheTab_tag}}",
+              "chartAnnotationPath": "com.sap.vocabularies.UI.v1.Chart#B4ZeitreiheTag"
+            }
+          ]
         }
       }
     }

@@ -1,58 +1,141 @@
 <?xml version="1.0" encoding="utf-8"?>
-<edmx:Edmx Version="1.0" xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx">
-    <edmx:DataServices m:DataServiceVersion="2.0" xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata">
-        <Schema Namespace="com.example.vertrag" xmlns="http://schemas.microsoft.com/ado/2008/09/edm" xmlns:sap="http://www.sap.com/Protocols/SAPData">
-
-            <EntityType Name="VertragStatistik">
+<edmx:Edmx Version="1.0" xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx" xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata" xmlns:sap="http://www.sap.com/Protocols/SAPData">
+    <edmx:DataServices m:DataServiceVersion="2.0">
+        <Schema Namespace="cds_zsd_huel" xml:lang="en" sap:schema-version="1" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+            <EntityType Name="HuelType" sap:semantics="aggregate" sap:label="Huel" sap:content-version="1">
                 <Key>
-                    <PropertyRef Name="Status"/>
+                    <PropertyRef Name="ID"/>
                 </Key>
-                <Property Name="Status" Type="Edm.String" MaxLength="20" Nullable="false"/>
-                <Property Name="Anzahl" Type="Edm.Int32" Nullable="false"/>
-                <Property Name="Created" Type="Edm.DateTime" Nullable="true"/>
-                <Property Name="Jahr" Type="Edm.String" MaxLength="4" Nullable="true" sap:label="Jahr"/>
+                <Property Name="ID" Type="Edm.String" Nullable="false" sap:sortable="false" sap:filterable="false"/>
+                <Property Name="Lfdnr" Type="Edm.String" MaxLength="6" sap:aggregation-role="dimension" sap:display-format="NonNegative"/>
+                <Property Name="Buchungskreis" Type="Edm.String" MaxLength="4" sap:aggregation-role="dimension"/>
+                <Property Name="Geschaeftsjahr" Type="Edm.String" MaxLength="4" sap:aggregation-role="dimension" sap:display-format="NonNegative"/>
+                <Property Name="Belegnummer" Type="Edm.String" MaxLength="10" sap:aggregation-role="dimension"/>
+                <Property Name="JahrKassenwirksamkeit" Type="Edm.String" MaxLength="4" sap:aggregation-role="dimension" sap:display-format="NonNegative"/>
+                <Property Name="Amt" Type="Edm.String" MaxLength="3" sap:aggregation-role="dimension"/>
+                <Property Name="AmtBezeichnung" Type="Edm.String" MaxLength="40" sap:aggregation-role="dimension"/>
+                <Property Name="DocID" Type="Edm.String" MaxLength="12" sap:aggregation-role="dimension"/>
+                <Property Name="Vorgangsnummer" Type="Edm.String" MaxLength="20" sap:aggregation-role="dimension"/>
+                <Property Name="VorgangsnummerAnzeige" Type="Edm.String" MaxLength="20" sap:aggregation-role="dimension"/>
+                <Property Name="HuelNummer" Type="Edm.String" MaxLength="10" sap:aggregation-role="dimension"/>
+                <Property Name="HuelMNummer" Type="Edm.String" MaxLength="10" sap:aggregation-role="dimension"/>
+                <Property Name="Waehrung" Type="Edm.String" MaxLength="5" sap:aggregation-role="dimension" sap:semantics="currency-code"/>
+                <Property Name="Haushalt" Type="Edm.String" MaxLength="2" sap:aggregation-role="dimension"/>
+                <Property Name="HaushaltBezeichnung" Type="Edm.String" MaxLength="40" sap:aggregation-role="dimension"/>
+                <Property Name="Haushaltsstelle" Type="Edm.String" MaxLength="12" sap:aggregation-role="dimension"/>
+                <Property Name="Einzelplan" Type="Edm.String" MaxLength="4" sap:aggregation-role="dimension"/>
+                <Property Name="EinzelplanText" Type="Edm.String" MaxLength="60" sap:aggregation-role="dimension"/>
+                <Property Name="Kapitel" Type="Edm.String" MaxLength="6" sap:aggregation-role="dimension"/>
+                <Property Name="Titel" Type="Edm.String" MaxLength="8" sap:aggregation-role="dimension"/>
+                <Property Name="TitelGroup" Type="Edm.String" MaxLength="100" sap:aggregation-role="dimension"/>
+                <Property Name="Hauptgruppe" Type="Edm.String" MaxLength="4" sap:aggregation-role="dimension"/>
+                <Property Name="Obergruppe" Type="Edm.String" MaxLength="4" sap:aggregation-role="dimension"/>
+                <Property Name="Gruppe" Type="Edm.String" MaxLength="4" sap:aggregation-role="dimension"/>
+                <Property Name="Titelgruppe" Type="Edm.String" MaxLength="4" sap:aggregation-role="dimension"/>
+                <Property Name="Bereich" Type="Edm.String" MaxLength="1" sap:aggregation-role="dimension"/>
+                <Property Name="BereichBezeichnung" Type="Edm.String" MaxLength="40" sap:aggregation-role="dimension"/>
+                <Property Name="Text" Type="Edm.String" MaxLength="60" sap:aggregation-role="dimension"/>
+                <Property Name="Verwendungszweck" Type="Edm.String" MaxLength="60" sap:aggregation-role="dimension"/>
+                <Property Name="PkNummer" Type="Edm.String" MaxLength="20" sap:aggregation-role="dimension"/>
+                <Property Name="Einnahmekennzeichen" Type="Edm.String" MaxLength="20" sap:aggregation-role="dimension"/>
+                <Property Name="GPHatZugriff" Type="Edm.String" MaxLength="1" sap:aggregation-role="dimension"/>
+                <Property Name="GPHatKeinenZugriff" Type="Edm.String" MaxLength="1" sap:aggregation-role="dimension"/>
+                <Property Name="GeschaeftspartnerID" Type="Edm.String" MaxLength="10" sap:aggregation-role="dimension"/>
+                <Property Name="GeschaeftspartnerURL" Type="Edm.String" MaxLength="200" sap:aggregation-role="dimension"/>
+                <Property Name="GeschaeftspartnerName" Type="Edm.String" MaxLength="80" sap:aggregation-role="dimension"/>
+                <Property Name="GeschaeftspartnerLand" Type="Edm.String" MaxLength="20" sap:aggregation-role="dimension"/>
+                <Property Name="GeschaeftspartnerPLZ" Type="Edm.String" MaxLength="10" sap:aggregation-role="dimension"/>
+                <Property Name="GeschaeftspartnerOrt" Type="Edm.String" MaxLength="40" sap:aggregation-role="dimension"/>
+                <Property Name="GeschaeftspartnerStrasse" Type="Edm.String" MaxLength="60" sap:aggregation-role="dimension"/>
+                <Property Name="GeschaeftspartnerHausNr" Type="Edm.String" MaxLength="10" sap:aggregation-role="dimension"/>
+                <Property Name="SollbetragAuszahlung" Type="Edm.Decimal" Precision="13" Scale="2" sap:aggregation-role="measure" sap:unit="Waehrung" sap:filterable="false"/>
+                <Property Name="SollbetragEinzahlung" Type="Edm.Decimal" Precision="13" Scale="2" sap:aggregation-role="measure" sap:unit="Waehrung" sap:filterable="false"/>
+                <Property Name="SollbetragSaldiert" Type="Edm.Decimal" Precision="13" Scale="2" sap:aggregation-role="measure" sap:unit="Waehrung" sap:filterable="false"/>
+                <Property Name="IstBetragAuszahlung" Type="Edm.Decimal" Precision="13" Scale="2" sap:aggregation-role="measure" sap:unit="Waehrung" sap:filterable="false"/>
+                <Property Name="IstBetragEinzahlung" Type="Edm.Decimal" Precision="13" Scale="2" sap:aggregation-role="measure" sap:unit="Waehrung" sap:filterable="false"/>
+                <Property Name="IstBetragSaldiert" Type="Edm.Decimal" Precision="13" Scale="2" sap:aggregation-role="measure" sap:unit="Waehrung" sap:filterable="false"/>
+                <Property Name="B0" Type="Edm.Decimal" Precision="13" Scale="2" sap:aggregation-role="measure" sap:unit="Waehrung" sap:filterable="false"/>
+                <Property Name="B1" Type="Edm.Decimal" Precision="13" Scale="2" sap:aggregation-role="measure" sap:unit="Waehrung" sap:filterable="false"/>
+                <Property Name="B2" Type="Edm.Decimal" Precision="13" Scale="2" sap:aggregation-role="measure" sap:unit="Waehrung" sap:filterable="false"/>
+                <Property Name="B3" Type="Edm.Decimal" Precision="13" Scale="2" sap:aggregation-role="measure" sap:unit="Waehrung" sap:filterable="false"/>
+                <Property Name="V" Type="Edm.Decimal" Precision="13" Scale="2" sap:aggregation-role="measure" sap:unit="Waehrung" sap:filterable="false"/>
+                <Property Name="B4" Type="Edm.Decimal" Precision="13" Scale="2" sap:aggregation-role="measure" sap:unit="Waehrung" sap:filterable="false"/>
+                <Property Name="Bgesamt" Type="Edm.Decimal" Precision="13" Scale="2" sap:aggregation-role="measure" sap:unit="Waehrung" sap:filterable="false"/>
+                <Property Name="BuchungsdatumKasse" Type="Edm.DateTime" Precision="0" sap:aggregation-role="measure" sap:display-format="Date" sap:filterable="false"/>
+                <Property Name="BuchungsdatumHaSta" Type="Edm.DateTime" Precision="0" sap:aggregation-role="measure" sap:display-format="Date" sap:filterable="false"/>
+                <Property Name="FaelligBis" Type="Edm.DateTime" Precision="0" sap:aggregation-role="dimension" sap:display-format="Date"/>
+                <Property Name="AuftragID" Type="Edm.String" MaxLength="20" sap:aggregation-role="dimension"/>
+                <Property Name="Rechnungsnummer" Type="Edm.String" MaxLength="20" sap:aggregation-role="dimension"/>
+                <Property Name="Vetragsbezeichnung" Type="Edm.String" MaxLength="40" sap:aggregation-role="dimension"/>
+                <Property Name="RechnungsartID" Type="Edm.String" MaxLength="1" sap:aggregation-role="dimension"/>
+                <Property Name="RechnungsartText" Type="Edm.String" MaxLength="60" sap:aggregation-role="dimension"/>
+                <Property Name="Kasse" Type="Edm.String" MaxLength="4" sap:aggregation-role="dimension"/>
+                <Property Name="AbteilungID" Type="Edm.String" MaxLength="4" sap:aggregation-role="dimension"/>
+                <Property Name="AbteilungBezeichnung" Type="Edm.String" MaxLength="40" sap:aggregation-role="dimension"/>
+                <Property Name="Massnahme" Type="Edm.String" MaxLength="20" sap:aggregation-role="dimension"/>
+                <Property Name="MassnahmeBezeichnung" Type="Edm.String" MaxLength="60" sap:aggregation-role="dimension"/>
+                <Property Name="Antragsteller" Type="Edm.String" MaxLength="12" sap:aggregation-role="dimension"/>
+                <Property Name="AntragstellerName" Type="Edm.String" MaxLength="60" sap:aggregation-role="dimension"/>
+                <Property Name="ZusaetzlicherAntragsteller" Type="Edm.String" MaxLength="12" sap:aggregation-role="dimension"/>
+                <Property Name="ZusaetzlicherAntragstellerName" Type="Edm.String" MaxLength="60" sap:aggregation-role="dimension"/>
+                <Property Name="Massnahmenart" Type="Edm.String" MaxLength="2" sap:aggregation-role="dimension"/>
+                <Property Name="MassnahmenartName" Type="Edm.String" MaxLength="40" sap:aggregation-role="dimension"/>
+                <Property Name="MassnahmenKategorie" Type="Edm.String" MaxLength="1" sap:aggregation-role="dimension"/>
+                <Property Name="MassnahmenKategorieText" Type="Edm.String" MaxLength="60" sap:aggregation-role="dimension"/>
+                <Property Name="VerantwortlicheKostenstelle" Type="Edm.String" MaxLength="12" sap:aggregation-role="dimension"/>
+                <Property Name="VerantwortlicheKostenstelleAnz" Type="Edm.String" MaxLength="40" sap:aggregation-role="dimension"/>
+                <Property Name="Finanzierungsbereich" Type="Edm.String" MaxLength="20" sap:aggregation-role="dimension"/>
+                <Property Name="FinanzierungsbereichBezeich" Type="Edm.String" MaxLength="60" sap:aggregation-role="dimension"/>
+                <Property Name="Planungsebene1" Type="Edm.String" MaxLength="20" sap:aggregation-role="dimension"/>
+                <Property Name="Planungsebene1Description" Type="Edm.String" MaxLength="60" sap:aggregation-role="dimension"/>
+                <Property Name="Planungsebene2" Type="Edm.String" MaxLength="20" sap:aggregation-role="dimension"/>
+                <Property Name="Planungsebene2Description" Type="Edm.String" MaxLength="60" sap:aggregation-role="dimension"/>
+                <Property Name="Planungsebene3" Type="Edm.String" MaxLength="20" sap:aggregation-role="dimension"/>
+                <Property Name="Planungsebene3Description" Type="Edm.String" MaxLength="60" sap:aggregation-role="dimension"/>
+                <Property Name="Kostenart" Type="Edm.String" MaxLength="10" sap:aggregation-role="dimension"/>
+                <Property Name="KostenartBezeichnung" Type="Edm.String" MaxLength="60" sap:aggregation-role="dimension"/>
+                <Property Name="Kostenstelle" Type="Edm.String" MaxLength="10" sap:aggregation-role="dimension"/>
+                <Property Name="Kostentraeger" Type="Edm.String" MaxLength="10" sap:aggregation-role="dimension"/>
             </EntityType>
-
-            <EntityType Name="JahresWert" sap:semantics="aggregate">
-                <Key>
-                    <PropertyRef Name="Bereich"/>
-                    <PropertyRef Name="Jahr"/>
-                </Key>
-                <Property Name="Bereich" Type="Edm.String" MaxLength="1" Nullable="false" sap:aggregation-role="dimension" sap:label="Bereich"/>
-                <Property Name="Jahr" Type="Edm.String" MaxLength="4" Nullable="false" sap:aggregation-role="dimension" sap:label="Jahr"/>
-                <Property Name="B0" Type="Edm.Decimal" Precision="18" Scale="2" sap:aggregation-role="measure" sap:label="B0"/>
-                <Property Name="B1" Type="Edm.Decimal" Precision="18" Scale="2" sap:aggregation-role="measure" sap:label="B1"/>
-                <Property Name="B2" Type="Edm.Decimal" Precision="18" Scale="2" sap:aggregation-role="measure" sap:label="B2"/>
-                <Property Name="B3" Type="Edm.Decimal" Precision="18" Scale="2" sap:aggregation-role="measure" sap:label="B3"/>
-                <Property Name="B4" Type="Edm.Decimal" Precision="18" Scale="2" sap:aggregation-role="measure" sap:label="B4"/>
+            <EntityType Name="HuelAmtType" sap:label="HUEL ValueHelp Bauamt" sap:content-version="1">
+                <Key><PropertyRef Name="Amt"/></Key>
+                <Property Name="Amt" Type="Edm.String" Nullable="false" MaxLength="3" sap:text="AmtBezeichnung"/>
+                <Property Name="AmtBezeichnung" Type="Edm.String" MaxLength="40"/>
             </EntityType>
-
-            <EntityType Name="B4Zahlung" sap:semantics="aggregate">
-                <Key>
-                    <PropertyRef Name="Datum"/>
-                </Key>
-                <Property Name="Datum" Type="Edm.DateTime" Nullable="false" sap:aggregation-role="dimension" sap:label="Datum"/>
-                <Property Name="Jahr" Type="Edm.String" MaxLength="4" Nullable="false" sap:aggregation-role="dimension" sap:label="Jahr"/>
-                <Property Name="B4" Type="Edm.Decimal" Precision="18" Scale="2" sap:aggregation-role="measure" sap:label="B4 Zahlungen (kumuliert)"/>
+            <EntityType Name="HuelHaushaltType" sap:label="HUEL ValueHelp Haushalt" sap:content-version="1">
+                <Key><PropertyRef Name="Haushalt"/></Key>
+                <Property Name="Haushalt" Type="Edm.String" Nullable="false" MaxLength="2" sap:text="HaushaltBezeichnung"/>
+                <Property Name="HaushaltBezeichnung" Type="Edm.String" MaxLength="40"/>
             </EntityType>
-
-            <EntityType Name="BereichSumme" sap:semantics="aggregate">
-                <Key>
-                    <PropertyRef Name="Bereich"/>
-                    <PropertyRef Name="Jahr"/>
-                </Key>
-                <Property Name="Bereich" Type="Edm.String" MaxLength="1" Nullable="false" sap:aggregation-role="dimension" sap:label="Bereich"/>
-                <Property Name="Jahr" Type="Edm.String" MaxLength="4" Nullable="false" sap:aggregation-role="dimension" sap:label="Jahr"/>
-                <Property Name="B4" Type="Edm.Decimal" Precision="18" Scale="2" sap:aggregation-role="measure" sap:label="B4"/>
+            <EntityType Name="HuelEinzelplanType" sap:label="HUEL ValueHelp Einzelplan" sap:content-version="1">
+                <Key><PropertyRef Name="Einzelplan"/></Key>
+                <Property Name="Einzelplan" Type="Edm.String" Nullable="false" MaxLength="4" sap:text="EinzelplanText"/>
+                <Property Name="EinzelplanText" Type="Edm.String" MaxLength="60"/>
             </EntityType>
-
-            <EntityContainer Name="Container" m:IsDefaultEntityContainer="true">
-                <EntitySet Name="VertragStatistiken" EntityType="com.example.vertrag.VertragStatistik"/>
-                <EntitySet Name="JahresWerte" EntityType="com.example.vertrag.JahresWert" sap:semantics="aggregate"/>
-                <EntitySet Name="B4Zahlungen" EntityType="com.example.vertrag.B4Zahlung" sap:semantics="aggregate"/>
-                <EntitySet Name="BereichSummen" EntityType="com.example.vertrag.BereichSumme" sap:semantics="aggregate"/>
+            <EntityType Name="HuelBereichType" sap:label="HUEL ValueHelp Bereich" sap:content-version="1">
+                <Key><PropertyRef Name="Bereich"/></Key>
+                <Property Name="Bereich" Type="Edm.String" Nullable="false" MaxLength="1" sap:text="BereichBezeichnung"/>
+                <Property Name="BereichBezeichnung" Type="Edm.String" MaxLength="40"/>
+            </EntityType>
+            <EntityType Name="HuelMassnahmenArtType" sap:label="HUEL ValueHelp Massnahmenart" sap:content-version="1">
+                <Key><PropertyRef Name="Massnahmenart"/></Key>
+                <Property Name="Massnahmenart" Type="Edm.String" Nullable="false" MaxLength="2" sap:text="MassnahmenartName"/>
+                <Property Name="MassnahmenartName" Type="Edm.String" MaxLength="40"/>
+            </EntityType>
+            <EntityType Name="HuelMassnahmenKatType" sap:label="HUEL ValueHelp Massnahmenkategorie" sap:content-version="1">
+                <Key><PropertyRef Name="MassnahmenKategorie"/></Key>
+                <Property Name="MassnahmenKategorie" Type="Edm.String" Nullable="false" MaxLength="1" sap:text="MassnahmenKategorieText"/>
+                <Property Name="MassnahmenKategorieText" Type="Edm.String" MaxLength="60"/>
+            </EntityType>
+            <EntityContainer Name="cds_zsd_huel_Entities" m:IsDefaultEntityContainer="true" sap:supported-formats="atom json">
+                <EntitySet Name="Huel" EntityType="cds_zsd_huel.HuelType" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1"/>
+                <EntitySet Name="HuelAmt" EntityType="cds_zsd_huel.HuelAmtType" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:searchable="true" sap:content-version="1"/>
+                <EntitySet Name="HuelHaushalt" EntityType="cds_zsd_huel.HuelHaushaltType" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:searchable="true" sap:content-version="1"/>
+                <EntitySet Name="HuelEinzelplan" EntityType="cds_zsd_huel.HuelEinzelplanType" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:searchable="true" sap:content-version="1"/>
+                <EntitySet Name="HuelBereich" EntityType="cds_zsd_huel.HuelBereichType" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:searchable="true" sap:content-version="1"/>
+                <EntitySet Name="HuelMassnahmenArt" EntityType="cds_zsd_huel.HuelMassnahmenArtType" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:searchable="true" sap:content-version="1"/>
+                <EntitySet Name="HuelMassnahmenKat" EntityType="cds_zsd_huel.HuelMassnahmenKatType" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:searchable="true" sap:content-version="1"/>
             </EntityContainer>
-
         </Schema>
     </edmx:DataServices>
 </edmx:Edmx>

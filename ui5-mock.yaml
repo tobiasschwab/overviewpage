@@ -34,7 +34,7 @@ server:
       configuration:
         mountPath: /
         services:
-          - urlPath: /here/goes/your/serviceurl
+          - urlPath: /sap/opu/odata/sap/ZSB_HUEL
             metadataPath: ./webapp/localService/mainService/metadata.xml
             mockdataPath: ./webapp/localService/mainService/data
             generateMockData: true

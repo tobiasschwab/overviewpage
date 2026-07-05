@@ -1,0 +1,38 @@
+
+> opexample@0.0.1 start-mock
+> fiori run --config ./ui5-mock.yaml --open "test/flp.html#app-preview"
+
+(node:6540) [DEP0190] DeprecationWarning: Passing args to a child process with shell option true can lead to security vulnerabilities, as the arguments are not escaped, only concatenated.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+[32minfo[39m fiori-tools-proxy Using UI5 version 1.96.49 based on manifest.json
+[32minfo[39m fiori-tools-proxy Starting fiori-tools-proxy using following configuration:
+[32minfo[39m fiori-tools-proxy proxy: 'undefined'
+[32minfo[39m fiori-tools-proxy ignoreCertErrors: 'false'
+[32minfo[39m fiori-tools-proxy backend: [{"path":"/here","url":"http://localhost"}]
+[32minfo[39m fiori-tools-proxy ui5: [{"path":"/resources","url":"https://ui5.sap.com","version":"1.96.49"},{"path":"/test-resources","url":"https://ui5.sap.com","version":"1.96.49"}]
+[32minfo[39m fiori-tools-proxy debug: 'false'
+[33mwarn[39m backend-proxy-middleware Cannot find module '@zowe/secrets-for-zowe-sdk'
+[33mwarn[39m backend-proxy-middleware Require stack:
+[33mwarn[39m backend-proxy-middleware - C:\Dev\ui5\overviewpage\opexample\node_modules\@sap\ux-ui5-tooling\dist\middlewares\fiori-tools-proxy.js
+[31merror[39m backend-proxy-middleware Deserialization error for Service: [fiori/v2/system], Key: [http://localhost]. Error: this.keyring.getPassword is not a function
+[33mwarn[39m backend-proxy-middleware Cannot find module '@zowe/secrets-for-zowe-sdk'
+[33mwarn[39m backend-proxy-middleware Require stack:
+[33mwarn[39m backend-proxy-middleware - C:\Dev\ui5\overviewpage\opexample\node_modules\@sap\ux-ui5-tooling\dist\middlewares\fiori-tools-proxy.js
+[31merror[39m backend-proxy-middleware Deserialization error for Service: [fiori/v2/system], Key: [http://localhost]. Error: this.keyring.getPassword is not a function
+[32minfo[39m backend-proxy-middleware Backend proxy created for http://localhost
+[32minfo[39m fiori-tools-appreload Livereload middleware started for port 35731 and path C:\Dev\ui5\overviewpage\opexample\webapp
+(node:9992) [DEP0190] DeprecationWarning: Passing args to a child process with shell option true can lead to security vulnerabilities, as the arguments are not escaped, only concatenated.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+[32minfo[39m fiori-tools-preview Initialized for app lbd.hasta.opexample.opexample
+Server started
+URL: http://localhost:8082
+[32minfo[39m fiori-tools-preview Using sandbox template for UI5 version: 1.96.47.
+warn builder:processors:manifestEnhancer /manifest.json: Generated supported locales ('') for bundle 'i18n/i18n.properties' do not contain default fallback locale 'en'. Either provide a properties file for 'en' or configure another available fallbackLocale
+warn builder:processors:manifestEnhancer /manifest.json: Generated supported locales ('') for bundle 'i18n/i18n.properties' do not contain default fallback locale 'en'. Either provide a properties file for 'en' or configure another available fallbackLocale
+warn builder:processors:manifestEnhancer /manifest.json: Generated supported locales ('') for bundle 'i18n/i18n.properties' do not contain default fallback locale 'en'. Either provide a properties file for 'en' or configure another available fallbackLocale
+warn builder:processors:manifestEnhancer /manifest.json: Generated supported locales ('') for bundle 'i18n/i18n.properties' do not contain default fallback locale 'en'. Either provide a properties file for 'en' or configure another available fallbackLocale
+warn builder:processors:manifestEnhancer /manifest.json: Generated supported locales ('') for bundle 'i18n/i18n.properties' do not contain default fallback locale 'en'. Either provide a properties file for 'en' or configure another available fallbackLocale
+warn builder:processors:manifestEnhancer /manifest.json: Generated supported locales ('') for bundle 'i18n/i18n.properties' do not contain default fallback locale 'en'. Either provide a properties file for 'en' or configure another available fallbackLocale
+warn builder:processors:manifestEnhancer /manifest.json: Generated supported locales ('') for bundle 'i18n/i18n.properties' do not contain default fallback locale 'en'. Either provide a properties file for 'en' or configure another available fallbackLocale
+warn builder:processors:manifestEnhancer /manifest.json: Generated supported locales ('') for bundle 'i18n/i18n.properties' do not contain default fallback locale 'en'. Either provide a properties file for 'en' or configure another available fallbackLocale
+warn builder:processors:manifestEnhancer /manifest.json: Generated supported locales ('') for bundle 'i18n/i18n.properties' do not contain default fallback locale 'en'. Either provide a properties file for 'en' or configure another available fallbackLocale

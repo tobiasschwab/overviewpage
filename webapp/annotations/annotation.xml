@@ -1,61 +1,153 @@
-<edmx:Edmx xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx" Version="4.0">
+﻿<edmx:Edmx xmlns:edmx="http://docs.oasis-open.org/odata/ns/edmx" Version="4.0">
     <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/Common.xml">
         <edmx:Include Namespace="com.sap.vocabularies.Common.v1" Alias="Common"/>
     </edmx:Reference>
     <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/UI.xml">
         <edmx:Include Namespace="com.sap.vocabularies.UI.v1" Alias="UI"/>
     </edmx:Reference>
-    <edmx:Reference Uri="https://sap.github.io/odata-vocabularies/vocabularies/Communication.xml">
-        <edmx:Include Namespace="com.sap.vocabularies.Communication.v1" Alias="Communication"/>
-    </edmx:Reference>
-    <edmx:Reference Uri="/here/goes/your/serviceurl/$metadata">
-        <edmx:Include Namespace="com.example.vertrag"/>
+    <edmx:Reference Uri="/sap/opu/odata/sap/ZSB_HUEL/$metadata">
+        <edmx:Include Namespace="cds_zsd_huel"/>
     </edmx:Reference>
     <edmx:DataServices>
         <Schema xmlns="http://docs.oasis-open.org/odata/ns/edm" Namespace="local">
-            <Annotations Target="com.example.vertrag.VertragStatistik">
-                <Annotation Term="UI.DataPoint" Qualifier="Anzahl">
-                    <Record Type="UI.DataPointType">
-                        <PropertyValue Property="Value" Path="Anzahl"/>
-                        <PropertyValue Property="Title" String="{i18n>vertragStatistik_anzahlLabel}"/>
-                    </Record>
-                </Annotation>
-                <Annotation Term="UI.LineItem">
-                    <Collection>
-                        <Record Type="UI.DataField">
-                            <PropertyValue Property="Value" Path="Status"/>
-                            <PropertyValue Property="Label" String="{i18n>vertragStatistik_typLabel}"/>
-                        </Record>
-                        <Record Type="UI.DataFieldForAnnotation">
-                            <PropertyValue Property="Target" AnnotationPath="@UI.DataPoint#Anzahl"/>
-                        </Record>
-                        <Record Type="UI.DataField">
-                            <PropertyValue Property="Value" Path="Created"/>
-                            <PropertyValue Property="Label" String="{i18n>vertragStatistik_createdLabel}"/>
-                        </Record>
-                    </Collection>
-                </Annotation>
-            </Annotations>
-            <Annotations Target="com.example.vertrag.JahresWert">
+            <Annotations Target="cds_zsd_huel.HuelType">
+
+                <!-- Globaler Filter: Geschaeftsjahr + JahrKassenwirksamkeit, beide Default aktuelles Jahr -->
                 <Annotation Term="UI.SelectionFields">
                     <Collection>
-                        <PropertyPath>Jahr</PropertyPath>
+                        <PropertyPath>Geschaeftsjahr</PropertyPath>
+                        <PropertyPath>JahrKassenwirksamkeit</PropertyPath>
+                        <PropertyPath>Amt</PropertyPath>
                         <PropertyPath>Bereich</PropertyPath>
+                        <PropertyPath>Einzelplan</PropertyPath>
+                        <PropertyPath>Kostentraeger</PropertyPath>
+                        <PropertyPath>Kostenstelle</PropertyPath>
+                        <PropertyPath>Kostenart</PropertyPath>
                     </Collection>
                 </Annotation>
-                <Annotation Term="UI.Chart">
+
+                <!-- Default: Geschaeftsjahr = 2026, JahrKassenwirksamkeit = 2026 -->
+                <Annotation Term="UI.SelectionVariant" Qualifier="GlobalDefaults">
+                    <Record Type="UI.SelectionVariantType">
+                        <PropertyValue Property="SelectOptions">
+                            <Collection>
+                                <Record Type="UI.SelectOptionType">
+                                    <PropertyValue Property="PropertyName" PropertyPath="Geschaeftsjahr"/>
+                                    <PropertyValue Property="Ranges">
+                                        <Collection>
+                                            <Record Type="UI.SelectionRangeType">
+                                                <PropertyValue Property="Sign" EnumMember="UI.SelectionRangeSignType/I"/>
+                                                <PropertyValue Property="Option" EnumMember="UI.SelectionRangeOptionType/EQ"/>
+                                                <PropertyValue Property="Low" String="2026"/>
+                                            </Record>
+                                        </Collection>
+                                    </PropertyValue>
+                                </Record>
+                                <Record Type="UI.SelectOptionType">
+                                    <PropertyValue Property="PropertyName" PropertyPath="JahrKassenwirksamkeit"/>
+                                    <PropertyValue Property="Ranges">
+                                        <Collection>
+                                            <Record Type="UI.SelectionRangeType">
+                                                <PropertyValue Property="Sign" EnumMember="UI.SelectionRangeSignType/I"/>
+                                                <PropertyValue Property="Option" EnumMember="UI.SelectionRangeOptionType/EQ"/>
+                                                <PropertyValue Property="Low" String="2026"/>
+                                            </Record>
+                                        </Collection>
+                                    </PropertyValue>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+
+                <!-- Jahreswerte: Varianten fuer Tabs-Dropdown -->
+                <Annotation Term="UI.SelectionVariant" Qualifier="AktuellesJahr">
+                    <Record Type="UI.SelectionVariantType">
+                        <PropertyValue Property="SelectOptions">
+                            <Collection>
+                                <Record Type="UI.SelectOptionType">
+                                    <PropertyValue Property="PropertyName" PropertyPath="JahrKassenwirksamkeit"/>
+                                    <PropertyValue Property="Ranges">
+                                        <Collection>
+                                            <Record Type="UI.SelectionRangeType">
+                                                <PropertyValue Property="Sign" EnumMember="UI.SelectionRangeSignType/I"/>
+                                                <PropertyValue Property="Option" EnumMember="UI.SelectionRangeOptionType/EQ"/>
+                                                <PropertyValue Property="Low" String="2026"/>
+                                            </Record>
+                                        </Collection>
+                                    </PropertyValue>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+
+                <Annotation Term="UI.SelectionVariant" Qualifier="ZehnJahre">
+                    <Record Type="UI.SelectionVariantType">
+                        <PropertyValue Property="SelectOptions">
+                            <Collection>
+                                <Record Type="UI.SelectOptionType">
+                                    <PropertyValue Property="PropertyName" PropertyPath="JahrKassenwirksamkeit"/>
+                                    <PropertyValue Property="Ranges">
+                                        <Collection>
+                                            <Record Type="UI.SelectionRangeType">
+                                                <PropertyValue Property="Sign" EnumMember="UI.SelectionRangeSignType/I"/>
+                                                <PropertyValue Property="Option" EnumMember="UI.SelectionRangeOptionType/BT"/>
+                                                <PropertyValue Property="Low" String="2026"/>
+                                                <PropertyValue Property="High" String="2035"/>
+                                            </Record>
+                                        </Collection>
+                                    </PropertyValue>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+
+                <Annotation Term="UI.SelectionVariant" Qualifier="AlleJahre">
+                    <Record Type="UI.SelectionVariantType">
+                        <PropertyValue Property="SelectOptions">
+                            <Collection/>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+
+                <Annotation Term="UI.SelectionVariant" Qualifier="Naechste5Jahre">
+                    <Record Type="UI.SelectionVariantType">
+                        <PropertyValue Property="SelectOptions">
+                            <Collection>
+                                <Record Type="UI.SelectOptionType">
+                                    <PropertyValue Property="PropertyName" PropertyPath="JahrKassenwirksamkeit"/>
+                                    <PropertyValue Property="Ranges">
+                                        <Collection>
+                                            <Record Type="UI.SelectionRangeType">
+                                                <PropertyValue Property="Sign" EnumMember="UI.SelectionRangeSignType/I"/>
+                                                <PropertyValue Property="Option" EnumMember="UI.SelectionRangeOptionType/BT"/>
+                                                <PropertyValue Property="Low" String="2026"/>
+                                                <PropertyValue Property="High" String="2030"/>
+                                            </Record>
+                                        </Collection>
+                                    </PropertyValue>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+
+                <!-- Jahreswerte: Dimension = JahrKassenwirksamkeit (gruppiert nach Kassenjahr) -->
+                <Annotation Term="UI.Chart" Qualifier="JahresWerte">
                     <Record Type="UI.ChartDefinitionType">
-                        <PropertyValue Property="Title" String="Jahreswerte"/>
+                        <PropertyValue Property="Title" String="Jahreswerte B0-B4"/>
                         <PropertyValue Property="ChartType" EnumMember="UI.ChartType/ColumnStacked"/>
                         <PropertyValue Property="Dimensions">
                             <Collection>
-                                <PropertyPath>Jahr</PropertyPath>
+                                <PropertyPath>JahrKassenwirksamkeit</PropertyPath>
                             </Collection>
                         </PropertyValue>
                         <PropertyValue Property="DimensionAttributes">
                             <Collection>
                                 <Record Type="UI.ChartDimensionAttributeType">
-                                    <PropertyValue Property="Dimension" PropertyPath="Jahr"/>
+                                    <PropertyValue Property="Dimension" PropertyPath="JahrKassenwirksamkeit"/>
                                     <PropertyValue Property="Role" EnumMember="UI.ChartDimensionRoleType/Category"/>
                                 </Record>
                             </Collection>
@@ -95,21 +187,1196 @@
                         </PropertyValue>
                     </Record>
                 </Annotation>
-            </Annotations>
-            <Annotations Target="com.example.vertrag.B4Zahlung">
-                <Annotation Term="UI.Chart">
+
+                <!-- Jahreswerte: Tabs je B-Wert (JahrKassenwirksamkeit Dimension, global gefiltert) -->
+                <Annotation Term="UI.PresentationVariant" Qualifier="JahresWerteTopBgesamt">
+                    <Record Type="UI.PresentationVariantType">
+                        <PropertyValue Property="SortOrder"><Collection><Record Type="Common.SortOrderType"><PropertyValue Property="Property" PropertyPath="JahrKassenwirksamkeit"/><PropertyValue Property="Descending" Bool="false"/></Record></Collection></PropertyValue>
+                        <PropertyValue Property="Visualizations"><Collection><AnnotationPath>@UI.Chart#JahresWerte</AnnotationPath></Collection></PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="UI.Chart" Qualifier="JahresWerteB0">
                     <Record Type="UI.ChartDefinitionType">
-                        <PropertyValue Property="Title" String="B4 Kostenentwicklung"/>
-                        <PropertyValue Property="ChartType" EnumMember="UI.ChartType/Line"/>
+                        <PropertyValue Property="Title" String="B0 (Einplanung) nach Kassenjahr"/>
+                        <PropertyValue Property="ChartType" EnumMember="UI.ChartType/Column"/>
+                        <PropertyValue Property="Dimensions"><Collection><PropertyPath>JahrKassenwirksamkeit</PropertyPath></Collection></PropertyValue>
+                        <PropertyValue Property="DimensionAttributes"><Collection><Record Type="UI.ChartDimensionAttributeType"><PropertyValue Property="Dimension" PropertyPath="JahrKassenwirksamkeit"/><PropertyValue Property="Role" EnumMember="UI.ChartDimensionRoleType/Category"/></Record></Collection></PropertyValue>
+                        <PropertyValue Property="Measures"><Collection><PropertyPath>B0</PropertyPath></Collection></PropertyValue>
+                        <PropertyValue Property="MeasureAttributes"><Collection><Record Type="UI.ChartMeasureAttributeType"><PropertyValue Property="Measure" PropertyPath="B0"/><PropertyValue Property="Role" EnumMember="UI.ChartMeasureRoleType/Axis1"/></Record></Collection></PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="UI.Chart" Qualifier="JahresWerteB1">
+                    <Record Type="UI.ChartDefinitionType">
+                        <PropertyValue Property="Title" String="B1 nach Kassenjahr"/>
+                        <PropertyValue Property="ChartType" EnumMember="UI.ChartType/Column"/>
+                        <PropertyValue Property="Dimensions"><Collection><PropertyPath>JahrKassenwirksamkeit</PropertyPath></Collection></PropertyValue>
+                        <PropertyValue Property="DimensionAttributes"><Collection><Record Type="UI.ChartDimensionAttributeType"><PropertyValue Property="Dimension" PropertyPath="JahrKassenwirksamkeit"/><PropertyValue Property="Role" EnumMember="UI.ChartDimensionRoleType/Category"/></Record></Collection></PropertyValue>
+                        <PropertyValue Property="Measures"><Collection><PropertyPath>B1</PropertyPath></Collection></PropertyValue>
+                        <PropertyValue Property="MeasureAttributes"><Collection><Record Type="UI.ChartMeasureAttributeType"><PropertyValue Property="Measure" PropertyPath="B1"/><PropertyValue Property="Role" EnumMember="UI.ChartMeasureRoleType/Axis1"/></Record></Collection></PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="UI.Chart" Qualifier="JahresWerteB2">
+                    <Record Type="UI.ChartDefinitionType">
+                        <PropertyValue Property="Title" String="B2 (Vergaben) nach Kassenjahr"/>
+                        <PropertyValue Property="ChartType" EnumMember="UI.ChartType/Column"/>
+                        <PropertyValue Property="Dimensions"><Collection><PropertyPath>JahrKassenwirksamkeit</PropertyPath></Collection></PropertyValue>
+                        <PropertyValue Property="DimensionAttributes"><Collection><Record Type="UI.ChartDimensionAttributeType"><PropertyValue Property="Dimension" PropertyPath="JahrKassenwirksamkeit"/><PropertyValue Property="Role" EnumMember="UI.ChartDimensionRoleType/Category"/></Record></Collection></PropertyValue>
+                        <PropertyValue Property="Measures"><Collection><PropertyPath>B2</PropertyPath></Collection></PropertyValue>
+                        <PropertyValue Property="MeasureAttributes"><Collection><Record Type="UI.ChartMeasureAttributeType"><PropertyValue Property="Measure" PropertyPath="B2"/><PropertyValue Property="Role" EnumMember="UI.ChartMeasureRoleType/Axis1"/></Record></Collection></PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="UI.Chart" Qualifier="JahresWerteB3">
+                    <Record Type="UI.ChartDefinitionType">
+                        <PropertyValue Property="Title" String="B3 (Festlegungen) nach Kassenjahr"/>
+                        <PropertyValue Property="ChartType" EnumMember="UI.ChartType/Column"/>
+                        <PropertyValue Property="Dimensions"><Collection><PropertyPath>JahrKassenwirksamkeit</PropertyPath></Collection></PropertyValue>
+                        <PropertyValue Property="DimensionAttributes"><Collection><Record Type="UI.ChartDimensionAttributeType"><PropertyValue Property="Dimension" PropertyPath="JahrKassenwirksamkeit"/><PropertyValue Property="Role" EnumMember="UI.ChartDimensionRoleType/Category"/></Record></Collection></PropertyValue>
+                        <PropertyValue Property="Measures"><Collection><PropertyPath>B3</PropertyPath></Collection></PropertyValue>
+                        <PropertyValue Property="MeasureAttributes"><Collection><Record Type="UI.ChartMeasureAttributeType"><PropertyValue Property="Measure" PropertyPath="B3"/><PropertyValue Property="Role" EnumMember="UI.ChartMeasureRoleType/Axis1"/></Record></Collection></PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="UI.Chart" Qualifier="JahresWerteB4">
+                    <Record Type="UI.ChartDefinitionType">
+                        <PropertyValue Property="Title" String="B4 (Zahlungen) nach Kassenjahr"/>
+                        <PropertyValue Property="ChartType" EnumMember="UI.ChartType/Column"/>
+                        <PropertyValue Property="Dimensions"><Collection><PropertyPath>JahrKassenwirksamkeit</PropertyPath></Collection></PropertyValue>
+                        <PropertyValue Property="DimensionAttributes"><Collection><Record Type="UI.ChartDimensionAttributeType"><PropertyValue Property="Dimension" PropertyPath="JahrKassenwirksamkeit"/><PropertyValue Property="Role" EnumMember="UI.ChartDimensionRoleType/Category"/></Record></Collection></PropertyValue>
+                        <PropertyValue Property="Measures"><Collection><PropertyPath>B4</PropertyPath></Collection></PropertyValue>
+                        <PropertyValue Property="MeasureAttributes"><Collection><Record Type="UI.ChartMeasureAttributeType"><PropertyValue Property="Measure" PropertyPath="B4"/><PropertyValue Property="Role" EnumMember="UI.ChartMeasureRoleType/Axis1"/></Record></Collection></PropertyValue>
+                    </Record>
+                </Annotation>
+
+                <!-- Bauamt: ColumnStacked, Default-Filter JahrKassenwirksamkeit = aktuelles Jahr -->
+                <Annotation Term="UI.SelectionVariant" Qualifier="BauamtFilter">
+                    <Record Type="UI.SelectionVariantType">
+                        <PropertyValue Property="SelectOptions">
+                            <Collection>
+                                <Record Type="UI.SelectOptionType">
+                                    <PropertyValue Property="PropertyName" PropertyPath="JahrKassenwirksamkeit"/>
+                                    <PropertyValue Property="Ranges">
+                                        <Collection>
+                                            <Record Type="UI.SelectionRangeType">
+                                                <PropertyValue Property="Sign" EnumMember="UI.SelectionRangeSignType/I"/>
+                                                <PropertyValue Property="Option" EnumMember="UI.SelectionRangeOptionType/EQ"/>
+                                                <PropertyValue Property="Low" String="2026"/>
+                                            </Record>
+                                        </Collection>
+                                    </PropertyValue>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+
+                <Annotation Term="UI.Chart" Qualifier="BauamtWerte">
+                    <Record Type="UI.ChartDefinitionType">
+                        <PropertyValue Property="Title" String="Bauämter"/>
+                        <PropertyValue Property="ChartType" EnumMember="UI.ChartType/ColumnStacked"/>
                         <PropertyValue Property="Dimensions">
                             <Collection>
-                                <PropertyPath>Datum</PropertyPath>
+                                <PropertyPath>Amt</PropertyPath>
                             </Collection>
                         </PropertyValue>
                         <PropertyValue Property="DimensionAttributes">
                             <Collection>
                                 <Record Type="UI.ChartDimensionAttributeType">
-                                    <PropertyValue Property="Dimension" PropertyPath="Datum"/>
+                                    <PropertyValue Property="Dimension" PropertyPath="Amt"/>
+                                    <PropertyValue Property="Role" EnumMember="UI.ChartDimensionRoleType/Category"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                        <PropertyValue Property="Measures">
+                            <Collection>
+                                <PropertyPath>B0</PropertyPath>
+                                <PropertyPath>B1</PropertyPath>
+                                <PropertyPath>B2</PropertyPath>
+                                <PropertyPath>B3</PropertyPath>
+                                <PropertyPath>B4</PropertyPath>
+                            </Collection>
+                        </PropertyValue>
+                        <PropertyValue Property="MeasureAttributes">
+                            <Collection>
+                                <Record Type="UI.ChartMeasureAttributeType">
+                                    <PropertyValue Property="Measure" PropertyPath="B0"/>
+                                    <PropertyValue Property="Role" EnumMember="UI.ChartMeasureRoleType/Axis1"/>
+                                </Record>
+                                <Record Type="UI.ChartMeasureAttributeType">
+                                    <PropertyValue Property="Measure" PropertyPath="B1"/>
+                                    <PropertyValue Property="Role" EnumMember="UI.ChartMeasureRoleType/Axis1"/>
+                                </Record>
+                                <Record Type="UI.ChartMeasureAttributeType">
+                                    <PropertyValue Property="Measure" PropertyPath="B2"/>
+                                    <PropertyValue Property="Role" EnumMember="UI.ChartMeasureRoleType/Axis1"/>
+                                </Record>
+                                <Record Type="UI.ChartMeasureAttributeType">
+                                    <PropertyValue Property="Measure" PropertyPath="B3"/>
+                                    <PropertyValue Property="Role" EnumMember="UI.ChartMeasureRoleType/Axis1"/>
+                                </Record>
+                                <Record Type="UI.ChartMeasureAttributeType">
+                                    <PropertyValue Property="Measure" PropertyPath="B4"/>
+                                    <PropertyValue Property="Role" EnumMember="UI.ChartMeasureRoleType/Axis1"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+
+                <!-- Bauamt: Tabs je B-Wert (Bgesamt/B0..B4), sortiert DESC nach jeweiligem Betrag -->
+                <Annotation Term="UI.Chart" Qualifier="BauamtBgesamt">
+                    <Record Type="UI.ChartDefinitionType">
+                        <PropertyValue Property="Title" String="Bedarf gesamt nach Bauamt"/>
+                        <PropertyValue Property="ChartType" EnumMember="UI.ChartType/ColumnStacked"/>
+                        <PropertyValue Property="Dimensions"><Collection><PropertyPath>Amt</PropertyPath></Collection></PropertyValue>
+                        <PropertyValue Property="DimensionAttributes"><Collection><Record Type="UI.ChartDimensionAttributeType"><PropertyValue Property="Dimension" PropertyPath="Amt"/><PropertyValue Property="Role" EnumMember="UI.ChartDimensionRoleType/Category"/></Record></Collection></PropertyValue>
+                        <PropertyValue Property="Measures"><Collection><PropertyPath>B0</PropertyPath><PropertyPath>B1</PropertyPath><PropertyPath>B2</PropertyPath><PropertyPath>B3</PropertyPath><PropertyPath>B4</PropertyPath></Collection></PropertyValue>
+                        <PropertyValue Property="MeasureAttributes"><Collection>
+                            <Record Type="UI.ChartMeasureAttributeType"><PropertyValue Property="Measure" PropertyPath="B0"/><PropertyValue Property="Role" EnumMember="UI.ChartMeasureRoleType/Axis1"/></Record>
+                            <Record Type="UI.ChartMeasureAttributeType"><PropertyValue Property="Measure" PropertyPath="B1"/><PropertyValue Property="Role" EnumMember="UI.ChartMeasureRoleType/Axis1"/></Record>
+                            <Record Type="UI.ChartMeasureAttributeType"><PropertyValue Property="Measure" PropertyPath="B2"/><PropertyValue Property="Role" EnumMember="UI.ChartMeasureRoleType/Axis1"/></Record>
+                            <Record Type="UI.ChartMeasureAttributeType"><PropertyValue Property="Measure" PropertyPath="B3"/><PropertyValue Property="Role" EnumMember="UI.ChartMeasureRoleType/Axis1"/></Record>
+                            <Record Type="UI.ChartMeasureAttributeType"><PropertyValue Property="Measure" PropertyPath="B4"/><PropertyValue Property="Role" EnumMember="UI.ChartMeasureRoleType/Axis1"/></Record>
+                        </Collection></PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="UI.PresentationVariant" Qualifier="BauamtTopBgesamt">
+                    <Record Type="UI.PresentationVariantType">
+                        <PropertyValue Property="SortOrder"><Collection><Record Type="Common.SortOrderType"><PropertyValue Property="Property" PropertyPath="Bgesamt"/><PropertyValue Property="Descending" Bool="true"/></Record></Collection></PropertyValue>
+                        <PropertyValue Property="Visualizations"><Collection><AnnotationPath>@UI.Chart#BauamtBgesamt</AnnotationPath></Collection></PropertyValue>
+                    </Record>
+                </Annotation>
+
+                <Annotation Term="UI.Chart" Qualifier="BauamtB0">
+                    <Record Type="UI.ChartDefinitionType">
+                        <PropertyValue Property="Title" String="B0 (Einplanung) nach Bauamt"/>
+                        <PropertyValue Property="ChartType" EnumMember="UI.ChartType/Column"/>
+                        <PropertyValue Property="Dimensions"><Collection><PropertyPath>Amt</PropertyPath></Collection></PropertyValue>
+                        <PropertyValue Property="DimensionAttributes"><Collection><Record Type="UI.ChartDimensionAttributeType"><PropertyValue Property="Dimension" PropertyPath="Amt"/><PropertyValue Property="Role" EnumMember="UI.ChartDimensionRoleType/Category"/></Record></Collection></PropertyValue>
+                        <PropertyValue Property="Measures"><Collection><PropertyPath>B0</PropertyPath></Collection></PropertyValue>
+                        <PropertyValue Property="MeasureAttributes"><Collection><Record Type="UI.ChartMeasureAttributeType"><PropertyValue Property="Measure" PropertyPath="B0"/><PropertyValue Property="Role" EnumMember="UI.ChartMeasureRoleType/Axis1"/></Record></Collection></PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="UI.PresentationVariant" Qualifier="BauamtTopB0">
+                    <Record Type="UI.PresentationVariantType">
+                        <PropertyValue Property="SortOrder"><Collection><Record Type="Common.SortOrderType"><PropertyValue Property="Property" PropertyPath="B0"/><PropertyValue Property="Descending" Bool="true"/></Record></Collection></PropertyValue>
+                        <PropertyValue Property="Visualizations"><Collection><AnnotationPath>@UI.Chart#BauamtB0</AnnotationPath></Collection></PropertyValue>
+                    </Record>
+                </Annotation>
+
+                <Annotation Term="UI.Chart" Qualifier="BauamtB1">
+                    <Record Type="UI.ChartDefinitionType">
+                        <PropertyValue Property="Title" String="B1 nach Bauamt"/>
+                        <PropertyValue Property="ChartType" EnumMember="UI.ChartType/Column"/>
+                        <PropertyValue Property="Dimensions"><Collection><PropertyPath>Amt</PropertyPath></Collection></PropertyValue>
+                        <PropertyValue Property="DimensionAttributes"><Collection><Record Type="UI.ChartDimensionAttributeType"><PropertyValue Property="Dimension" PropertyPath="Amt"/><PropertyValue Property="Role" EnumMember="UI.ChartDimensionRoleType/Category"/></Record></Collection></PropertyValue>
+                        <PropertyValue Property="Measures"><Collection><PropertyPath>B1</PropertyPath></Collection></PropertyValue>
+                        <PropertyValue Property="MeasureAttributes"><Collection><Record Type="UI.ChartMeasureAttributeType"><PropertyValue Property="Measure" PropertyPath="B1"/><PropertyValue Property="Role" EnumMember="UI.ChartMeasureRoleType/Axis1"/></Record></Collection></PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="UI.PresentationVariant" Qualifier="BauamtTopB1">
+                    <Record Type="UI.PresentationVariantType">
+                        <PropertyValue Property="SortOrder"><Collection><Record Type="Common.SortOrderType"><PropertyValue Property="Property" PropertyPath="B1"/><PropertyValue Property="Descending" Bool="true"/></Record></Collection></PropertyValue>
+                        <PropertyValue Property="Visualizations"><Collection><AnnotationPath>@UI.Chart#BauamtB1</AnnotationPath></Collection></PropertyValue>
+                    </Record>
+                </Annotation>
+
+                <Annotation Term="UI.Chart" Qualifier="BauamtB2">
+                    <Record Type="UI.ChartDefinitionType">
+                        <PropertyValue Property="Title" String="B2 (Vergaben) nach Bauamt"/>
+                        <PropertyValue Property="ChartType" EnumMember="UI.ChartType/Column"/>
+                        <PropertyValue Property="Dimensions"><Collection><PropertyPath>Amt</PropertyPath></Collection></PropertyValue>
+                        <PropertyValue Property="DimensionAttributes"><Collection><Record Type="UI.ChartDimensionAttributeType"><PropertyValue Property="Dimension" PropertyPath="Amt"/><PropertyValue Property="Role" EnumMember="UI.ChartDimensionRoleType/Category"/></Record></Collection></PropertyValue>
+                        <PropertyValue Property="Measures"><Collection><PropertyPath>B2</PropertyPath></Collection></PropertyValue>
+                        <PropertyValue Property="MeasureAttributes"><Collection><Record Type="UI.ChartMeasureAttributeType"><PropertyValue Property="Measure" PropertyPath="B2"/><PropertyValue Property="Role" EnumMember="UI.ChartMeasureRoleType/Axis1"/></Record></Collection></PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="UI.PresentationVariant" Qualifier="BauamtTopB2">
+                    <Record Type="UI.PresentationVariantType">
+                        <PropertyValue Property="SortOrder"><Collection><Record Type="Common.SortOrderType"><PropertyValue Property="Property" PropertyPath="B2"/><PropertyValue Property="Descending" Bool="true"/></Record></Collection></PropertyValue>
+                        <PropertyValue Property="Visualizations"><Collection><AnnotationPath>@UI.Chart#BauamtB2</AnnotationPath></Collection></PropertyValue>
+                    </Record>
+                </Annotation>
+
+                <Annotation Term="UI.Chart" Qualifier="BauamtB3">
+                    <Record Type="UI.ChartDefinitionType">
+                        <PropertyValue Property="Title" String="B3 (Offene Festlegungen) nach Bauamt"/>
+                        <PropertyValue Property="ChartType" EnumMember="UI.ChartType/Column"/>
+                        <PropertyValue Property="Dimensions"><Collection><PropertyPath>Amt</PropertyPath></Collection></PropertyValue>
+                        <PropertyValue Property="DimensionAttributes"><Collection><Record Type="UI.ChartDimensionAttributeType"><PropertyValue Property="Dimension" PropertyPath="Amt"/><PropertyValue Property="Role" EnumMember="UI.ChartDimensionRoleType/Category"/></Record></Collection></PropertyValue>
+                        <PropertyValue Property="Measures"><Collection><PropertyPath>B3</PropertyPath></Collection></PropertyValue>
+                        <PropertyValue Property="MeasureAttributes"><Collection><Record Type="UI.ChartMeasureAttributeType"><PropertyValue Property="Measure" PropertyPath="B3"/><PropertyValue Property="Role" EnumMember="UI.ChartMeasureRoleType/Axis1"/></Record></Collection></PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="UI.PresentationVariant" Qualifier="BauamtTopB3">
+                    <Record Type="UI.PresentationVariantType">
+                        <PropertyValue Property="SortOrder"><Collection><Record Type="Common.SortOrderType"><PropertyValue Property="Property" PropertyPath="B3"/><PropertyValue Property="Descending" Bool="true"/></Record></Collection></PropertyValue>
+                        <PropertyValue Property="Visualizations"><Collection><AnnotationPath>@UI.Chart#BauamtB3</AnnotationPath></Collection></PropertyValue>
+                    </Record>
+                </Annotation>
+
+                <Annotation Term="UI.Chart" Qualifier="BauamtB4">
+                    <Record Type="UI.ChartDefinitionType">
+                        <PropertyValue Property="Title" String="B4 (Zahlungen) nach Bauamt"/>
+                        <PropertyValue Property="ChartType" EnumMember="UI.ChartType/Column"/>
+                        <PropertyValue Property="Dimensions"><Collection><PropertyPath>Amt</PropertyPath></Collection></PropertyValue>
+                        <PropertyValue Property="DimensionAttributes"><Collection><Record Type="UI.ChartDimensionAttributeType"><PropertyValue Property="Dimension" PropertyPath="Amt"/><PropertyValue Property="Role" EnumMember="UI.ChartDimensionRoleType/Category"/></Record></Collection></PropertyValue>
+                        <PropertyValue Property="Measures"><Collection><PropertyPath>B4</PropertyPath></Collection></PropertyValue>
+                        <PropertyValue Property="MeasureAttributes"><Collection><Record Type="UI.ChartMeasureAttributeType"><PropertyValue Property="Measure" PropertyPath="B4"/><PropertyValue Property="Role" EnumMember="UI.ChartMeasureRoleType/Axis1"/></Record></Collection></PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="UI.PresentationVariant" Qualifier="BauamtTopB4">
+                    <Record Type="UI.PresentationVariantType">
+                        <PropertyValue Property="SortOrder"><Collection><Record Type="Common.SortOrderType"><PropertyValue Property="Property" PropertyPath="B4"/><PropertyValue Property="Descending" Bool="true"/></Record></Collection></PropertyValue>
+                        <PropertyValue Property="Visualizations"><Collection><AnnotationPath>@UI.Chart#BauamtB4</AnnotationPath></Collection></PropertyValue>
+                    </Record>
+                </Annotation>
+
+                <!-- Bereiche: ColumnStacked, alle B0-B4, Default-Filter JahrKassenwirksamkeit -->
+                <Annotation Term="UI.SelectionVariant" Qualifier="BereichFilter">
+                    <Record Type="UI.SelectionVariantType">
+                        <PropertyValue Property="SelectOptions">
+                            <Collection>
+                                <Record Type="UI.SelectOptionType">
+                                    <PropertyValue Property="PropertyName" PropertyPath="JahrKassenwirksamkeit"/>
+                                    <PropertyValue Property="Ranges">
+                                        <Collection>
+                                            <Record Type="UI.SelectionRangeType">
+                                                <PropertyValue Property="Sign" EnumMember="UI.SelectionRangeSignType/I"/>
+                                                <PropertyValue Property="Option" EnumMember="UI.SelectionRangeOptionType/EQ"/>
+                                                <PropertyValue Property="Low" String="2026"/>
+                                            </Record>
+                                        </Collection>
+                                    </PropertyValue>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+
+                <Annotation Term="UI.Chart" Qualifier="BereichSummen">
+                    <Record Type="UI.ChartDefinitionType">
+                        <PropertyValue Property="Title" String="Bereiche"/>
+                        <PropertyValue Property="ChartType" EnumMember="UI.ChartType/ColumnStacked"/>
+                        <PropertyValue Property="Dimensions">
+                            <Collection>
+                                <PropertyPath>BereichBezeichnung</PropertyPath>
+                            </Collection>
+                        </PropertyValue>
+                        <PropertyValue Property="DimensionAttributes">
+                            <Collection>
+                                <Record Type="UI.ChartDimensionAttributeType">
+                                    <PropertyValue Property="Dimension" PropertyPath="BereichBezeichnung"/>
+                                    <PropertyValue Property="Role" EnumMember="UI.ChartDimensionRoleType/Category"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                        <PropertyValue Property="Measures">
+                            <Collection>
+                                <PropertyPath>B0</PropertyPath>
+                                <PropertyPath>B1</PropertyPath>
+                                <PropertyPath>B2</PropertyPath>
+                                <PropertyPath>B3</PropertyPath>
+                                <PropertyPath>B4</PropertyPath>
+                            </Collection>
+                        </PropertyValue>
+                        <PropertyValue Property="MeasureAttributes">
+                            <Collection>
+                                <Record Type="UI.ChartMeasureAttributeType">
+                                    <PropertyValue Property="Measure" PropertyPath="B0"/>
+                                    <PropertyValue Property="Role" EnumMember="UI.ChartMeasureRoleType/Axis1"/>
+                                </Record>
+                                <Record Type="UI.ChartMeasureAttributeType">
+                                    <PropertyValue Property="Measure" PropertyPath="B1"/>
+                                    <PropertyValue Property="Role" EnumMember="UI.ChartMeasureRoleType/Axis1"/>
+                                </Record>
+                                <Record Type="UI.ChartMeasureAttributeType">
+                                    <PropertyValue Property="Measure" PropertyPath="B2"/>
+                                    <PropertyValue Property="Role" EnumMember="UI.ChartMeasureRoleType/Axis1"/>
+                                </Record>
+                                <Record Type="UI.ChartMeasureAttributeType">
+                                    <PropertyValue Property="Measure" PropertyPath="B3"/>
+                                    <PropertyValue Property="Role" EnumMember="UI.ChartMeasureRoleType/Axis1"/>
+                                </Record>
+                                <Record Type="UI.ChartMeasureAttributeType">
+                                    <PropertyValue Property="Measure" PropertyPath="B4"/>
+                                    <PropertyValue Property="Role" EnumMember="UI.ChartMeasureRoleType/Axis1"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+
+                <!-- Bereiche: Tabs je B-Wert -->
+                <Annotation Term="UI.Chart" Qualifier="BereichBgesamt">
+                    <Record Type="UI.ChartDefinitionType">
+                        <PropertyValue Property="Title" String="Bedarf gesamt nach Bereich"/>
+                        <PropertyValue Property="ChartType" EnumMember="UI.ChartType/ColumnStacked"/>
+                        <PropertyValue Property="Dimensions"><Collection><PropertyPath>BereichBezeichnung</PropertyPath></Collection></PropertyValue>
+                        <PropertyValue Property="DimensionAttributes"><Collection><Record Type="UI.ChartDimensionAttributeType"><PropertyValue Property="Dimension" PropertyPath="BereichBezeichnung"/><PropertyValue Property="Role" EnumMember="UI.ChartDimensionRoleType/Category"/></Record></Collection></PropertyValue>
+                        <PropertyValue Property="Measures"><Collection><PropertyPath>B0</PropertyPath><PropertyPath>B1</PropertyPath><PropertyPath>B2</PropertyPath><PropertyPath>B3</PropertyPath><PropertyPath>B4</PropertyPath></Collection></PropertyValue>
+                        <PropertyValue Property="MeasureAttributes"><Collection>
+                            <Record Type="UI.ChartMeasureAttributeType"><PropertyValue Property="Measure" PropertyPath="B0"/><PropertyValue Property="Role" EnumMember="UI.ChartMeasureRoleType/Axis1"/></Record>
+                            <Record Type="UI.ChartMeasureAttributeType"><PropertyValue Property="Measure" PropertyPath="B1"/><PropertyValue Property="Role" EnumMember="UI.ChartMeasureRoleType/Axis1"/></Record>
+                            <Record Type="UI.ChartMeasureAttributeType"><PropertyValue Property="Measure" PropertyPath="B2"/><PropertyValue Property="Role" EnumMember="UI.ChartMeasureRoleType/Axis1"/></Record>
+                            <Record Type="UI.ChartMeasureAttributeType"><PropertyValue Property="Measure" PropertyPath="B3"/><PropertyValue Property="Role" EnumMember="UI.ChartMeasureRoleType/Axis1"/></Record>
+                            <Record Type="UI.ChartMeasureAttributeType"><PropertyValue Property="Measure" PropertyPath="B4"/><PropertyValue Property="Role" EnumMember="UI.ChartMeasureRoleType/Axis1"/></Record>
+                        </Collection></PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="UI.PresentationVariant" Qualifier="BereichTopBgesamt">
+                    <Record Type="UI.PresentationVariantType">
+                        <PropertyValue Property="SortOrder"><Collection><Record Type="Common.SortOrderType"><PropertyValue Property="Property" PropertyPath="Bgesamt"/><PropertyValue Property="Descending" Bool="true"/></Record></Collection></PropertyValue>
+                        <PropertyValue Property="Visualizations"><Collection><AnnotationPath>@UI.Chart#BereichBgesamt</AnnotationPath></Collection></PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="UI.Chart" Qualifier="BereichB0">
+                    <Record Type="UI.ChartDefinitionType">
+                        <PropertyValue Property="Title" String="B0 (Einplanung) nach Bereich"/>
+                        <PropertyValue Property="ChartType" EnumMember="UI.ChartType/Column"/>
+                        <PropertyValue Property="Dimensions"><Collection><PropertyPath>BereichBezeichnung</PropertyPath></Collection></PropertyValue>
+                        <PropertyValue Property="DimensionAttributes"><Collection><Record Type="UI.ChartDimensionAttributeType"><PropertyValue Property="Dimension" PropertyPath="BereichBezeichnung"/><PropertyValue Property="Role" EnumMember="UI.ChartDimensionRoleType/Category"/></Record></Collection></PropertyValue>
+                        <PropertyValue Property="Measures"><Collection><PropertyPath>B0</PropertyPath></Collection></PropertyValue>
+                        <PropertyValue Property="MeasureAttributes"><Collection><Record Type="UI.ChartMeasureAttributeType"><PropertyValue Property="Measure" PropertyPath="B0"/><PropertyValue Property="Role" EnumMember="UI.ChartMeasureRoleType/Axis1"/></Record></Collection></PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="UI.PresentationVariant" Qualifier="BereichTopB0">
+                    <Record Type="UI.PresentationVariantType">
+                        <PropertyValue Property="SortOrder"><Collection><Record Type="Common.SortOrderType"><PropertyValue Property="Property" PropertyPath="B0"/><PropertyValue Property="Descending" Bool="true"/></Record></Collection></PropertyValue>
+                        <PropertyValue Property="Visualizations"><Collection><AnnotationPath>@UI.Chart#BereichB0</AnnotationPath></Collection></PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="UI.Chart" Qualifier="BereichB1">
+                    <Record Type="UI.ChartDefinitionType">
+                        <PropertyValue Property="Title" String="B1 nach Bereich"/>
+                        <PropertyValue Property="ChartType" EnumMember="UI.ChartType/Column"/>
+                        <PropertyValue Property="Dimensions"><Collection><PropertyPath>BereichBezeichnung</PropertyPath></Collection></PropertyValue>
+                        <PropertyValue Property="DimensionAttributes"><Collection><Record Type="UI.ChartDimensionAttributeType"><PropertyValue Property="Dimension" PropertyPath="BereichBezeichnung"/><PropertyValue Property="Role" EnumMember="UI.ChartDimensionRoleType/Category"/></Record></Collection></PropertyValue>
+                        <PropertyValue Property="Measures"><Collection><PropertyPath>B1</PropertyPath></Collection></PropertyValue>
+                        <PropertyValue Property="MeasureAttributes"><Collection><Record Type="UI.ChartMeasureAttributeType"><PropertyValue Property="Measure" PropertyPath="B1"/><PropertyValue Property="Role" EnumMember="UI.ChartMeasureRoleType/Axis1"/></Record></Collection></PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="UI.PresentationVariant" Qualifier="BereichTopB1">
+                    <Record Type="UI.PresentationVariantType">
+                        <PropertyValue Property="SortOrder"><Collection><Record Type="Common.SortOrderType"><PropertyValue Property="Property" PropertyPath="B1"/><PropertyValue Property="Descending" Bool="true"/></Record></Collection></PropertyValue>
+                        <PropertyValue Property="Visualizations"><Collection><AnnotationPath>@UI.Chart#BereichB1</AnnotationPath></Collection></PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="UI.Chart" Qualifier="BereichB2">
+                    <Record Type="UI.ChartDefinitionType">
+                        <PropertyValue Property="Title" String="B2 (Vergaben) nach Bereich"/>
+                        <PropertyValue Property="ChartType" EnumMember="UI.ChartType/Column"/>
+                        <PropertyValue Property="Dimensions"><Collection><PropertyPath>BereichBezeichnung</PropertyPath></Collection></PropertyValue>
+                        <PropertyValue Property="DimensionAttributes"><Collection><Record Type="UI.ChartDimensionAttributeType"><PropertyValue Property="Dimension" PropertyPath="BereichBezeichnung"/><PropertyValue Property="Role" EnumMember="UI.ChartDimensionRoleType/Category"/></Record></Collection></PropertyValue>
+                        <PropertyValue Property="Measures"><Collection><PropertyPath>B2</PropertyPath></Collection></PropertyValue>
+                        <PropertyValue Property="MeasureAttributes"><Collection><Record Type="UI.ChartMeasureAttributeType"><PropertyValue Property="Measure" PropertyPath="B2"/><PropertyValue Property="Role" EnumMember="UI.ChartMeasureRoleType/Axis1"/></Record></Collection></PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="UI.PresentationVariant" Qualifier="BereichTopB2">
+                    <Record Type="UI.PresentationVariantType">
+                        <PropertyValue Property="SortOrder"><Collection><Record Type="Common.SortOrderType"><PropertyValue Property="Property" PropertyPath="B2"/><PropertyValue Property="Descending" Bool="true"/></Record></Collection></PropertyValue>
+                        <PropertyValue Property="Visualizations"><Collection><AnnotationPath>@UI.Chart#BereichB2</AnnotationPath></Collection></PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="UI.Chart" Qualifier="BereichB3">
+                    <Record Type="UI.ChartDefinitionType">
+                        <PropertyValue Property="Title" String="B3 (Festlegungen) nach Bereich"/>
+                        <PropertyValue Property="ChartType" EnumMember="UI.ChartType/Column"/>
+                        <PropertyValue Property="Dimensions"><Collection><PropertyPath>BereichBezeichnung</PropertyPath></Collection></PropertyValue>
+                        <PropertyValue Property="DimensionAttributes"><Collection><Record Type="UI.ChartDimensionAttributeType"><PropertyValue Property="Dimension" PropertyPath="BereichBezeichnung"/><PropertyValue Property="Role" EnumMember="UI.ChartDimensionRoleType/Category"/></Record></Collection></PropertyValue>
+                        <PropertyValue Property="Measures"><Collection><PropertyPath>B3</PropertyPath></Collection></PropertyValue>
+                        <PropertyValue Property="MeasureAttributes"><Collection><Record Type="UI.ChartMeasureAttributeType"><PropertyValue Property="Measure" PropertyPath="B3"/><PropertyValue Property="Role" EnumMember="UI.ChartMeasureRoleType/Axis1"/></Record></Collection></PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="UI.PresentationVariant" Qualifier="BereichTopB3">
+                    <Record Type="UI.PresentationVariantType">
+                        <PropertyValue Property="SortOrder"><Collection><Record Type="Common.SortOrderType"><PropertyValue Property="Property" PropertyPath="B3"/><PropertyValue Property="Descending" Bool="true"/></Record></Collection></PropertyValue>
+                        <PropertyValue Property="Visualizations"><Collection><AnnotationPath>@UI.Chart#BereichB3</AnnotationPath></Collection></PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="UI.Chart" Qualifier="BereichB4">
+                    <Record Type="UI.ChartDefinitionType">
+                        <PropertyValue Property="Title" String="B4 (Zahlungen) nach Bereich"/>
+                        <PropertyValue Property="ChartType" EnumMember="UI.ChartType/Column"/>
+                        <PropertyValue Property="Dimensions"><Collection><PropertyPath>BereichBezeichnung</PropertyPath></Collection></PropertyValue>
+                        <PropertyValue Property="DimensionAttributes"><Collection><Record Type="UI.ChartDimensionAttributeType"><PropertyValue Property="Dimension" PropertyPath="BereichBezeichnung"/><PropertyValue Property="Role" EnumMember="UI.ChartDimensionRoleType/Category"/></Record></Collection></PropertyValue>
+                        <PropertyValue Property="Measures"><Collection><PropertyPath>B4</PropertyPath></Collection></PropertyValue>
+                        <PropertyValue Property="MeasureAttributes"><Collection><Record Type="UI.ChartMeasureAttributeType"><PropertyValue Property="Measure" PropertyPath="B4"/><PropertyValue Property="Role" EnumMember="UI.ChartMeasureRoleType/Axis1"/></Record></Collection></PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="UI.PresentationVariant" Qualifier="BereichTopB4">
+                    <Record Type="UI.PresentationVariantType">
+                        <PropertyValue Property="SortOrder"><Collection><Record Type="Common.SortOrderType"><PropertyValue Property="Property" PropertyPath="B4"/><PropertyValue Property="Descending" Bool="true"/></Record></Collection></PropertyValue>
+                        <PropertyValue Property="Visualizations"><Collection><AnnotationPath>@UI.Chart#BereichB4</AnnotationPath></Collection></PropertyValue>
+                    </Record>
+                </Annotation>
+
+                <!-- Einzelplan: ColumnStacked, alle B0-B4, Default-Filter JahrKassenwirksamkeit -->
+                <Annotation Term="UI.SelectionVariant" Qualifier="EinzelplanFilter">
+                    <Record Type="UI.SelectionVariantType">
+                        <PropertyValue Property="SelectOptions">
+                            <Collection>
+                                <Record Type="UI.SelectOptionType">
+                                    <PropertyValue Property="PropertyName" PropertyPath="JahrKassenwirksamkeit"/>
+                                    <PropertyValue Property="Ranges">
+                                        <Collection>
+                                            <Record Type="UI.SelectionRangeType">
+                                                <PropertyValue Property="Sign" EnumMember="UI.SelectionRangeSignType/I"/>
+                                                <PropertyValue Property="Option" EnumMember="UI.SelectionRangeOptionType/EQ"/>
+                                                <PropertyValue Property="Low" String="2026"/>
+                                            </Record>
+                                        </Collection>
+                                    </PropertyValue>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+
+                <Annotation Term="UI.Chart" Qualifier="EinzelplanWerte">
+                    <Record Type="UI.ChartDefinitionType">
+                        <PropertyValue Property="Title" String="B0-B4 nach Einzelplan"/>
+                        <PropertyValue Property="ChartType" EnumMember="UI.ChartType/ColumnStacked"/>
+                        <PropertyValue Property="Dimensions">
+                            <Collection>
+                                <PropertyPath>Einzelplan</PropertyPath>
+                            </Collection>
+                        </PropertyValue>
+                        <PropertyValue Property="DimensionAttributes">
+                            <Collection>
+                                <Record Type="UI.ChartDimensionAttributeType">
+                                    <PropertyValue Property="Dimension" PropertyPath="Einzelplan"/>
+                                    <PropertyValue Property="Role" EnumMember="UI.ChartDimensionRoleType/Category"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                        <PropertyValue Property="Measures">
+                            <Collection>
+                                <PropertyPath>B0</PropertyPath>
+                                <PropertyPath>B1</PropertyPath>
+                                <PropertyPath>B2</PropertyPath>
+                                <PropertyPath>B3</PropertyPath>
+                                <PropertyPath>B4</PropertyPath>
+                            </Collection>
+                        </PropertyValue>
+                        <PropertyValue Property="MeasureAttributes">
+                            <Collection>
+                                <Record Type="UI.ChartMeasureAttributeType">
+                                    <PropertyValue Property="Measure" PropertyPath="B0"/>
+                                    <PropertyValue Property="Role" EnumMember="UI.ChartMeasureRoleType/Axis1"/>
+                                </Record>
+                                <Record Type="UI.ChartMeasureAttributeType">
+                                    <PropertyValue Property="Measure" PropertyPath="B1"/>
+                                    <PropertyValue Property="Role" EnumMember="UI.ChartMeasureRoleType/Axis1"/>
+                                </Record>
+                                <Record Type="UI.ChartMeasureAttributeType">
+                                    <PropertyValue Property="Measure" PropertyPath="B2"/>
+                                    <PropertyValue Property="Role" EnumMember="UI.ChartMeasureRoleType/Axis1"/>
+                                </Record>
+                                <Record Type="UI.ChartMeasureAttributeType">
+                                    <PropertyValue Property="Measure" PropertyPath="B3"/>
+                                    <PropertyValue Property="Role" EnumMember="UI.ChartMeasureRoleType/Axis1"/>
+                                </Record>
+                                <Record Type="UI.ChartMeasureAttributeType">
+                                    <PropertyValue Property="Measure" PropertyPath="B4"/>
+                                    <PropertyValue Property="Role" EnumMember="UI.ChartMeasureRoleType/Axis1"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+
+
+                <!-- Einzelplan: Tabs je B-Wert -->
+                <Annotation Term="UI.Chart" Qualifier="EinzelplanBgesamt">
+                    <Record Type="UI.ChartDefinitionType">
+                        <PropertyValue Property="Title" String="Bedarf gesamt nach Einzelplan"/>
+                        <PropertyValue Property="ChartType" EnumMember="UI.ChartType/ColumnStacked"/>
+                        <PropertyValue Property="Dimensions"><Collection><PropertyPath>Einzelplan</PropertyPath></Collection></PropertyValue>
+                        <PropertyValue Property="DimensionAttributes"><Collection><Record Type="UI.ChartDimensionAttributeType"><PropertyValue Property="Dimension" PropertyPath="Einzelplan"/><PropertyValue Property="Role" EnumMember="UI.ChartDimensionRoleType/Category"/></Record></Collection></PropertyValue>
+                        <PropertyValue Property="Measures"><Collection><PropertyPath>B0</PropertyPath><PropertyPath>B1</PropertyPath><PropertyPath>B2</PropertyPath><PropertyPath>B3</PropertyPath><PropertyPath>B4</PropertyPath></Collection></PropertyValue>
+                        <PropertyValue Property="MeasureAttributes"><Collection>
+                            <Record Type="UI.ChartMeasureAttributeType"><PropertyValue Property="Measure" PropertyPath="B0"/><PropertyValue Property="Role" EnumMember="UI.ChartMeasureRoleType/Axis1"/></Record>
+                            <Record Type="UI.ChartMeasureAttributeType"><PropertyValue Property="Measure" PropertyPath="B1"/><PropertyValue Property="Role" EnumMember="UI.ChartMeasureRoleType/Axis1"/></Record>
+                            <Record Type="UI.ChartMeasureAttributeType"><PropertyValue Property="Measure" PropertyPath="B2"/><PropertyValue Property="Role" EnumMember="UI.ChartMeasureRoleType/Axis1"/></Record>
+                            <Record Type="UI.ChartMeasureAttributeType"><PropertyValue Property="Measure" PropertyPath="B3"/><PropertyValue Property="Role" EnumMember="UI.ChartMeasureRoleType/Axis1"/></Record>
+                            <Record Type="UI.ChartMeasureAttributeType"><PropertyValue Property="Measure" PropertyPath="B4"/><PropertyValue Property="Role" EnumMember="UI.ChartMeasureRoleType/Axis1"/></Record>
+                        </Collection></PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="UI.PresentationVariant" Qualifier="EinzelplanTopBgesamt">
+                    <Record Type="UI.PresentationVariantType">
+                        <PropertyValue Property="SortOrder"><Collection><Record Type="Common.SortOrderType"><PropertyValue Property="Property" PropertyPath="Bgesamt"/><PropertyValue Property="Descending" Bool="true"/></Record></Collection></PropertyValue>
+                        <PropertyValue Property="Visualizations"><Collection><AnnotationPath>@UI.Chart#EinzelplanBgesamt</AnnotationPath></Collection></PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="UI.Chart" Qualifier="EinzelplanB0"><Record Type="UI.ChartDefinitionType"><PropertyValue Property="Title" String="B0 (Einplanung) nach Einzelplan"/><PropertyValue Property="ChartType" EnumMember="UI.ChartType/Column"/><PropertyValue Property="Dimensions"><Collection><PropertyPath>Einzelplan</PropertyPath></Collection></PropertyValue><PropertyValue Property="DimensionAttributes"><Collection><Record Type="UI.ChartDimensionAttributeType"><PropertyValue Property="Dimension" PropertyPath="Einzelplan"/><PropertyValue Property="Role" EnumMember="UI.ChartDimensionRoleType/Category"/></Record></Collection></PropertyValue><PropertyValue Property="Measures"><Collection><PropertyPath>B0</PropertyPath></Collection></PropertyValue><PropertyValue Property="MeasureAttributes"><Collection><Record Type="UI.ChartMeasureAttributeType"><PropertyValue Property="Measure" PropertyPath="B0"/><PropertyValue Property="Role" EnumMember="UI.ChartMeasureRoleType/Axis1"/></Record></Collection></PropertyValue></Record></Annotation>
+                <Annotation Term="UI.PresentationVariant" Qualifier="EinzelplanTopB0"><Record Type="UI.PresentationVariantType"><PropertyValue Property="SortOrder"><Collection><Record Type="Common.SortOrderType"><PropertyValue Property="Property" PropertyPath="B0"/><PropertyValue Property="Descending" Bool="true"/></Record></Collection></PropertyValue><PropertyValue Property="Visualizations"><Collection><AnnotationPath>@UI.Chart#EinzelplanB0</AnnotationPath></Collection></PropertyValue></Record></Annotation>
+                <Annotation Term="UI.Chart" Qualifier="EinzelplanB1"><Record Type="UI.ChartDefinitionType"><PropertyValue Property="Title" String="B1 nach Einzelplan"/><PropertyValue Property="ChartType" EnumMember="UI.ChartType/Column"/><PropertyValue Property="Dimensions"><Collection><PropertyPath>Einzelplan</PropertyPath></Collection></PropertyValue><PropertyValue Property="DimensionAttributes"><Collection><Record Type="UI.ChartDimensionAttributeType"><PropertyValue Property="Dimension" PropertyPath="Einzelplan"/><PropertyValue Property="Role" EnumMember="UI.ChartDimensionRoleType/Category"/></Record></Collection></PropertyValue><PropertyValue Property="Measures"><Collection><PropertyPath>B1</PropertyPath></Collection></PropertyValue><PropertyValue Property="MeasureAttributes"><Collection><Record Type="UI.ChartMeasureAttributeType"><PropertyValue Property="Measure" PropertyPath="B1"/><PropertyValue Property="Role" EnumMember="UI.ChartMeasureRoleType/Axis1"/></Record></Collection></PropertyValue></Record></Annotation>
+                <Annotation Term="UI.PresentationVariant" Qualifier="EinzelplanTopB1"><Record Type="UI.PresentationVariantType"><PropertyValue Property="SortOrder"><Collection><Record Type="Common.SortOrderType"><PropertyValue Property="Property" PropertyPath="B1"/><PropertyValue Property="Descending" Bool="true"/></Record></Collection></PropertyValue><PropertyValue Property="Visualizations"><Collection><AnnotationPath>@UI.Chart#EinzelplanB1</AnnotationPath></Collection></PropertyValue></Record></Annotation>
+                <Annotation Term="UI.Chart" Qualifier="EinzelplanB2"><Record Type="UI.ChartDefinitionType"><PropertyValue Property="Title" String="B2 (Vergaben) nach Einzelplan"/><PropertyValue Property="ChartType" EnumMember="UI.ChartType/Column"/><PropertyValue Property="Dimensions"><Collection><PropertyPath>Einzelplan</PropertyPath></Collection></PropertyValue><PropertyValue Property="DimensionAttributes"><Collection><Record Type="UI.ChartDimensionAttributeType"><PropertyValue Property="Dimension" PropertyPath="Einzelplan"/><PropertyValue Property="Role" EnumMember="UI.ChartDimensionRoleType/Category"/></Record></Collection></PropertyValue><PropertyValue Property="Measures"><Collection><PropertyPath>B2</PropertyPath></Collection></PropertyValue><PropertyValue Property="MeasureAttributes"><Collection><Record Type="UI.ChartMeasureAttributeType"><PropertyValue Property="Measure" PropertyPath="B2"/><PropertyValue Property="Role" EnumMember="UI.ChartMeasureRoleType/Axis1"/></Record></Collection></PropertyValue></Record></Annotation>
+                <Annotation Term="UI.PresentationVariant" Qualifier="EinzelplanTopB2"><Record Type="UI.PresentationVariantType"><PropertyValue Property="SortOrder"><Collection><Record Type="Common.SortOrderType"><PropertyValue Property="Property" PropertyPath="B2"/><PropertyValue Property="Descending" Bool="true"/></Record></Collection></PropertyValue><PropertyValue Property="Visualizations"><Collection><AnnotationPath>@UI.Chart#EinzelplanB2</AnnotationPath></Collection></PropertyValue></Record></Annotation>
+                <Annotation Term="UI.Chart" Qualifier="EinzelplanB3"><Record Type="UI.ChartDefinitionType"><PropertyValue Property="Title" String="B3 (Festlegungen) nach Einzelplan"/><PropertyValue Property="ChartType" EnumMember="UI.ChartType/Column"/><PropertyValue Property="Dimensions"><Collection><PropertyPath>Einzelplan</PropertyPath></Collection></PropertyValue><PropertyValue Property="DimensionAttributes"><Collection><Record Type="UI.ChartDimensionAttributeType"><PropertyValue Property="Dimension" PropertyPath="Einzelplan"/><PropertyValue Property="Role" EnumMember="UI.ChartDimensionRoleType/Category"/></Record></Collection></PropertyValue><PropertyValue Property="Measures"><Collection><PropertyPath>B3</PropertyPath></Collection></PropertyValue><PropertyValue Property="MeasureAttributes"><Collection><Record Type="UI.ChartMeasureAttributeType"><PropertyValue Property="Measure" PropertyPath="B3"/><PropertyValue Property="Role" EnumMember="UI.ChartMeasureRoleType/Axis1"/></Record></Collection></PropertyValue></Record></Annotation>
+                <Annotation Term="UI.PresentationVariant" Qualifier="EinzelplanTopB3"><Record Type="UI.PresentationVariantType"><PropertyValue Property="SortOrder"><Collection><Record Type="Common.SortOrderType"><PropertyValue Property="Property" PropertyPath="B3"/><PropertyValue Property="Descending" Bool="true"/></Record></Collection></PropertyValue><PropertyValue Property="Visualizations"><Collection><AnnotationPath>@UI.Chart#EinzelplanB3</AnnotationPath></Collection></PropertyValue></Record></Annotation>
+                <Annotation Term="UI.Chart" Qualifier="EinzelplanB4"><Record Type="UI.ChartDefinitionType"><PropertyValue Property="Title" String="B4 (Zahlungen) nach Einzelplan"/><PropertyValue Property="ChartType" EnumMember="UI.ChartType/Column"/><PropertyValue Property="Dimensions"><Collection><PropertyPath>Einzelplan</PropertyPath></Collection></PropertyValue><PropertyValue Property="DimensionAttributes"><Collection><Record Type="UI.ChartDimensionAttributeType"><PropertyValue Property="Dimension" PropertyPath="Einzelplan"/><PropertyValue Property="Role" EnumMember="UI.ChartDimensionRoleType/Category"/></Record></Collection></PropertyValue><PropertyValue Property="Measures"><Collection><PropertyPath>B4</PropertyPath></Collection></PropertyValue><PropertyValue Property="MeasureAttributes"><Collection><Record Type="UI.ChartMeasureAttributeType"><PropertyValue Property="Measure" PropertyPath="B4"/><PropertyValue Property="Role" EnumMember="UI.ChartMeasureRoleType/Axis1"/></Record></Collection></PropertyValue></Record></Annotation>
+                <Annotation Term="UI.PresentationVariant" Qualifier="EinzelplanTopB4"><Record Type="UI.PresentationVariantType"><PropertyValue Property="SortOrder"><Collection><Record Type="Common.SortOrderType"><PropertyValue Property="Property" PropertyPath="B4"/><PropertyValue Property="Descending" Bool="true"/></Record></Collection></PropertyValue><PropertyValue Property="Visualizations"><Collection><AnnotationPath>@UI.Chart#EinzelplanB4</AnnotationPath></Collection></PropertyValue></Record></Annotation>
+
+                <!-- Haushalt: ColumnStacked, Default-Filter JahrKassenwirksamkeit -->
+                <Annotation Term="UI.SelectionVariant" Qualifier="HaushaltFilter">
+                    <Record Type="UI.SelectionVariantType">
+                        <PropertyValue Property="SelectOptions">
+                            <Collection>
+                                <Record Type="UI.SelectOptionType">
+                                    <PropertyValue Property="PropertyName" PropertyPath="JahrKassenwirksamkeit"/>
+                                    <PropertyValue Property="Ranges">
+                                        <Collection>
+                                            <Record Type="UI.SelectionRangeType">
+                                                <PropertyValue Property="Sign" EnumMember="UI.SelectionRangeSignType/I"/>
+                                                <PropertyValue Property="Option" EnumMember="UI.SelectionRangeOptionType/EQ"/>
+                                                <PropertyValue Property="Low" String="2026"/>
+                                            </Record>
+                                        </Collection>
+                                    </PropertyValue>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+
+                <Annotation Term="UI.Chart" Qualifier="HaushaltWerte">
+                    <Record Type="UI.ChartDefinitionType">
+                        <PropertyValue Property="Title" String="B0-B4 nach Haushalt"/>
+                        <PropertyValue Property="ChartType" EnumMember="UI.ChartType/ColumnStacked"/>
+                        <PropertyValue Property="Dimensions">
+                            <Collection>
+                                <PropertyPath>Haushalt</PropertyPath>
+                            </Collection>
+                        </PropertyValue>
+                        <PropertyValue Property="DimensionAttributes">
+                            <Collection>
+                                <Record Type="UI.ChartDimensionAttributeType">
+                                    <PropertyValue Property="Dimension" PropertyPath="Haushalt"/>
+                                    <PropertyValue Property="Role" EnumMember="UI.ChartDimensionRoleType/Category"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                        <PropertyValue Property="Measures">
+                            <Collection>
+                                <PropertyPath>B0</PropertyPath>
+                                <PropertyPath>B1</PropertyPath>
+                                <PropertyPath>B2</PropertyPath>
+                                <PropertyPath>B3</PropertyPath>
+                                <PropertyPath>B4</PropertyPath>
+                            </Collection>
+                        </PropertyValue>
+                        <PropertyValue Property="MeasureAttributes">
+                            <Collection>
+                                <Record Type="UI.ChartMeasureAttributeType">
+                                    <PropertyValue Property="Measure" PropertyPath="B0"/>
+                                    <PropertyValue Property="Role" EnumMember="UI.ChartMeasureRoleType/Axis1"/>
+                                </Record>
+                                <Record Type="UI.ChartMeasureAttributeType">
+                                    <PropertyValue Property="Measure" PropertyPath="B1"/>
+                                    <PropertyValue Property="Role" EnumMember="UI.ChartMeasureRoleType/Axis1"/>
+                                </Record>
+                                <Record Type="UI.ChartMeasureAttributeType">
+                                    <PropertyValue Property="Measure" PropertyPath="B2"/>
+                                    <PropertyValue Property="Role" EnumMember="UI.ChartMeasureRoleType/Axis1"/>
+                                </Record>
+                                <Record Type="UI.ChartMeasureAttributeType">
+                                    <PropertyValue Property="Measure" PropertyPath="B3"/>
+                                    <PropertyValue Property="Role" EnumMember="UI.ChartMeasureRoleType/Axis1"/>
+                                </Record>
+                                <Record Type="UI.ChartMeasureAttributeType">
+                                    <PropertyValue Property="Measure" PropertyPath="B4"/>
+                                    <PropertyValue Property="Role" EnumMember="UI.ChartMeasureRoleType/Axis1"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+
+                <!-- Massnahme Top 10: ColumnStacked, sortiert nach B4 DESC, max. 10 -->
+                <Annotation Term="UI.SelectionVariant" Qualifier="MassnahmeFilter">
+                    <Record Type="UI.SelectionVariantType">
+                        <PropertyValue Property="SelectOptions">
+                            <Collection>
+                                <Record Type="UI.SelectOptionType">
+                                    <PropertyValue Property="PropertyName" PropertyPath="JahrKassenwirksamkeit"/>
+                                    <PropertyValue Property="Ranges">
+                                        <Collection>
+                                            <Record Type="UI.SelectionRangeType">
+                                                <PropertyValue Property="Sign" EnumMember="UI.SelectionRangeSignType/I"/>
+                                                <PropertyValue Property="Option" EnumMember="UI.SelectionRangeOptionType/EQ"/>
+                                                <PropertyValue Property="Low" String="2026"/>
+                                            </Record>
+                                        </Collection>
+                                    </PropertyValue>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+
+                <!-- Haushalt: Tabs je B-Wert, Dimension = HaushaltBezeichnung (Text statt Code) -->
+                <Annotation Term="UI.Chart" Qualifier="HaushaltBgesamt">
+                    <Record Type="UI.ChartDefinitionType">
+                        <PropertyValue Property="Title" String="Bedarf gesamt nach Haushalt"/>
+                        <PropertyValue Property="ChartType" EnumMember="UI.ChartType/ColumnStacked"/>
+                        <PropertyValue Property="Dimensions"><Collection><PropertyPath>Haushalt</PropertyPath></Collection></PropertyValue>
+                        <PropertyValue Property="DimensionAttributes"><Collection><Record Type="UI.ChartDimensionAttributeType"><PropertyValue Property="Dimension" PropertyPath="Haushalt"/><PropertyValue Property="Role" EnumMember="UI.ChartDimensionRoleType/Category"/></Record></Collection></PropertyValue>
+                        <PropertyValue Property="Measures"><Collection><PropertyPath>B0</PropertyPath><PropertyPath>B1</PropertyPath><PropertyPath>B2</PropertyPath><PropertyPath>B3</PropertyPath><PropertyPath>B4</PropertyPath></Collection></PropertyValue>
+                        <PropertyValue Property="MeasureAttributes"><Collection>
+                            <Record Type="UI.ChartMeasureAttributeType"><PropertyValue Property="Measure" PropertyPath="B0"/><PropertyValue Property="Role" EnumMember="UI.ChartMeasureRoleType/Axis1"/></Record>
+                            <Record Type="UI.ChartMeasureAttributeType"><PropertyValue Property="Measure" PropertyPath="B1"/><PropertyValue Property="Role" EnumMember="UI.ChartMeasureRoleType/Axis1"/></Record>
+                            <Record Type="UI.ChartMeasureAttributeType"><PropertyValue Property="Measure" PropertyPath="B2"/><PropertyValue Property="Role" EnumMember="UI.ChartMeasureRoleType/Axis1"/></Record>
+                            <Record Type="UI.ChartMeasureAttributeType"><PropertyValue Property="Measure" PropertyPath="B3"/><PropertyValue Property="Role" EnumMember="UI.ChartMeasureRoleType/Axis1"/></Record>
+                            <Record Type="UI.ChartMeasureAttributeType"><PropertyValue Property="Measure" PropertyPath="B4"/><PropertyValue Property="Role" EnumMember="UI.ChartMeasureRoleType/Axis1"/></Record>
+                        </Collection></PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="UI.PresentationVariant" Qualifier="HaushaltTopBgesamt"><Record Type="UI.PresentationVariantType"><PropertyValue Property="SortOrder"><Collection><Record Type="Common.SortOrderType"><PropertyValue Property="Property" PropertyPath="Bgesamt"/><PropertyValue Property="Descending" Bool="true"/></Record></Collection></PropertyValue><PropertyValue Property="Visualizations"><Collection><AnnotationPath>@UI.Chart#HaushaltBgesamt</AnnotationPath></Collection></PropertyValue></Record></Annotation>
+                <Annotation Term="UI.Chart" Qualifier="HaushaltB0"><Record Type="UI.ChartDefinitionType"><PropertyValue Property="Title" String="B0 (Einplanung) nach Haushalt"/><PropertyValue Property="ChartType" EnumMember="UI.ChartType/Column"/><PropertyValue Property="Dimensions"><Collection><PropertyPath>Haushalt</PropertyPath></Collection></PropertyValue><PropertyValue Property="DimensionAttributes"><Collection><Record Type="UI.ChartDimensionAttributeType"><PropertyValue Property="Dimension" PropertyPath="Haushalt"/><PropertyValue Property="Role" EnumMember="UI.ChartDimensionRoleType/Category"/></Record></Collection></PropertyValue><PropertyValue Property="Measures"><Collection><PropertyPath>B0</PropertyPath></Collection></PropertyValue><PropertyValue Property="MeasureAttributes"><Collection><Record Type="UI.ChartMeasureAttributeType"><PropertyValue Property="Measure" PropertyPath="B0"/><PropertyValue Property="Role" EnumMember="UI.ChartMeasureRoleType/Axis1"/></Record></Collection></PropertyValue></Record></Annotation>
+                <Annotation Term="UI.PresentationVariant" Qualifier="HaushaltTopB0"><Record Type="UI.PresentationVariantType"><PropertyValue Property="SortOrder"><Collection><Record Type="Common.SortOrderType"><PropertyValue Property="Property" PropertyPath="B0"/><PropertyValue Property="Descending" Bool="true"/></Record></Collection></PropertyValue><PropertyValue Property="Visualizations"><Collection><AnnotationPath>@UI.Chart#HaushaltB0</AnnotationPath></Collection></PropertyValue></Record></Annotation>
+                <Annotation Term="UI.Chart" Qualifier="HaushaltB1"><Record Type="UI.ChartDefinitionType"><PropertyValue Property="Title" String="B1 nach Haushalt"/><PropertyValue Property="ChartType" EnumMember="UI.ChartType/Column"/><PropertyValue Property="Dimensions"><Collection><PropertyPath>Haushalt</PropertyPath></Collection></PropertyValue><PropertyValue Property="DimensionAttributes"><Collection><Record Type="UI.ChartDimensionAttributeType"><PropertyValue Property="Dimension" PropertyPath="Haushalt"/><PropertyValue Property="Role" EnumMember="UI.ChartDimensionRoleType/Category"/></Record></Collection></PropertyValue><PropertyValue Property="Measures"><Collection><PropertyPath>B1</PropertyPath></Collection></PropertyValue><PropertyValue Property="MeasureAttributes"><Collection><Record Type="UI.ChartMeasureAttributeType"><PropertyValue Property="Measure" PropertyPath="B1"/><PropertyValue Property="Role" EnumMember="UI.ChartMeasureRoleType/Axis1"/></Record></Collection></PropertyValue></Record></Annotation>
+                <Annotation Term="UI.PresentationVariant" Qualifier="HaushaltTopB1"><Record Type="UI.PresentationVariantType"><PropertyValue Property="SortOrder"><Collection><Record Type="Common.SortOrderType"><PropertyValue Property="Property" PropertyPath="B1"/><PropertyValue Property="Descending" Bool="true"/></Record></Collection></PropertyValue><PropertyValue Property="Visualizations"><Collection><AnnotationPath>@UI.Chart#HaushaltB1</AnnotationPath></Collection></PropertyValue></Record></Annotation>
+                <Annotation Term="UI.Chart" Qualifier="HaushaltB2"><Record Type="UI.ChartDefinitionType"><PropertyValue Property="Title" String="B2 (Vergaben) nach Haushalt"/><PropertyValue Property="ChartType" EnumMember="UI.ChartType/Column"/><PropertyValue Property="Dimensions"><Collection><PropertyPath>Haushalt</PropertyPath></Collection></PropertyValue><PropertyValue Property="DimensionAttributes"><Collection><Record Type="UI.ChartDimensionAttributeType"><PropertyValue Property="Dimension" PropertyPath="Haushalt"/><PropertyValue Property="Role" EnumMember="UI.ChartDimensionRoleType/Category"/></Record></Collection></PropertyValue><PropertyValue Property="Measures"><Collection><PropertyPath>B2</PropertyPath></Collection></PropertyValue><PropertyValue Property="MeasureAttributes"><Collection><Record Type="UI.ChartMeasureAttributeType"><PropertyValue Property="Measure" PropertyPath="B2"/><PropertyValue Property="Role" EnumMember="UI.ChartMeasureRoleType/Axis1"/></Record></Collection></PropertyValue></Record></Annotation>
+                <Annotation Term="UI.PresentationVariant" Qualifier="HaushaltTopB2"><Record Type="UI.PresentationVariantType"><PropertyValue Property="SortOrder"><Collection><Record Type="Common.SortOrderType"><PropertyValue Property="Property" PropertyPath="B2"/><PropertyValue Property="Descending" Bool="true"/></Record></Collection></PropertyValue><PropertyValue Property="Visualizations"><Collection><AnnotationPath>@UI.Chart#HaushaltB2</AnnotationPath></Collection></PropertyValue></Record></Annotation>
+                <Annotation Term="UI.Chart" Qualifier="HaushaltB3"><Record Type="UI.ChartDefinitionType"><PropertyValue Property="Title" String="B3 (Festlegungen) nach Haushalt"/><PropertyValue Property="ChartType" EnumMember="UI.ChartType/Column"/><PropertyValue Property="Dimensions"><Collection><PropertyPath>Haushalt</PropertyPath></Collection></PropertyValue><PropertyValue Property="DimensionAttributes"><Collection><Record Type="UI.ChartDimensionAttributeType"><PropertyValue Property="Dimension" PropertyPath="Haushalt"/><PropertyValue Property="Role" EnumMember="UI.ChartDimensionRoleType/Category"/></Record></Collection></PropertyValue><PropertyValue Property="Measures"><Collection><PropertyPath>B3</PropertyPath></Collection></PropertyValue><PropertyValue Property="MeasureAttributes"><Collection><Record Type="UI.ChartMeasureAttributeType"><PropertyValue Property="Measure" PropertyPath="B3"/><PropertyValue Property="Role" EnumMember="UI.ChartMeasureRoleType/Axis1"/></Record></Collection></PropertyValue></Record></Annotation>
+                <Annotation Term="UI.PresentationVariant" Qualifier="HaushaltTopB3"><Record Type="UI.PresentationVariantType"><PropertyValue Property="SortOrder"><Collection><Record Type="Common.SortOrderType"><PropertyValue Property="Property" PropertyPath="B3"/><PropertyValue Property="Descending" Bool="true"/></Record></Collection></PropertyValue><PropertyValue Property="Visualizations"><Collection><AnnotationPath>@UI.Chart#HaushaltB3</AnnotationPath></Collection></PropertyValue></Record></Annotation>
+                <Annotation Term="UI.Chart" Qualifier="HaushaltB4"><Record Type="UI.ChartDefinitionType"><PropertyValue Property="Title" String="B4 (Zahlungen) nach Haushalt"/><PropertyValue Property="ChartType" EnumMember="UI.ChartType/Column"/><PropertyValue Property="Dimensions"><Collection><PropertyPath>Haushalt</PropertyPath></Collection></PropertyValue><PropertyValue Property="DimensionAttributes"><Collection><Record Type="UI.ChartDimensionAttributeType"><PropertyValue Property="Dimension" PropertyPath="Haushalt"/><PropertyValue Property="Role" EnumMember="UI.ChartDimensionRoleType/Category"/></Record></Collection></PropertyValue><PropertyValue Property="Measures"><Collection><PropertyPath>B4</PropertyPath></Collection></PropertyValue><PropertyValue Property="MeasureAttributes"><Collection><Record Type="UI.ChartMeasureAttributeType"><PropertyValue Property="Measure" PropertyPath="B4"/><PropertyValue Property="Role" EnumMember="UI.ChartMeasureRoleType/Axis1"/></Record></Collection></PropertyValue></Record></Annotation>
+                <Annotation Term="UI.PresentationVariant" Qualifier="HaushaltTopB4"><Record Type="UI.PresentationVariantType"><PropertyValue Property="SortOrder"><Collection><Record Type="Common.SortOrderType"><PropertyValue Property="Property" PropertyPath="B4"/><PropertyValue Property="Descending" Bool="true"/></Record></Collection></PropertyValue><PropertyValue Property="Visualizations"><Collection><AnnotationPath>@UI.Chart#HaushaltB4</AnnotationPath></Collection></PropertyValue></Record></Annotation>
+
+                <!-- Massnahmen Top 10: Tabs je B-Wert, MaxItems=10 -->
+                <Annotation Term="UI.PresentationVariant" Qualifier="MassnahmeTop10">
+                    <Record Type="UI.PresentationVariantType">
+                        <PropertyValue Property="MaxItems" Int="10"/>
+                        <PropertyValue Property="SortOrder">
+                            <Collection>
+                                <Record Type="Common.SortOrderType">
+                                    <PropertyValue Property="Property" PropertyPath="B4"/>
+                                    <PropertyValue Property="Descending" Bool="true"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                        <PropertyValue Property="Visualizations">
+                            <Collection>
+                                <AnnotationPath>@UI.Chart#MassnahmeTop10</AnnotationPath>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+
+                <Annotation Term="UI.Chart" Qualifier="MassnahmeTop10">
+                    <Record Type="UI.ChartDefinitionType">
+                        <PropertyValue Property="Title" String="B0-B4 nach Massnahme (Top 10)"/>
+                        <PropertyValue Property="ChartType" EnumMember="UI.ChartType/ColumnStacked"/>
+                        <PropertyValue Property="Dimensions">
+                            <Collection>
+                                <PropertyPath>Massnahme</PropertyPath>
+                            </Collection>
+                        </PropertyValue>
+                        <PropertyValue Property="DimensionAttributes">
+                            <Collection>
+                                <Record Type="UI.ChartDimensionAttributeType">
+                                    <PropertyValue Property="Dimension" PropertyPath="Massnahme"/>
+                                    <PropertyValue Property="Role" EnumMember="UI.ChartDimensionRoleType/Category"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                        <PropertyValue Property="Measures">
+                            <Collection>
+                                <PropertyPath>B0</PropertyPath>
+                                <PropertyPath>B1</PropertyPath>
+                                <PropertyPath>B2</PropertyPath>
+                                <PropertyPath>B3</PropertyPath>
+                                <PropertyPath>B4</PropertyPath>
+                            </Collection>
+                        </PropertyValue>
+                        <PropertyValue Property="MeasureAttributes">
+                            <Collection>
+                                <Record Type="UI.ChartMeasureAttributeType">
+                                    <PropertyValue Property="Measure" PropertyPath="B0"/>
+                                    <PropertyValue Property="Role" EnumMember="UI.ChartMeasureRoleType/Axis1"/>
+                                </Record>
+                                <Record Type="UI.ChartMeasureAttributeType">
+                                    <PropertyValue Property="Measure" PropertyPath="B1"/>
+                                    <PropertyValue Property="Role" EnumMember="UI.ChartMeasureRoleType/Axis1"/>
+                                </Record>
+                                <Record Type="UI.ChartMeasureAttributeType">
+                                    <PropertyValue Property="Measure" PropertyPath="B2"/>
+                                    <PropertyValue Property="Role" EnumMember="UI.ChartMeasureRoleType/Axis1"/>
+                                </Record>
+                                <Record Type="UI.ChartMeasureAttributeType">
+                                    <PropertyValue Property="Measure" PropertyPath="B3"/>
+                                    <PropertyValue Property="Role" EnumMember="UI.ChartMeasureRoleType/Axis1"/>
+                                </Record>
+                                <Record Type="UI.ChartMeasureAttributeType">
+                                    <PropertyValue Property="Measure" PropertyPath="B4"/>
+                                    <PropertyValue Property="Role" EnumMember="UI.ChartMeasureRoleType/Axis1"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+
+                <!-- Massnahmen Top 10: Tabs je B-Wert, MaxItems=10, sortiert DESC -->
+                <Annotation Term="UI.Chart" Qualifier="MassnahmeBgesamt">
+                    <Record Type="UI.ChartDefinitionType">
+                        <PropertyValue Property="Title" String="Bedarf gesamt nach Massnahme (Top 10)"/>
+                        <PropertyValue Property="ChartType" EnumMember="UI.ChartType/ColumnStacked"/>
+                        <PropertyValue Property="Dimensions"><Collection><PropertyPath>Massnahme</PropertyPath></Collection></PropertyValue>
+                        <PropertyValue Property="DimensionAttributes"><Collection><Record Type="UI.ChartDimensionAttributeType"><PropertyValue Property="Dimension" PropertyPath="Massnahme"/><PropertyValue Property="Role" EnumMember="UI.ChartDimensionRoleType/Category"/></Record></Collection></PropertyValue>
+                        <PropertyValue Property="Measures"><Collection><PropertyPath>B0</PropertyPath><PropertyPath>B1</PropertyPath><PropertyPath>B2</PropertyPath><PropertyPath>B3</PropertyPath><PropertyPath>B4</PropertyPath></Collection></PropertyValue>
+                        <PropertyValue Property="MeasureAttributes"><Collection>
+                            <Record Type="UI.ChartMeasureAttributeType"><PropertyValue Property="Measure" PropertyPath="B0"/><PropertyValue Property="Role" EnumMember="UI.ChartMeasureRoleType/Axis1"/></Record>
+                            <Record Type="UI.ChartMeasureAttributeType"><PropertyValue Property="Measure" PropertyPath="B1"/><PropertyValue Property="Role" EnumMember="UI.ChartMeasureRoleType/Axis1"/></Record>
+                            <Record Type="UI.ChartMeasureAttributeType"><PropertyValue Property="Measure" PropertyPath="B2"/><PropertyValue Property="Role" EnumMember="UI.ChartMeasureRoleType/Axis1"/></Record>
+                            <Record Type="UI.ChartMeasureAttributeType"><PropertyValue Property="Measure" PropertyPath="B3"/><PropertyValue Property="Role" EnumMember="UI.ChartMeasureRoleType/Axis1"/></Record>
+                            <Record Type="UI.ChartMeasureAttributeType"><PropertyValue Property="Measure" PropertyPath="B4"/><PropertyValue Property="Role" EnumMember="UI.ChartMeasureRoleType/Axis1"/></Record>
+                        </Collection></PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="UI.PresentationVariant" Qualifier="MassnahmeTopBgesamt"><Record Type="UI.PresentationVariantType"><PropertyValue Property="MaxItems" Int="10"/><PropertyValue Property="SortOrder"><Collection><Record Type="Common.SortOrderType"><PropertyValue Property="Property" PropertyPath="Bgesamt"/><PropertyValue Property="Descending" Bool="true"/></Record></Collection></PropertyValue><PropertyValue Property="Visualizations"><Collection><AnnotationPath>@UI.Chart#MassnahmeBgesamt</AnnotationPath></Collection></PropertyValue></Record></Annotation>
+                <Annotation Term="UI.Chart" Qualifier="MassnahmeB0"><Record Type="UI.ChartDefinitionType"><PropertyValue Property="Title" String="B0 (Einplanung) nach Massnahme (Top 10)"/><PropertyValue Property="ChartType" EnumMember="UI.ChartType/Column"/><PropertyValue Property="Dimensions"><Collection><PropertyPath>Massnahme</PropertyPath></Collection></PropertyValue><PropertyValue Property="DimensionAttributes"><Collection><Record Type="UI.ChartDimensionAttributeType"><PropertyValue Property="Dimension" PropertyPath="Massnahme"/><PropertyValue Property="Role" EnumMember="UI.ChartDimensionRoleType/Category"/></Record></Collection></PropertyValue><PropertyValue Property="Measures"><Collection><PropertyPath>B0</PropertyPath></Collection></PropertyValue><PropertyValue Property="MeasureAttributes"><Collection><Record Type="UI.ChartMeasureAttributeType"><PropertyValue Property="Measure" PropertyPath="B0"/><PropertyValue Property="Role" EnumMember="UI.ChartMeasureRoleType/Axis1"/></Record></Collection></PropertyValue></Record></Annotation>
+                <Annotation Term="UI.PresentationVariant" Qualifier="MassnahmeTopB0"><Record Type="UI.PresentationVariantType"><PropertyValue Property="MaxItems" Int="10"/><PropertyValue Property="SortOrder"><Collection><Record Type="Common.SortOrderType"><PropertyValue Property="Property" PropertyPath="B0"/><PropertyValue Property="Descending" Bool="true"/></Record></Collection></PropertyValue><PropertyValue Property="Visualizations"><Collection><AnnotationPath>@UI.Chart#MassnahmeB0</AnnotationPath></Collection></PropertyValue></Record></Annotation>
+                <Annotation Term="UI.Chart" Qualifier="MassnahmeB1"><Record Type="UI.ChartDefinitionType"><PropertyValue Property="Title" String="B1 nach Massnahme (Top 10)"/><PropertyValue Property="ChartType" EnumMember="UI.ChartType/Column"/><PropertyValue Property="Dimensions"><Collection><PropertyPath>Massnahme</PropertyPath></Collection></PropertyValue><PropertyValue Property="DimensionAttributes"><Collection><Record Type="UI.ChartDimensionAttributeType"><PropertyValue Property="Dimension" PropertyPath="Massnahme"/><PropertyValue Property="Role" EnumMember="UI.ChartDimensionRoleType/Category"/></Record></Collection></PropertyValue><PropertyValue Property="Measures"><Collection><PropertyPath>B1</PropertyPath></Collection></PropertyValue><PropertyValue Property="MeasureAttributes"><Collection><Record Type="UI.ChartMeasureAttributeType"><PropertyValue Property="Measure" PropertyPath="B1"/><PropertyValue Property="Role" EnumMember="UI.ChartMeasureRoleType/Axis1"/></Record></Collection></PropertyValue></Record></Annotation>
+                <Annotation Term="UI.PresentationVariant" Qualifier="MassnahmeTopB1"><Record Type="UI.PresentationVariantType"><PropertyValue Property="MaxItems" Int="10"/><PropertyValue Property="SortOrder"><Collection><Record Type="Common.SortOrderType"><PropertyValue Property="Property" PropertyPath="B1"/><PropertyValue Property="Descending" Bool="true"/></Record></Collection></PropertyValue><PropertyValue Property="Visualizations"><Collection><AnnotationPath>@UI.Chart#MassnahmeB1</AnnotationPath></Collection></PropertyValue></Record></Annotation>
+                <Annotation Term="UI.Chart" Qualifier="MassnahmeB2"><Record Type="UI.ChartDefinitionType"><PropertyValue Property="Title" String="B2 (Vergaben) nach Massnahme (Top 10)"/><PropertyValue Property="ChartType" EnumMember="UI.ChartType/Column"/><PropertyValue Property="Dimensions"><Collection><PropertyPath>Massnahme</PropertyPath></Collection></PropertyValue><PropertyValue Property="DimensionAttributes"><Collection><Record Type="UI.ChartDimensionAttributeType"><PropertyValue Property="Dimension" PropertyPath="Massnahme"/><PropertyValue Property="Role" EnumMember="UI.ChartDimensionRoleType/Category"/></Record></Collection></PropertyValue><PropertyValue Property="Measures"><Collection><PropertyPath>B2</PropertyPath></Collection></PropertyValue><PropertyValue Property="MeasureAttributes"><Collection><Record Type="UI.ChartMeasureAttributeType"><PropertyValue Property="Measure" PropertyPath="B2"/><PropertyValue Property="Role" EnumMember="UI.ChartMeasureRoleType/Axis1"/></Record></Collection></PropertyValue></Record></Annotation>
+                <Annotation Term="UI.PresentationVariant" Qualifier="MassnahmeTopB2"><Record Type="UI.PresentationVariantType"><PropertyValue Property="MaxItems" Int="10"/><PropertyValue Property="SortOrder"><Collection><Record Type="Common.SortOrderType"><PropertyValue Property="Property" PropertyPath="B2"/><PropertyValue Property="Descending" Bool="true"/></Record></Collection></PropertyValue><PropertyValue Property="Visualizations"><Collection><AnnotationPath>@UI.Chart#MassnahmeB2</AnnotationPath></Collection></PropertyValue></Record></Annotation>
+                <Annotation Term="UI.Chart" Qualifier="MassnahmeB3"><Record Type="UI.ChartDefinitionType"><PropertyValue Property="Title" String="B3 (Festlegungen) nach Massnahme (Top 10)"/><PropertyValue Property="ChartType" EnumMember="UI.ChartType/Column"/><PropertyValue Property="Dimensions"><Collection><PropertyPath>Massnahme</PropertyPath></Collection></PropertyValue><PropertyValue Property="DimensionAttributes"><Collection><Record Type="UI.ChartDimensionAttributeType"><PropertyValue Property="Dimension" PropertyPath="Massnahme"/><PropertyValue Property="Role" EnumMember="UI.ChartDimensionRoleType/Category"/></Record></Collection></PropertyValue><PropertyValue Property="Measures"><Collection><PropertyPath>B3</PropertyPath></Collection></PropertyValue><PropertyValue Property="MeasureAttributes"><Collection><Record Type="UI.ChartMeasureAttributeType"><PropertyValue Property="Measure" PropertyPath="B3"/><PropertyValue Property="Role" EnumMember="UI.ChartMeasureRoleType/Axis1"/></Record></Collection></PropertyValue></Record></Annotation>
+                <Annotation Term="UI.PresentationVariant" Qualifier="MassnahmeTopB3"><Record Type="UI.PresentationVariantType"><PropertyValue Property="MaxItems" Int="10"/><PropertyValue Property="SortOrder"><Collection><Record Type="Common.SortOrderType"><PropertyValue Property="Property" PropertyPath="B3"/><PropertyValue Property="Descending" Bool="true"/></Record></Collection></PropertyValue><PropertyValue Property="Visualizations"><Collection><AnnotationPath>@UI.Chart#MassnahmeB3</AnnotationPath></Collection></PropertyValue></Record></Annotation>
+                <Annotation Term="UI.Chart" Qualifier="MassnahmeB4"><Record Type="UI.ChartDefinitionType"><PropertyValue Property="Title" String="B4 (Zahlungen) nach Massnahme (Top 10)"/><PropertyValue Property="ChartType" EnumMember="UI.ChartType/Column"/><PropertyValue Property="Dimensions"><Collection><PropertyPath>Massnahme</PropertyPath></Collection></PropertyValue><PropertyValue Property="DimensionAttributes"><Collection><Record Type="UI.ChartDimensionAttributeType"><PropertyValue Property="Dimension" PropertyPath="Massnahme"/><PropertyValue Property="Role" EnumMember="UI.ChartDimensionRoleType/Category"/></Record></Collection></PropertyValue><PropertyValue Property="Measures"><Collection><PropertyPath>B4</PropertyPath></Collection></PropertyValue><PropertyValue Property="MeasureAttributes"><Collection><Record Type="UI.ChartMeasureAttributeType"><PropertyValue Property="Measure" PropertyPath="B4"/><PropertyValue Property="Role" EnumMember="UI.ChartMeasureRoleType/Axis1"/></Record></Collection></PropertyValue></Record></Annotation>
+                <Annotation Term="UI.PresentationVariant" Qualifier="MassnahmeTopB4"><Record Type="UI.PresentationVariantType"><PropertyValue Property="MaxItems" Int="10"/><PropertyValue Property="SortOrder"><Collection><Record Type="Common.SortOrderType"><PropertyValue Property="Property" PropertyPath="B4"/><PropertyValue Property="Descending" Bool="true"/></Record></Collection></PropertyValue><PropertyValue Property="Visualizations"><Collection><AnnotationPath>@UI.Chart#MassnahmeB4</AnnotationPath></Collection></PropertyValue></Record></Annotation>
+
+                <!-- Antragsteller Top 10: ColumnStacked, sortiert nach B4 DESC, max. 10 -->
+                <Annotation Term="UI.SelectionVariant" Qualifier="AntragstellerFilter">
+                    <Record Type="UI.SelectionVariantType">
+                        <PropertyValue Property="SelectOptions">
+                            <Collection>
+                                <Record Type="UI.SelectOptionType">
+                                    <PropertyValue Property="PropertyName" PropertyPath="JahrKassenwirksamkeit"/>
+                                    <PropertyValue Property="Ranges">
+                                        <Collection>
+                                            <Record Type="UI.SelectionRangeType">
+                                                <PropertyValue Property="Sign" EnumMember="UI.SelectionRangeSignType/I"/>
+                                                <PropertyValue Property="Option" EnumMember="UI.SelectionRangeOptionType/EQ"/>
+                                                <PropertyValue Property="Low" String="2026"/>
+                                            </Record>
+                                        </Collection>
+                                    </PropertyValue>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+
+                <Annotation Term="UI.PresentationVariant" Qualifier="AntragstellerTop10">
+                    <Record Type="UI.PresentationVariantType">
+                        <PropertyValue Property="MaxItems" Int="10"/>
+                        <PropertyValue Property="SortOrder">
+                            <Collection>
+                                <Record Type="Common.SortOrderType">
+                                    <PropertyValue Property="Property" PropertyPath="B4"/>
+                                    <PropertyValue Property="Descending" Bool="true"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                        <PropertyValue Property="Visualizations">
+                            <Collection>
+                                <AnnotationPath>@UI.Chart#AntragstellerTop10</AnnotationPath>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+
+                <Annotation Term="UI.Chart" Qualifier="AntragstellerTop10">
+                    <Record Type="UI.ChartDefinitionType">
+                        <PropertyValue Property="Title" String="B0-B4 nach Antragsteller (Top 10)"/>
+                        <PropertyValue Property="ChartType" EnumMember="UI.ChartType/ColumnStacked"/>
+                        <PropertyValue Property="Dimensions">
+                            <Collection>
+                                <PropertyPath>Antragsteller</PropertyPath>
+                            </Collection>
+                        </PropertyValue>
+                        <PropertyValue Property="DimensionAttributes">
+                            <Collection>
+                                <Record Type="UI.ChartDimensionAttributeType">
+                                    <PropertyValue Property="Dimension" PropertyPath="Antragsteller"/>
+                                    <PropertyValue Property="Role" EnumMember="UI.ChartDimensionRoleType/Category"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                        <PropertyValue Property="Measures">
+                            <Collection>
+                                <PropertyPath>B0</PropertyPath>
+                                <PropertyPath>B1</PropertyPath>
+                                <PropertyPath>B2</PropertyPath>
+                                <PropertyPath>B3</PropertyPath>
+                                <PropertyPath>B4</PropertyPath>
+                            </Collection>
+                        </PropertyValue>
+                        <PropertyValue Property="MeasureAttributes">
+                            <Collection>
+                                <Record Type="UI.ChartMeasureAttributeType">
+                                    <PropertyValue Property="Measure" PropertyPath="B0"/>
+                                    <PropertyValue Property="Role" EnumMember="UI.ChartMeasureRoleType/Axis1"/>
+                                </Record>
+                                <Record Type="UI.ChartMeasureAttributeType">
+                                    <PropertyValue Property="Measure" PropertyPath="B1"/>
+                                    <PropertyValue Property="Role" EnumMember="UI.ChartMeasureRoleType/Axis1"/>
+                                </Record>
+                                <Record Type="UI.ChartMeasureAttributeType">
+                                    <PropertyValue Property="Measure" PropertyPath="B2"/>
+                                    <PropertyValue Property="Role" EnumMember="UI.ChartMeasureRoleType/Axis1"/>
+                                </Record>
+                                <Record Type="UI.ChartMeasureAttributeType">
+                                    <PropertyValue Property="Measure" PropertyPath="B3"/>
+                                    <PropertyValue Property="Role" EnumMember="UI.ChartMeasureRoleType/Axis1"/>
+                                </Record>
+                                <Record Type="UI.ChartMeasureAttributeType">
+                                    <PropertyValue Property="Measure" PropertyPath="B4"/>
+                                    <PropertyValue Property="Role" EnumMember="UI.ChartMeasureRoleType/Axis1"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+
+                <!-- Antragsteller Top 10: Tabs je B-Wert (Bgesamt/B0..B4), sortiert DESC -->
+                <Annotation Term="UI.Chart" Qualifier="AntragstellerBgesamt">
+                    <Record Type="UI.ChartDefinitionType">
+                        <PropertyValue Property="Title" String="Bedarf gesamt nach Antragsteller (Top 10)"/>
+                        <PropertyValue Property="ChartType" EnumMember="UI.ChartType/ColumnStacked"/>
+                        <PropertyValue Property="Dimensions"><Collection><PropertyPath>Antragsteller</PropertyPath></Collection></PropertyValue>
+                        <PropertyValue Property="DimensionAttributes"><Collection><Record Type="UI.ChartDimensionAttributeType"><PropertyValue Property="Dimension" PropertyPath="Antragsteller"/><PropertyValue Property="Role" EnumMember="UI.ChartDimensionRoleType/Category"/></Record></Collection></PropertyValue>
+                        <PropertyValue Property="Measures"><Collection><PropertyPath>B0</PropertyPath><PropertyPath>B1</PropertyPath><PropertyPath>B2</PropertyPath><PropertyPath>B3</PropertyPath><PropertyPath>B4</PropertyPath></Collection></PropertyValue>
+                        <PropertyValue Property="MeasureAttributes"><Collection>
+                            <Record Type="UI.ChartMeasureAttributeType"><PropertyValue Property="Measure" PropertyPath="B0"/><PropertyValue Property="Role" EnumMember="UI.ChartMeasureRoleType/Axis1"/></Record>
+                            <Record Type="UI.ChartMeasureAttributeType"><PropertyValue Property="Measure" PropertyPath="B1"/><PropertyValue Property="Role" EnumMember="UI.ChartMeasureRoleType/Axis1"/></Record>
+                            <Record Type="UI.ChartMeasureAttributeType"><PropertyValue Property="Measure" PropertyPath="B2"/><PropertyValue Property="Role" EnumMember="UI.ChartMeasureRoleType/Axis1"/></Record>
+                            <Record Type="UI.ChartMeasureAttributeType"><PropertyValue Property="Measure" PropertyPath="B3"/><PropertyValue Property="Role" EnumMember="UI.ChartMeasureRoleType/Axis1"/></Record>
+                            <Record Type="UI.ChartMeasureAttributeType"><PropertyValue Property="Measure" PropertyPath="B4"/><PropertyValue Property="Role" EnumMember="UI.ChartMeasureRoleType/Axis1"/></Record>
+                        </Collection></PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="UI.PresentationVariant" Qualifier="AntragstellerTopBgesamt">
+                    <Record Type="UI.PresentationVariantType">
+                        <PropertyValue Property="MaxItems" Int="10"/>
+                        <PropertyValue Property="SortOrder"><Collection><Record Type="Common.SortOrderType"><PropertyValue Property="Property" PropertyPath="Bgesamt"/><PropertyValue Property="Descending" Bool="true"/></Record></Collection></PropertyValue>
+                        <PropertyValue Property="Visualizations"><Collection><AnnotationPath>@UI.Chart#AntragstellerBgesamt</AnnotationPath></Collection></PropertyValue>
+                    </Record>
+                </Annotation>
+
+                <Annotation Term="UI.Chart" Qualifier="AntragstellerB0">
+                    <Record Type="UI.ChartDefinitionType">
+                        <PropertyValue Property="Title" String="B0 (Einplanung) nach Antragsteller (Top 10)"/>
+                        <PropertyValue Property="ChartType" EnumMember="UI.ChartType/Column"/>
+                        <PropertyValue Property="Dimensions"><Collection><PropertyPath>Antragsteller</PropertyPath></Collection></PropertyValue>
+                        <PropertyValue Property="DimensionAttributes"><Collection><Record Type="UI.ChartDimensionAttributeType"><PropertyValue Property="Dimension" PropertyPath="Antragsteller"/><PropertyValue Property="Role" EnumMember="UI.ChartDimensionRoleType/Category"/></Record></Collection></PropertyValue>
+                        <PropertyValue Property="Measures"><Collection><PropertyPath>B0</PropertyPath></Collection></PropertyValue>
+                        <PropertyValue Property="MeasureAttributes"><Collection><Record Type="UI.ChartMeasureAttributeType"><PropertyValue Property="Measure" PropertyPath="B0"/><PropertyValue Property="Role" EnumMember="UI.ChartMeasureRoleType/Axis1"/></Record></Collection></PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="UI.PresentationVariant" Qualifier="AntragstellerTopB0">
+                    <Record Type="UI.PresentationVariantType">
+                        <PropertyValue Property="MaxItems" Int="10"/>
+                        <PropertyValue Property="SortOrder"><Collection><Record Type="Common.SortOrderType"><PropertyValue Property="Property" PropertyPath="B0"/><PropertyValue Property="Descending" Bool="true"/></Record></Collection></PropertyValue>
+                        <PropertyValue Property="Visualizations"><Collection><AnnotationPath>@UI.Chart#AntragstellerB0</AnnotationPath></Collection></PropertyValue>
+                    </Record>
+                </Annotation>
+
+                <Annotation Term="UI.Chart" Qualifier="AntragstellerB1">
+                    <Record Type="UI.ChartDefinitionType">
+                        <PropertyValue Property="Title" String="B1 nach Antragsteller (Top 10)"/>
+                        <PropertyValue Property="ChartType" EnumMember="UI.ChartType/Column"/>
+                        <PropertyValue Property="Dimensions"><Collection><PropertyPath>Antragsteller</PropertyPath></Collection></PropertyValue>
+                        <PropertyValue Property="DimensionAttributes"><Collection><Record Type="UI.ChartDimensionAttributeType"><PropertyValue Property="Dimension" PropertyPath="Antragsteller"/><PropertyValue Property="Role" EnumMember="UI.ChartDimensionRoleType/Category"/></Record></Collection></PropertyValue>
+                        <PropertyValue Property="Measures"><Collection><PropertyPath>B1</PropertyPath></Collection></PropertyValue>
+                        <PropertyValue Property="MeasureAttributes"><Collection><Record Type="UI.ChartMeasureAttributeType"><PropertyValue Property="Measure" PropertyPath="B1"/><PropertyValue Property="Role" EnumMember="UI.ChartMeasureRoleType/Axis1"/></Record></Collection></PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="UI.PresentationVariant" Qualifier="AntragstellerTopB1">
+                    <Record Type="UI.PresentationVariantType">
+                        <PropertyValue Property="MaxItems" Int="10"/>
+                        <PropertyValue Property="SortOrder"><Collection><Record Type="Common.SortOrderType"><PropertyValue Property="Property" PropertyPath="B1"/><PropertyValue Property="Descending" Bool="true"/></Record></Collection></PropertyValue>
+                        <PropertyValue Property="Visualizations"><Collection><AnnotationPath>@UI.Chart#AntragstellerB1</AnnotationPath></Collection></PropertyValue>
+                    </Record>
+                </Annotation>
+
+                <Annotation Term="UI.Chart" Qualifier="AntragstellerB2">
+                    <Record Type="UI.ChartDefinitionType">
+                        <PropertyValue Property="Title" String="B2 (Vergaben) nach Antragsteller (Top 10)"/>
+                        <PropertyValue Property="ChartType" EnumMember="UI.ChartType/Column"/>
+                        <PropertyValue Property="Dimensions"><Collection><PropertyPath>Antragsteller</PropertyPath></Collection></PropertyValue>
+                        <PropertyValue Property="DimensionAttributes"><Collection><Record Type="UI.ChartDimensionAttributeType"><PropertyValue Property="Dimension" PropertyPath="Antragsteller"/><PropertyValue Property="Role" EnumMember="UI.ChartDimensionRoleType/Category"/></Record></Collection></PropertyValue>
+                        <PropertyValue Property="Measures"><Collection><PropertyPath>B2</PropertyPath></Collection></PropertyValue>
+                        <PropertyValue Property="MeasureAttributes"><Collection><Record Type="UI.ChartMeasureAttributeType"><PropertyValue Property="Measure" PropertyPath="B2"/><PropertyValue Property="Role" EnumMember="UI.ChartMeasureRoleType/Axis1"/></Record></Collection></PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="UI.PresentationVariant" Qualifier="AntragstellerTopB2">
+                    <Record Type="UI.PresentationVariantType">
+                        <PropertyValue Property="MaxItems" Int="10"/>
+                        <PropertyValue Property="SortOrder"><Collection><Record Type="Common.SortOrderType"><PropertyValue Property="Property" PropertyPath="B2"/><PropertyValue Property="Descending" Bool="true"/></Record></Collection></PropertyValue>
+                        <PropertyValue Property="Visualizations"><Collection><AnnotationPath>@UI.Chart#AntragstellerB2</AnnotationPath></Collection></PropertyValue>
+                    </Record>
+                </Annotation>
+
+                <Annotation Term="UI.Chart" Qualifier="AntragstellerB3">
+                    <Record Type="UI.ChartDefinitionType">
+                        <PropertyValue Property="Title" String="B3 (Offene Festlegungen) nach Antragsteller (Top 10)"/>
+                        <PropertyValue Property="ChartType" EnumMember="UI.ChartType/Column"/>
+                        <PropertyValue Property="Dimensions"><Collection><PropertyPath>Antragsteller</PropertyPath></Collection></PropertyValue>
+                        <PropertyValue Property="DimensionAttributes"><Collection><Record Type="UI.ChartDimensionAttributeType"><PropertyValue Property="Dimension" PropertyPath="Antragsteller"/><PropertyValue Property="Role" EnumMember="UI.ChartDimensionRoleType/Category"/></Record></Collection></PropertyValue>
+                        <PropertyValue Property="Measures"><Collection><PropertyPath>B3</PropertyPath></Collection></PropertyValue>
+                        <PropertyValue Property="MeasureAttributes"><Collection><Record Type="UI.ChartMeasureAttributeType"><PropertyValue Property="Measure" PropertyPath="B3"/><PropertyValue Property="Role" EnumMember="UI.ChartMeasureRoleType/Axis1"/></Record></Collection></PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="UI.PresentationVariant" Qualifier="AntragstellerTopB3">
+                    <Record Type="UI.PresentationVariantType">
+                        <PropertyValue Property="MaxItems" Int="10"/>
+                        <PropertyValue Property="SortOrder"><Collection><Record Type="Common.SortOrderType"><PropertyValue Property="Property" PropertyPath="B3"/><PropertyValue Property="Descending" Bool="true"/></Record></Collection></PropertyValue>
+                        <PropertyValue Property="Visualizations"><Collection><AnnotationPath>@UI.Chart#AntragstellerB3</AnnotationPath></Collection></PropertyValue>
+                    </Record>
+                </Annotation>
+
+                <Annotation Term="UI.Chart" Qualifier="AntragstellerB4">
+                    <Record Type="UI.ChartDefinitionType">
+                        <PropertyValue Property="Title" String="B4 (Zahlungen) nach Antragsteller (Top 10)"/>
+                        <PropertyValue Property="ChartType" EnumMember="UI.ChartType/Column"/>
+                        <PropertyValue Property="Dimensions"><Collection><PropertyPath>Antragsteller</PropertyPath></Collection></PropertyValue>
+                        <PropertyValue Property="DimensionAttributes"><Collection><Record Type="UI.ChartDimensionAttributeType"><PropertyValue Property="Dimension" PropertyPath="Antragsteller"/><PropertyValue Property="Role" EnumMember="UI.ChartDimensionRoleType/Category"/></Record></Collection></PropertyValue>
+                        <PropertyValue Property="Measures"><Collection><PropertyPath>B4</PropertyPath></Collection></PropertyValue>
+                        <PropertyValue Property="MeasureAttributes"><Collection><Record Type="UI.ChartMeasureAttributeType"><PropertyValue Property="Measure" PropertyPath="B4"/><PropertyValue Property="Role" EnumMember="UI.ChartMeasureRoleType/Axis1"/></Record></Collection></PropertyValue>
+                    </Record>
+                </Annotation>
+                <Annotation Term="UI.PresentationVariant" Qualifier="AntragstellerTopB4">
+                    <Record Type="UI.PresentationVariantType">
+                        <PropertyValue Property="MaxItems" Int="10"/>
+                        <PropertyValue Property="SortOrder"><Collection><Record Type="Common.SortOrderType"><PropertyValue Property="Property" PropertyPath="B4"/><PropertyValue Property="Descending" Bool="true"/></Record></Collection></PropertyValue>
+                        <PropertyValue Property="Visualizations"><Collection><AnnotationPath>@UI.Chart#AntragstellerB4</AnnotationPath></Collection></PropertyValue>
+                    </Record>
+                </Annotation>
+
+                <!-- Budgetverteilung: Donut Tabs je B-Wert (Dimension: Bereich, sap:text=BereichBezeichnung) -->
+                <Annotation Term="UI.Chart" Qualifier="BereichDonutBgesamt"><Record Type="UI.ChartDefinitionType"><PropertyValue Property="Title" String="Bedarf gesamt nach Bereich"/><PropertyValue Property="ChartType" EnumMember="UI.ChartType/Donut"/><PropertyValue Property="Dimensions"><Collection><PropertyPath>BereichBezeichnung</PropertyPath></Collection></PropertyValue><PropertyValue Property="DimensionAttributes"><Collection><Record Type="UI.ChartDimensionAttributeType"><PropertyValue Property="Dimension" PropertyPath="BereichBezeichnung"/><PropertyValue Property="Role" EnumMember="UI.ChartDimensionRoleType/Series"/></Record></Collection></PropertyValue><PropertyValue Property="Measures"><Collection><PropertyPath>Bgesamt</PropertyPath></Collection></PropertyValue><PropertyValue Property="MeasureAttributes"><Collection><Record Type="UI.ChartMeasureAttributeType"><PropertyValue Property="Measure" PropertyPath="Bgesamt"/><PropertyValue Property="Role" EnumMember="UI.ChartMeasureRoleType/Axis1"/></Record></Collection></PropertyValue></Record></Annotation>
+                <Annotation Term="UI.Chart" Qualifier="BereichDonutB0"><Record Type="UI.ChartDefinitionType"><PropertyValue Property="Title" String="B0 (Einplanung) nach Bereich"/><PropertyValue Property="ChartType" EnumMember="UI.ChartType/Donut"/><PropertyValue Property="Dimensions"><Collection><PropertyPath>BereichBezeichnung</PropertyPath></Collection></PropertyValue><PropertyValue Property="DimensionAttributes"><Collection><Record Type="UI.ChartDimensionAttributeType"><PropertyValue Property="Dimension" PropertyPath="BereichBezeichnung"/><PropertyValue Property="Role" EnumMember="UI.ChartDimensionRoleType/Series"/></Record></Collection></PropertyValue><PropertyValue Property="Measures"><Collection><PropertyPath>B0</PropertyPath></Collection></PropertyValue><PropertyValue Property="MeasureAttributes"><Collection><Record Type="UI.ChartMeasureAttributeType"><PropertyValue Property="Measure" PropertyPath="B0"/><PropertyValue Property="Role" EnumMember="UI.ChartMeasureRoleType/Axis1"/></Record></Collection></PropertyValue></Record></Annotation>
+                <Annotation Term="UI.Chart" Qualifier="BereichDonutB1"><Record Type="UI.ChartDefinitionType"><PropertyValue Property="Title" String="B1 nach Bereich"/><PropertyValue Property="ChartType" EnumMember="UI.ChartType/Donut"/><PropertyValue Property="Dimensions"><Collection><PropertyPath>BereichBezeichnung</PropertyPath></Collection></PropertyValue><PropertyValue Property="DimensionAttributes"><Collection><Record Type="UI.ChartDimensionAttributeType"><PropertyValue Property="Dimension" PropertyPath="BereichBezeichnung"/><PropertyValue Property="Role" EnumMember="UI.ChartDimensionRoleType/Series"/></Record></Collection></PropertyValue><PropertyValue Property="Measures"><Collection><PropertyPath>B1</PropertyPath></Collection></PropertyValue><PropertyValue Property="MeasureAttributes"><Collection><Record Type="UI.ChartMeasureAttributeType"><PropertyValue Property="Measure" PropertyPath="B1"/><PropertyValue Property="Role" EnumMember="UI.ChartMeasureRoleType/Axis1"/></Record></Collection></PropertyValue></Record></Annotation>
+                <Annotation Term="UI.Chart" Qualifier="BereichDonutB2"><Record Type="UI.ChartDefinitionType"><PropertyValue Property="Title" String="B2 (Vergaben) nach Bereich"/><PropertyValue Property="ChartType" EnumMember="UI.ChartType/Donut"/><PropertyValue Property="Dimensions"><Collection><PropertyPath>BereichBezeichnung</PropertyPath></Collection></PropertyValue><PropertyValue Property="DimensionAttributes"><Collection><Record Type="UI.ChartDimensionAttributeType"><PropertyValue Property="Dimension" PropertyPath="BereichBezeichnung"/><PropertyValue Property="Role" EnumMember="UI.ChartDimensionRoleType/Series"/></Record></Collection></PropertyValue><PropertyValue Property="Measures"><Collection><PropertyPath>B2</PropertyPath></Collection></PropertyValue><PropertyValue Property="MeasureAttributes"><Collection><Record Type="UI.ChartMeasureAttributeType"><PropertyValue Property="Measure" PropertyPath="B2"/><PropertyValue Property="Role" EnumMember="UI.ChartMeasureRoleType/Axis1"/></Record></Collection></PropertyValue></Record></Annotation>
+                <Annotation Term="UI.Chart" Qualifier="BereichDonutB3"><Record Type="UI.ChartDefinitionType"><PropertyValue Property="Title" String="B3 (Festlegungen) nach Bereich"/><PropertyValue Property="ChartType" EnumMember="UI.ChartType/Donut"/><PropertyValue Property="Dimensions"><Collection><PropertyPath>BereichBezeichnung</PropertyPath></Collection></PropertyValue><PropertyValue Property="DimensionAttributes"><Collection><Record Type="UI.ChartDimensionAttributeType"><PropertyValue Property="Dimension" PropertyPath="BereichBezeichnung"/><PropertyValue Property="Role" EnumMember="UI.ChartDimensionRoleType/Series"/></Record></Collection></PropertyValue><PropertyValue Property="Measures"><Collection><PropertyPath>B3</PropertyPath></Collection></PropertyValue><PropertyValue Property="MeasureAttributes"><Collection><Record Type="UI.ChartMeasureAttributeType"><PropertyValue Property="Measure" PropertyPath="B3"/><PropertyValue Property="Role" EnumMember="UI.ChartMeasureRoleType/Axis1"/></Record></Collection></PropertyValue></Record></Annotation>
+                <Annotation Term="UI.Chart" Qualifier="BereichDonutB4"><Record Type="UI.ChartDefinitionType"><PropertyValue Property="Title" String="B4 (Zahlungen) nach Bereich"/><PropertyValue Property="ChartType" EnumMember="UI.ChartType/Donut"/><PropertyValue Property="Dimensions"><Collection><PropertyPath>BereichBezeichnung</PropertyPath></Collection></PropertyValue><PropertyValue Property="DimensionAttributes"><Collection><Record Type="UI.ChartDimensionAttributeType"><PropertyValue Property="Dimension" PropertyPath="BereichBezeichnung"/><PropertyValue Property="Role" EnumMember="UI.ChartDimensionRoleType/Series"/></Record></Collection></PropertyValue><PropertyValue Property="Measures"><Collection><PropertyPath>B4</PropertyPath></Collection></PropertyValue><PropertyValue Property="MeasureAttributes"><Collection><Record Type="UI.ChartMeasureAttributeType"><PropertyValue Property="Measure" PropertyPath="B4"/><PropertyValue Property="Role" EnumMember="UI.ChartMeasureRoleType/Axis1"/></Record></Collection></PropertyValue></Record></Annotation>
+
+
+                <!-- Mittelherkunft (Haushalt): Donut Tabs je B-Wert (Dimension: Haushalt, sap:text=HaushaltBezeichnung) -->
+                <Annotation Term="UI.Chart" Qualifier="HaushaltDonutBgesamt"><Record Type="UI.ChartDefinitionType"><PropertyValue Property="Title" String="Bedarf gesamt nach Mittelherkunft"/><PropertyValue Property="ChartType" EnumMember="UI.ChartType/Donut"/><PropertyValue Property="Dimensions"><Collection><PropertyPath>HaushaltBezeichnung</PropertyPath></Collection></PropertyValue><PropertyValue Property="DimensionAttributes"><Collection><Record Type="UI.ChartDimensionAttributeType"><PropertyValue Property="Dimension" PropertyPath="HaushaltBezeichnung"/><PropertyValue Property="Role" EnumMember="UI.ChartDimensionRoleType/Series"/></Record></Collection></PropertyValue><PropertyValue Property="Measures"><Collection><PropertyPath>Bgesamt</PropertyPath></Collection></PropertyValue><PropertyValue Property="MeasureAttributes"><Collection><Record Type="UI.ChartMeasureAttributeType"><PropertyValue Property="Measure" PropertyPath="Bgesamt"/><PropertyValue Property="Role" EnumMember="UI.ChartMeasureRoleType/Axis1"/></Record></Collection></PropertyValue></Record></Annotation>
+                <Annotation Term="UI.Chart" Qualifier="HaushaltDonutB0"><Record Type="UI.ChartDefinitionType"><PropertyValue Property="Title" String="B0 (Einplanung) nach Mittelherkunft"/><PropertyValue Property="ChartType" EnumMember="UI.ChartType/Donut"/><PropertyValue Property="Dimensions"><Collection><PropertyPath>HaushaltBezeichnung</PropertyPath></Collection></PropertyValue><PropertyValue Property="DimensionAttributes"><Collection><Record Type="UI.ChartDimensionAttributeType"><PropertyValue Property="Dimension" PropertyPath="HaushaltBezeichnung"/><PropertyValue Property="Role" EnumMember="UI.ChartDimensionRoleType/Series"/></Record></Collection></PropertyValue><PropertyValue Property="Measures"><Collection><PropertyPath>B0</PropertyPath></Collection></PropertyValue><PropertyValue Property="MeasureAttributes"><Collection><Record Type="UI.ChartMeasureAttributeType"><PropertyValue Property="Measure" PropertyPath="B0"/><PropertyValue Property="Role" EnumMember="UI.ChartMeasureRoleType/Axis1"/></Record></Collection></PropertyValue></Record></Annotation>
+                <Annotation Term="UI.Chart" Qualifier="HaushaltDonutB1"><Record Type="UI.ChartDefinitionType"><PropertyValue Property="Title" String="B1 nach Mittelherkunft"/><PropertyValue Property="ChartType" EnumMember="UI.ChartType/Donut"/><PropertyValue Property="Dimensions"><Collection><PropertyPath>HaushaltBezeichnung</PropertyPath></Collection></PropertyValue><PropertyValue Property="DimensionAttributes"><Collection><Record Type="UI.ChartDimensionAttributeType"><PropertyValue Property="Dimension" PropertyPath="HaushaltBezeichnung"/><PropertyValue Property="Role" EnumMember="UI.ChartDimensionRoleType/Series"/></Record></Collection></PropertyValue><PropertyValue Property="Measures"><Collection><PropertyPath>B1</PropertyPath></Collection></PropertyValue><PropertyValue Property="MeasureAttributes"><Collection><Record Type="UI.ChartMeasureAttributeType"><PropertyValue Property="Measure" PropertyPath="B1"/><PropertyValue Property="Role" EnumMember="UI.ChartMeasureRoleType/Axis1"/></Record></Collection></PropertyValue></Record></Annotation>
+                <Annotation Term="UI.Chart" Qualifier="HaushaltDonutB2"><Record Type="UI.ChartDefinitionType"><PropertyValue Property="Title" String="B2 (Vergaben) nach Mittelherkunft"/><PropertyValue Property="ChartType" EnumMember="UI.ChartType/Donut"/><PropertyValue Property="Dimensions"><Collection><PropertyPath>HaushaltBezeichnung</PropertyPath></Collection></PropertyValue><PropertyValue Property="DimensionAttributes"><Collection><Record Type="UI.ChartDimensionAttributeType"><PropertyValue Property="Dimension" PropertyPath="HaushaltBezeichnung"/><PropertyValue Property="Role" EnumMember="UI.ChartDimensionRoleType/Series"/></Record></Collection></PropertyValue><PropertyValue Property="Measures"><Collection><PropertyPath>B2</PropertyPath></Collection></PropertyValue><PropertyValue Property="MeasureAttributes"><Collection><Record Type="UI.ChartMeasureAttributeType"><PropertyValue Property="Measure" PropertyPath="B2"/><PropertyValue Property="Role" EnumMember="UI.ChartMeasureRoleType/Axis1"/></Record></Collection></PropertyValue></Record></Annotation>
+                <Annotation Term="UI.Chart" Qualifier="HaushaltDonutB3"><Record Type="UI.ChartDefinitionType"><PropertyValue Property="Title" String="B3 (Festlegungen) nach Mittelherkunft"/><PropertyValue Property="ChartType" EnumMember="UI.ChartType/Donut"/><PropertyValue Property="Dimensions"><Collection><PropertyPath>HaushaltBezeichnung</PropertyPath></Collection></PropertyValue><PropertyValue Property="DimensionAttributes"><Collection><Record Type="UI.ChartDimensionAttributeType"><PropertyValue Property="Dimension" PropertyPath="HaushaltBezeichnung"/><PropertyValue Property="Role" EnumMember="UI.ChartDimensionRoleType/Series"/></Record></Collection></PropertyValue><PropertyValue Property="Measures"><Collection><PropertyPath>B3</PropertyPath></Collection></PropertyValue><PropertyValue Property="MeasureAttributes"><Collection><Record Type="UI.ChartMeasureAttributeType"><PropertyValue Property="Measure" PropertyPath="B3"/><PropertyValue Property="Role" EnumMember="UI.ChartMeasureRoleType/Axis1"/></Record></Collection></PropertyValue></Record></Annotation>
+                <Annotation Term="UI.Chart" Qualifier="HaushaltDonutB4"><Record Type="UI.ChartDefinitionType"><PropertyValue Property="Title" String="B4 (Zahlungen) nach Mittelherkunft"/><PropertyValue Property="ChartType" EnumMember="UI.ChartType/Donut"/><PropertyValue Property="Dimensions"><Collection><PropertyPath>HaushaltBezeichnung</PropertyPath></Collection></PropertyValue><PropertyValue Property="DimensionAttributes"><Collection><Record Type="UI.ChartDimensionAttributeType"><PropertyValue Property="Dimension" PropertyPath="HaushaltBezeichnung"/><PropertyValue Property="Role" EnumMember="UI.ChartDimensionRoleType/Series"/></Record></Collection></PropertyValue><PropertyValue Property="Measures"><Collection><PropertyPath>B4</PropertyPath></Collection></PropertyValue><PropertyValue Property="MeasureAttributes"><Collection><Record Type="UI.ChartMeasureAttributeType"><PropertyValue Property="Measure" PropertyPath="B4"/><PropertyValue Property="Role" EnumMember="UI.ChartMeasureRoleType/Axis1"/></Record></Collection></PropertyValue></Record></Annotation>
+
+                <!-- Massnahmen Top 10 Tabelle: LineItems je B-Wert (Massnahme+Bezeichnung zusammengefasst) -->
+                <Annotation Term="UI.LineItem" Qualifier="MassnahmeTableBgesamt"><Collection><Record Type="UI.DataField"><PropertyValue Property="Label" String="Massnahme"/><PropertyValue Property="Value" Path="MassnahmeBezeichnung"/></Record><Record Type="UI.DataField"><PropertyValue Property="Label" String="Bedarf gesamt"/><PropertyValue Property="Value" Path="Bgesamt"/></Record></Collection></Annotation>
+                <Annotation Term="UI.PresentationVariant" Qualifier="MassnahmeTableTopBgesamt"><Record Type="UI.PresentationVariantType"><PropertyValue Property="MaxItems" Int="10"/><PropertyValue Property="SortOrder"><Collection><Record Type="Common.SortOrderType"><PropertyValue Property="Property" PropertyPath="Bgesamt"/><PropertyValue Property="Descending" Bool="true"/></Record></Collection></PropertyValue><PropertyValue Property="Visualizations"><Collection><AnnotationPath>@UI.LineItem#MassnahmeTableBgesamt</AnnotationPath></Collection></PropertyValue></Record></Annotation>
+                <Annotation Term="UI.LineItem" Qualifier="MassnahmeTableB0"><Collection><Record Type="UI.DataField"><PropertyValue Property="Label" String="Massnahme"/><PropertyValue Property="Value" Path="MassnahmeBezeichnung"/></Record><Record Type="UI.DataField"><PropertyValue Property="Label" String="B0 Einplanung"/><PropertyValue Property="Value" Path="B0"/></Record></Collection></Annotation>
+                <Annotation Term="UI.PresentationVariant" Qualifier="MassnahmeTableTopB0"><Record Type="UI.PresentationVariantType"><PropertyValue Property="MaxItems" Int="10"/><PropertyValue Property="SortOrder"><Collection><Record Type="Common.SortOrderType"><PropertyValue Property="Property" PropertyPath="B0"/><PropertyValue Property="Descending" Bool="true"/></Record></Collection></PropertyValue><PropertyValue Property="Visualizations"><Collection><AnnotationPath>@UI.LineItem#MassnahmeTableB0</AnnotationPath></Collection></PropertyValue></Record></Annotation>
+                <Annotation Term="UI.LineItem" Qualifier="MassnahmeTableB1"><Collection><Record Type="UI.DataField"><PropertyValue Property="Label" String="Massnahme"/><PropertyValue Property="Value" Path="MassnahmeBezeichnung"/></Record><Record Type="UI.DataField"><PropertyValue Property="Label" String="B1"/><PropertyValue Property="Value" Path="B1"/></Record></Collection></Annotation>
+                <Annotation Term="UI.PresentationVariant" Qualifier="MassnahmeTableTopB1"><Record Type="UI.PresentationVariantType"><PropertyValue Property="MaxItems" Int="10"/><PropertyValue Property="SortOrder"><Collection><Record Type="Common.SortOrderType"><PropertyValue Property="Property" PropertyPath="B1"/><PropertyValue Property="Descending" Bool="true"/></Record></Collection></PropertyValue><PropertyValue Property="Visualizations"><Collection><AnnotationPath>@UI.LineItem#MassnahmeTableB1</AnnotationPath></Collection></PropertyValue></Record></Annotation>
+                <Annotation Term="UI.LineItem" Qualifier="MassnahmeTableB2"><Collection><Record Type="UI.DataField"><PropertyValue Property="Label" String="Massnahme"/><PropertyValue Property="Value" Path="MassnahmeBezeichnung"/></Record><Record Type="UI.DataField"><PropertyValue Property="Label" String="B2 Vergaben"/><PropertyValue Property="Value" Path="B2"/></Record></Collection></Annotation>
+                <Annotation Term="UI.PresentationVariant" Qualifier="MassnahmeTableTopB2"><Record Type="UI.PresentationVariantType"><PropertyValue Property="MaxItems" Int="10"/><PropertyValue Property="SortOrder"><Collection><Record Type="Common.SortOrderType"><PropertyValue Property="Property" PropertyPath="B2"/><PropertyValue Property="Descending" Bool="true"/></Record></Collection></PropertyValue><PropertyValue Property="Visualizations"><Collection><AnnotationPath>@UI.LineItem#MassnahmeTableB2</AnnotationPath></Collection></PropertyValue></Record></Annotation>
+                <Annotation Term="UI.LineItem" Qualifier="MassnahmeTableB3"><Collection><Record Type="UI.DataField"><PropertyValue Property="Label" String="Massnahme"/><PropertyValue Property="Value" Path="MassnahmeBezeichnung"/></Record><Record Type="UI.DataField"><PropertyValue Property="Label" String="B3 Festlegungen"/><PropertyValue Property="Value" Path="B3"/></Record></Collection></Annotation>
+                <Annotation Term="UI.PresentationVariant" Qualifier="MassnahmeTableTopB3"><Record Type="UI.PresentationVariantType"><PropertyValue Property="MaxItems" Int="10"/><PropertyValue Property="SortOrder"><Collection><Record Type="Common.SortOrderType"><PropertyValue Property="Property" PropertyPath="B3"/><PropertyValue Property="Descending" Bool="true"/></Record></Collection></PropertyValue><PropertyValue Property="Visualizations"><Collection><AnnotationPath>@UI.LineItem#MassnahmeTableB3</AnnotationPath></Collection></PropertyValue></Record></Annotation>
+                <Annotation Term="UI.LineItem" Qualifier="MassnahmeTableB4"><Collection><Record Type="UI.DataField"><PropertyValue Property="Label" String="Massnahme"/><PropertyValue Property="Value" Path="MassnahmeBezeichnung"/></Record><Record Type="UI.DataField"><PropertyValue Property="Label" String="B4 Zahlungen"/><PropertyValue Property="Value" Path="B4"/></Record></Collection></Annotation>
+                <Annotation Term="UI.PresentationVariant" Qualifier="MassnahmeTableTopB4"><Record Type="UI.PresentationVariantType"><PropertyValue Property="MaxItems" Int="10"/><PropertyValue Property="SortOrder"><Collection><Record Type="Common.SortOrderType"><PropertyValue Property="Property" PropertyPath="B4"/><PropertyValue Property="Descending" Bool="true"/></Record></Collection></PropertyValue><PropertyValue Property="Visualizations"><Collection><AnnotationPath>@UI.LineItem#MassnahmeTableB4</AnnotationPath></Collection></PropertyValue></Record></Annotation>
+
+                <!-- Navigation zur Fiori Elements ALP via Intent SEM_HUEL_01#display -->
+                <Annotation Term="UI.Identification" Qualifier="HuelNavigation">
+                    <Collection>
+                        <Record Type="UI.DataFieldForIntentBasedNavigation">
+                            <PropertyValue Property="Label" String="Detailanalyse Massnahmen"/>
+                            <PropertyValue Property="SemanticObject" String="SEM_HUEL_01"/>
+                            <PropertyValue Property="Action" String="display"/>
+                            <PropertyValue Property="IconUrl" String="sap-icon://analytical-map"/>
+                        </Record>
+                    </Collection>
+                </Annotation>
+
+                <!-- Bindungspipeline: Bubble Chart B0 (X) / B4 (Y) / B3 (Groesse) je Amt -->
+                <Annotation Term="UI.Chart" Qualifier="Bindungspipeline">
+                    <Record Type="UI.ChartDefinitionType">
+                        <PropertyValue Property="Title" String="Bindungspipeline je Amt"/>
+                        <PropertyValue Property="Description" String="X=Einplanung(B0), Y=Zahlungen(B4), Groesse=Offene Festlegungen(B3)"/>
+                        <PropertyValue Property="ChartType" EnumMember="UI.ChartType/Bubble"/>
+                        <PropertyValue Property="Dimensions">
+                            <Collection>
+                                <PropertyPath>Amt</PropertyPath>
+                            </Collection>
+                        </PropertyValue>
+                        <PropertyValue Property="DimensionAttributes">
+                            <Collection>
+                                <Record Type="UI.ChartDimensionAttributeType">
+                                    <PropertyValue Property="Dimension" PropertyPath="Amt"/>
+                                    <PropertyValue Property="Role" EnumMember="UI.ChartDimensionRoleType/Series"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                        <PropertyValue Property="Measures">
+                            <Collection>
+                                <PropertyPath>B0</PropertyPath>
+                                <PropertyPath>B4</PropertyPath>
+                                <PropertyPath>B3</PropertyPath>
+                            </Collection>
+                        </PropertyValue>
+                        <PropertyValue Property="MeasureAttributes">
+                            <Collection>
+                                <Record Type="UI.ChartMeasureAttributeType">
+                                    <PropertyValue Property="Measure" PropertyPath="B0"/>
+                                    <PropertyValue Property="Role" EnumMember="UI.ChartMeasureRoleType/Axis1"/>
+                                </Record>
+                                <Record Type="UI.ChartMeasureAttributeType">
+                                    <PropertyValue Property="Measure" PropertyPath="B4"/>
+                                    <PropertyValue Property="Role" EnumMember="UI.ChartMeasureRoleType/Axis2"/>
+                                </Record>
+                                <Record Type="UI.ChartMeasureAttributeType">
+                                    <PropertyValue Property="Measure" PropertyPath="B3"/>
+                                    <PropertyValue Property="Role" EnumMember="UI.ChartMeasureRoleType/Axis3"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+
+                <!-- KPI DataPoints fuer Management-Uebersicht -->
+                <Annotation Term="UI.DataPoint" Qualifier="BgesamtKPI">
+                    <Record Type="UI.DataPointType">
+                        <PropertyValue Property="Title" String="Gesamtvolumen"/>
+                        <PropertyValue Property="Description" String="Summe aller Bindungsstufen (B0-B4)"/>
+                        <PropertyValue Property="Value" Path="Bgesamt"/>
+                    </Record>
+                </Annotation>
+
+                <Annotation Term="UI.DataPoint" Qualifier="B4KPI">
+                    <Record Type="UI.DataPointType">
+                        <PropertyValue Property="Title" String="Zahlungen"/>
+                        <PropertyValue Property="Description" String="Ausgezahlte Mittel (B4) vs. Gesamtvolumen"/>
+                        <PropertyValue Property="Value" Path="B4"/>
+                        <PropertyValue Property="TargetValue" Path="Bgesamt"/>
+                        <PropertyValue Property="CriticalityCalculation">
+                            <Record Type="UI.CriticalityCalculationType">
+                                <PropertyValue Property="ImprovementDirection" EnumMember="UI.ImprovementDirectionType/Maximize"/>
+                                <PropertyValue Property="ToleranceRangeLowValue" Decimal="0.5"/>
+                                <PropertyValue Property="DeviationRangeLowValue" Decimal="0.2"/>
+                            </Record>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+
+                <Annotation Term="UI.DataPoint" Qualifier="B3KPI">
+                    <Record Type="UI.DataPointType">
+                        <PropertyValue Property="Title" String="Offene Festlegungen"/>
+                        <PropertyValue Property="Description" String="Beauftragt, noch nicht bezahlt (B3) vs. Gesamtvolumen"/>
+                        <PropertyValue Property="Value" Path="B3"/>
+                        <PropertyValue Property="TargetValue" Path="Bgesamt"/>
+                        <PropertyValue Property="CriticalityCalculation">
+                            <Record Type="UI.CriticalityCalculationType">
+                                <PropertyValue Property="ImprovementDirection" EnumMember="UI.ImprovementDirectionType/Minimize"/>
+                                <PropertyValue Property="ToleranceRangeHighValue" Decimal="0.5"/>
+                                <PropertyValue Property="DeviationRangeHighValue" Decimal="0.8"/>
+                            </Record>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+
+                <Annotation Term="UI.SelectionVariant" Qualifier="MassnahmeTableFilter">
+                    <Record Type="UI.SelectionVariantType">
+                        <PropertyValue Property="SelectOptions">
+                            <Collection>
+                                <Record Type="UI.SelectOptionType">
+                                    <PropertyValue Property="PropertyName" PropertyPath="JahrKassenwirksamkeit"/>
+                                    <PropertyValue Property="Ranges">
+                                        <Collection>
+                                            <Record Type="UI.SelectionRangeType">
+                                                <PropertyValue Property="Sign" EnumMember="UI.SelectionRangeSignType/I"/>
+                                                <PropertyValue Property="Option" EnumMember="UI.SelectionRangeOptionType/EQ"/>
+                                                <PropertyValue Property="Low" String="2026"/>
+                                            </Record>
+                                        </Collection>
+                                    </PropertyValue>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+
+                <Annotation Term="UI.PresentationVariant" Qualifier="MassnahmeTableTop10">
+                    <Record Type="UI.PresentationVariantType">
+                        <PropertyValue Property="MaxItems" Int="10"/>
+                        <PropertyValue Property="SortOrder">
+                            <Collection>
+                                <Record Type="Common.SortOrderType">
+                                    <PropertyValue Property="Property" PropertyPath="Bgesamt"/>
+                                    <PropertyValue Property="Descending" Bool="true"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                        <PropertyValue Property="Visualizations">
+                            <Collection>
+                                <AnnotationPath>@UI.LineItem#MassnahmeTop10</AnnotationPath>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+
+                <Annotation Term="UI.LineItem" Qualifier="MassnahmeTop10">
+                    <Collection>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Label" String="Massnahme"/>
+                            <PropertyValue Property="Value" Path="Massnahme"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Label" String="Bezeichnung"/>
+                            <PropertyValue Property="Value" Path="MassnahmeBezeichnung"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Label" String="B0"/>
+                            <PropertyValue Property="Value" Path="B0"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Label" String="B1"/>
+                            <PropertyValue Property="Value" Path="B1"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Label" String="B2"/>
+                            <PropertyValue Property="Value" Path="B2"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Label" String="B3"/>
+                            <PropertyValue Property="Value" Path="B3"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Label" String="B4"/>
+                            <PropertyValue Property="Value" Path="B4"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Label" String="Bedarf gesamt"/>
+                            <PropertyValue Property="Value" Path="Bgesamt"/>
+                        </Record>
+                    </Collection>
+                </Annotation>
+
+                <!-- B4 Zeitreihe: Linienchart B4 pro BuchungsdatumHaSta (Monat / Tag), GJ 2026 via GlobalFilter -->
+                <!-- MonatHaSta ist numc(6) YYYYMM ohne calendar.yearMonth-Annotation (verhindert Datumsfehler 50061) -->
+                <Annotation Term="UI.Chart" Qualifier="B4ZeitreiheMonat">
+                    <Record Type="UI.ChartDefinitionType">
+                        <PropertyValue Property="Title" String="B4 Zahlungen pro Monat"/>
+                        <PropertyValue Property="ChartType" EnumMember="UI.ChartType/Line"/>
+                        <PropertyValue Property="Dimensions">
+                            <Collection>
+                                <PropertyPath>MonatHaSta</PropertyPath>
+                            </Collection>
+                        </PropertyValue>
+                        <PropertyValue Property="DimensionAttributes">
+                            <Collection>
+                                <Record Type="UI.ChartDimensionAttributeType">
+                                    <PropertyValue Property="Dimension" PropertyPath="MonatHaSta"/>
                                     <PropertyValue Property="Role" EnumMember="UI.ChartDimensionRoleType/Category"/>
                                 </Record>
                             </Collection>
@@ -129,22 +1396,21 @@
                         </PropertyValue>
                     </Record>
                 </Annotation>
-            </Annotations>
-            <Annotations Target="com.example.vertrag.BereichSumme">
-                <Annotation Term="UI.Chart">
+
+                <Annotation Term="UI.Chart" Qualifier="B4ZeitreiheTag">
                     <Record Type="UI.ChartDefinitionType">
-                        <PropertyValue Property="Title" String="B4 nach Bereich"/>
-                        <PropertyValue Property="ChartType" EnumMember="UI.ChartType/Donut"/>
+                        <PropertyValue Property="Title" String="B4 Zahlungen pro Tag"/>
+                        <PropertyValue Property="ChartType" EnumMember="UI.ChartType/Line"/>
                         <PropertyValue Property="Dimensions">
                             <Collection>
-                                <PropertyPath>Bereich</PropertyPath>
+                                <PropertyPath>TagHaSta</PropertyPath>
                             </Collection>
                         </PropertyValue>
                         <PropertyValue Property="DimensionAttributes">
                             <Collection>
                                 <Record Type="UI.ChartDimensionAttributeType">
-                                    <PropertyValue Property="Dimension" PropertyPath="Bereich"/>
-                                    <PropertyValue Property="Role" EnumMember="UI.ChartDimensionRoleType/Series"/>
+                                    <PropertyValue Property="Dimension" PropertyPath="TagHaSta"/>
+                                    <PropertyValue Property="Role" EnumMember="UI.ChartDimensionRoleType/Category"/>
                                 </Record>
                             </Collection>
                         </PropertyValue>
@@ -163,7 +1429,367 @@
                         </PropertyValue>
                     </Record>
                 </Annotation>
+
+                <Annotation Term="UI.Chart" Qualifier="B4Zeitreihe">
+                    <Record Type="UI.ChartDefinitionType">
+                        <PropertyValue Property="Title" String="B4 Zahlungen Zeitreihe"/>
+                        <PropertyValue Property="ChartType" EnumMember="UI.ChartType/Line"/>
+                        <PropertyValue Property="Dimensions">
+                            <Collection>
+                                <PropertyPath>JahrKassenwirksamkeit</PropertyPath>
+                            </Collection>
+                        </PropertyValue>
+                        <PropertyValue Property="DimensionAttributes">
+                            <Collection>
+                                <Record Type="UI.ChartDimensionAttributeType">
+                                    <PropertyValue Property="Dimension" PropertyPath="JahrKassenwirksamkeit"/>
+                                    <PropertyValue Property="Role" EnumMember="UI.ChartDimensionRoleType/Category"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                        <PropertyValue Property="Measures">
+                            <Collection>
+                                <PropertyPath>B4</PropertyPath>
+                            </Collection>
+                        </PropertyValue>
+                        <PropertyValue Property="MeasureAttributes">
+                            <Collection>
+                                <Record Type="UI.ChartMeasureAttributeType">
+                                    <PropertyValue Property="Measure" PropertyPath="B4"/>
+                                    <PropertyValue Property="Role" EnumMember="UI.ChartMeasureRoleType/Axis1"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+
+                <!-- HeaderInfo fuer Stack Card -->
+                <Annotation Term="UI.HeaderInfo">
+                    <Record Type="UI.HeaderInfoType">
+                        <PropertyValue Property="TypeName" String="Massnahme"/>
+                        <PropertyValue Property="TypeNamePlural" String="Massnahmen"/>
+                        <PropertyValue Property="Title">
+                            <Record Type="UI.DataField">
+                                <PropertyValue Property="Value" Path="Massnahme"/>
+                            </Record>
+                        </PropertyValue>
+                        <PropertyValue Property="Description">
+                            <Record Type="UI.DataField">
+                                <PropertyValue Property="Value" Path="MassnahmeBezeichnung"/>
+                            </Record>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+
+                <!-- LineItem fuer Stack Card Details -->
+                <Annotation Term="UI.LineItem" Qualifier="StackDetails">
+                    <Collection>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Label" String="Bauamt"/>
+                            <PropertyValue Property="Value" Path="AmtBezeichnung"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Label" String="Einplanung (B0)"/>
+                            <PropertyValue Property="Value" Path="B0"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Label" String="Offene Festlegungen (B3)"/>
+                            <PropertyValue Property="Value" Path="B3"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Label" String="Zahlungen (B4)"/>
+                            <PropertyValue Property="Value" Path="B4"/>
+                        </Record>
+                        <Record Type="UI.DataField">
+                            <PropertyValue Property="Label" String="Bedarf gesamt"/>
+                            <PropertyValue Property="Value" Path="Bgesamt"/>
+                        </Record>
+                    </Collection>
+                </Annotation>
+
+                <!-- PresentationVariant fuer Stack Card: Top 10 nach Bgesamt -->
+                <Annotation Term="UI.PresentationVariant" Qualifier="MassnahmeStack">
+                    <Record Type="UI.PresentationVariantType">
+                        <PropertyValue Property="MaxItems" Int="10"/>
+                        <PropertyValue Property="SortOrder">
+                            <Collection>
+                                <Record Type="Common.SortOrderType">
+                                    <PropertyValue Property="Property" PropertyPath="Bgesamt"/>
+                                    <PropertyValue Property="Descending" Bool="true"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                        <PropertyValue Property="Visualizations">
+                            <Collection>
+                                <AnnotationPath>@UI.LineItem#StackDetails</AnnotationPath>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+
+                <!-- Donut Charts: Budgetverteilung aus 3 Perspektiven -->
+                <Annotation Term="UI.Chart" Qualifier="MassnahmenartDonut">
+                    <Record Type="UI.ChartDefinitionType">
+                        <PropertyValue Property="Title" String="Verteilung nach Massnahmenart"/>
+                        <PropertyValue Property="ChartType" EnumMember="UI.ChartType/Donut"/>
+                        <PropertyValue Property="Dimensions">
+                            <Collection>
+                                <PropertyPath>MassnahmenartName</PropertyPath>
+                            </Collection>
+                        </PropertyValue>
+                        <PropertyValue Property="DimensionAttributes">
+                            <Collection>
+                                <Record Type="UI.ChartDimensionAttributeType">
+                                    <PropertyValue Property="Dimension" PropertyPath="MassnahmenartName"/>
+                                    <PropertyValue Property="Role" EnumMember="UI.ChartDimensionRoleType/Series"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                        <PropertyValue Property="Measures">
+                            <Collection>
+                                <PropertyPath>Bgesamt</PropertyPath>
+                            </Collection>
+                        </PropertyValue>
+                        <PropertyValue Property="MeasureAttributes">
+                            <Collection>
+                                <Record Type="UI.ChartMeasureAttributeType">
+                                    <PropertyValue Property="Measure" PropertyPath="Bgesamt"/>
+                                    <PropertyValue Property="Role" EnumMember="UI.ChartMeasureRoleType/Axis1"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+
+                <Annotation Term="UI.Chart" Qualifier="FinanzierungsbereichDonut">
+                    <Record Type="UI.ChartDefinitionType">
+                        <PropertyValue Property="Title" String="Verteilung nach Finanzierungsbereich"/>
+                        <PropertyValue Property="ChartType" EnumMember="UI.ChartType/Donut"/>
+                        <PropertyValue Property="Dimensions">
+                            <Collection>
+                                <PropertyPath>FinanzierungsbereichBezeich</PropertyPath>
+                            </Collection>
+                        </PropertyValue>
+                        <PropertyValue Property="DimensionAttributes">
+                            <Collection>
+                                <Record Type="UI.ChartDimensionAttributeType">
+                                    <PropertyValue Property="Dimension" PropertyPath="FinanzierungsbereichBezeich"/>
+                                    <PropertyValue Property="Role" EnumMember="UI.ChartDimensionRoleType/Series"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                        <PropertyValue Property="Measures">
+                            <Collection>
+                                <PropertyPath>Bgesamt</PropertyPath>
+                            </Collection>
+                        </PropertyValue>
+                        <PropertyValue Property="MeasureAttributes">
+                            <Collection>
+                                <Record Type="UI.ChartMeasureAttributeType">
+                                    <PropertyValue Property="Measure" PropertyPath="Bgesamt"/>
+                                    <PropertyValue Property="Role" EnumMember="UI.ChartMeasureRoleType/Axis1"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+
+                <Annotation Term="UI.Chart" Qualifier="BereichDonut">
+                    <Record Type="UI.ChartDefinitionType">
+                        <PropertyValue Property="Title" String="Verteilung nach Bereich"/>
+                        <PropertyValue Property="ChartType" EnumMember="UI.ChartType/Donut"/>
+                        <PropertyValue Property="Dimensions">
+                            <Collection>
+                                <PropertyPath>Bereich</PropertyPath>
+                            </Collection>
+                        </PropertyValue>
+                        <PropertyValue Property="DimensionAttributes">
+                            <Collection>
+                                <Record Type="UI.ChartDimensionAttributeType">
+                                    <PropertyValue Property="Dimension" PropertyPath="Bereich"/>
+                                    <PropertyValue Property="Role" EnumMember="UI.ChartDimensionRoleType/Series"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                        <PropertyValue Property="Measures">
+                            <Collection>
+                                <PropertyPath>Bgesamt</PropertyPath>
+                            </Collection>
+                        </PropertyValue>
+                        <PropertyValue Property="MeasureAttributes">
+                            <Collection>
+                                <Record Type="UI.ChartMeasureAttributeType">
+                                    <PropertyValue Property="Measure" PropertyPath="Bgesamt"/>
+                                    <PropertyValue Property="Role" EnumMember="UI.ChartMeasureRoleType/Axis1"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+
+                <!-- Sparkline-Charts fuer KPI-Cards: Verlauf ueber JahrKassenwirksamkeit -->
+                <Annotation Term="UI.Chart" Qualifier="BgesamtSparkline">
+                    <Record Type="UI.ChartDefinitionType">
+                        <PropertyValue Property="Title" String="Gesamtvolumen Verlauf"/>
+                        <PropertyValue Property="ChartType" EnumMember="UI.ChartType/Line"/>
+                        <PropertyValue Property="Dimensions">
+                            <Collection>
+                                <PropertyPath>JahrKassenwirksamkeit</PropertyPath>
+                            </Collection>
+                        </PropertyValue>
+                        <PropertyValue Property="DimensionAttributes">
+                            <Collection>
+                                <Record Type="UI.ChartDimensionAttributeType">
+                                    <PropertyValue Property="Dimension" PropertyPath="JahrKassenwirksamkeit"/>
+                                    <PropertyValue Property="Role" EnumMember="UI.ChartDimensionRoleType/Category"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                        <PropertyValue Property="Measures">
+                            <Collection>
+                                <PropertyPath>Bgesamt</PropertyPath>
+                            </Collection>
+                        </PropertyValue>
+                        <PropertyValue Property="MeasureAttributes">
+                            <Collection>
+                                <Record Type="UI.ChartMeasureAttributeType">
+                                    <PropertyValue Property="Measure" PropertyPath="Bgesamt"/>
+                                    <PropertyValue Property="Role" EnumMember="UI.ChartMeasureRoleType/Axis1"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+
+                <Annotation Term="UI.Chart" Qualifier="B4Sparkline">
+                    <Record Type="UI.ChartDefinitionType">
+                        <PropertyValue Property="Title" String="Zahlungen Verlauf"/>
+                        <PropertyValue Property="ChartType" EnumMember="UI.ChartType/Line"/>
+                        <PropertyValue Property="Dimensions">
+                            <Collection>
+                                <PropertyPath>JahrKassenwirksamkeit</PropertyPath>
+                            </Collection>
+                        </PropertyValue>
+                        <PropertyValue Property="DimensionAttributes">
+                            <Collection>
+                                <Record Type="UI.ChartDimensionAttributeType">
+                                    <PropertyValue Property="Dimension" PropertyPath="JahrKassenwirksamkeit"/>
+                                    <PropertyValue Property="Role" EnumMember="UI.ChartDimensionRoleType/Category"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                        <PropertyValue Property="Measures">
+                            <Collection>
+                                <PropertyPath>B4</PropertyPath>
+                            </Collection>
+                        </PropertyValue>
+                        <PropertyValue Property="MeasureAttributes">
+                            <Collection>
+                                <Record Type="UI.ChartMeasureAttributeType">
+                                    <PropertyValue Property="Measure" PropertyPath="B4"/>
+                                    <PropertyValue Property="Role" EnumMember="UI.ChartMeasureRoleType/Axis1"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+
+                <Annotation Term="UI.Chart" Qualifier="B3Sparkline">
+                    <Record Type="UI.ChartDefinitionType">
+                        <PropertyValue Property="Title" String="Offene Festlegungen Verlauf"/>
+                        <PropertyValue Property="ChartType" EnumMember="UI.ChartType/Line"/>
+                        <PropertyValue Property="Dimensions">
+                            <Collection>
+                                <PropertyPath>JahrKassenwirksamkeit</PropertyPath>
+                            </Collection>
+                        </PropertyValue>
+                        <PropertyValue Property="DimensionAttributes">
+                            <Collection>
+                                <Record Type="UI.ChartDimensionAttributeType">
+                                    <PropertyValue Property="Dimension" PropertyPath="JahrKassenwirksamkeit"/>
+                                    <PropertyValue Property="Role" EnumMember="UI.ChartDimensionRoleType/Category"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                        <PropertyValue Property="Measures">
+                            <Collection>
+                                <PropertyPath>B3</PropertyPath>
+                            </Collection>
+                        </PropertyValue>
+                        <PropertyValue Property="MeasureAttributes">
+                            <Collection>
+                                <Record Type="UI.ChartMeasureAttributeType">
+                                    <PropertyValue Property="Measure" PropertyPath="B3"/>
+                                    <PropertyValue Property="Role" EnumMember="UI.ChartMeasureRoleType/Axis1"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+
             </Annotations>
+
+            <!-- ValueList-Annotationen für globale Filterfelder -->
+            <Annotations Target="cds_zsd_huel.HuelType/Amt">
+                <Annotation Term="Common.ValueList">
+                    <Record>
+                        <PropertyValue Property="CollectionPath" String="HuelAmt"/>
+                        <PropertyValue Property="Parameters">
+                            <Collection>
+                                <Record Type="Common.ValueListParameterOut">
+                                    <PropertyValue Property="LocalDataProperty" PropertyPath="Amt"/>
+                                    <PropertyValue Property="ValueListProperty" String="Amt"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="AmtBezeichnung"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+            </Annotations>
+
+            <Annotations Target="cds_zsd_huel.HuelType/Bereich">
+                <Annotation Term="Common.ValueList">
+                    <Record>
+                        <PropertyValue Property="CollectionPath" String="HuelBereich"/>
+                        <PropertyValue Property="Parameters">
+                            <Collection>
+                                <Record Type="Common.ValueListParameterOut">
+                                    <PropertyValue Property="LocalDataProperty" PropertyPath="Bereich"/>
+                                    <PropertyValue Property="ValueListProperty" String="Bereich"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="BereichBezeichnung"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+            </Annotations>
+
+            <Annotations Target="cds_zsd_huel.HuelType/Einzelplan">
+                <Annotation Term="Common.ValueList">
+                    <Record>
+                        <PropertyValue Property="CollectionPath" String="HuelEinzelplan"/>
+                        <PropertyValue Property="Parameters">
+                            <Collection>
+                                <Record Type="Common.ValueListParameterOut">
+                                    <PropertyValue Property="LocalDataProperty" PropertyPath="Einzelplan"/>
+                                    <PropertyValue Property="ValueListProperty" String="Einzelplan"/>
+                                </Record>
+                                <Record Type="Common.ValueListParameterDisplayOnly">
+                                    <PropertyValue Property="ValueListProperty" String="EinzelplanText"/>
+                                </Record>
+                            </Collection>
+                        </PropertyValue>
+                    </Record>
+                </Annotation>
+            </Annotations>
+
         </Schema>
     </edmx:DataServices>
 </edmx:Edmx>
+
+
+
